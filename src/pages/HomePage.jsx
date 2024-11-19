@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 
 const HomePage = () => {
   const { user } = useAuth();
+  console.log("HomePage -> user", user);
 
   return (
     <div>

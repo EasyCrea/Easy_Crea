@@ -7,10 +7,17 @@ import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au con
 
 // Composant pour protéger les routes selon les rôles
 const ProtectedRoute = ({ role, children }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  // Affiche un indicateur de chargement tant que l'état de l'authentification n'est pas connu
+  if (loading) {
+    return <div>Chargement...</div>; // Vous pouvez remplacer par un spinner ou autre composant de chargement
+  }
 
   // Si l'utilisateur n'est pas connecté, redirige vers login
-  if (!user) return <Navigate to="/login" />;
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
 
   // Vérifie si l'utilisateur a le rôle requis
   if (role && user.role !== role) {
@@ -23,23 +30,23 @@ const ProtectedRoute = ({ role, children }) => {
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Route publique pour login */}
+      {/* Route publique : page de connexion */}
       <Route path="/login" element={<LoginPage />} />
 
       {/* Route publique : page d'accueil */}
       <Route path="/" element={<HomePage />} />
 
-      {/* Routes protégées pour les admins */}
+      {/* Route protégée : tableau de bord administrateur */}
       <Route
         path="/admin/dashboard"
         element={
-          // <ProtectedRoute role="admin">
-          <AdminDashboard />
-          // </ProtectedRoute>
+          <ProtectedRoute role="admin">
+            <AdminDashboard />
+          </ProtectedRoute>
         }
       />
 
-      {/* Route par défaut (404 ou redirection vers login si non trouvé) */}
+      {/* Route par défaut : redirection vers la page de connexion */}
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );
