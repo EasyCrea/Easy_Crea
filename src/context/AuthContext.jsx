@@ -4,40 +4,44 @@ import API from "../api/api";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // Ajout d'un état d'erreur
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      // Ajout du token dans les en-têtes Authorization
       API.get("/createurs/checkToken", {
         headers: {
-          Authorization: `Bearer ${token}`, // Envoi du token dans l'en-tête Authorization
-          "Content-Type": "application/json", // Corrigé le nom de l'en-tête
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true, // Permet d'envoyer des informations d'identification si nécessaire
+        withCredentials: true,
       })
         .then((response) => {
-          if (response.data?.createur) {
-            setUser(response.data.createur); // Assurez-vous de récupérer 'createur' depuis la réponse
+          console.log({ response }, "################");
+
+          const data = response.data;
+
+          if (data.status === "success" && data.decoded?.role) {
+            setUser({
+              id: data.decoded.id,
+              email: data.decoded.email,
+              role: data.decoded.role,
+            });
           } else {
-            setUser(null); // En cas de réponse inattendue
+            throw new Error(data.message || "Rôle inconnu");
           }
         })
         .catch((err) => {
-          console.error("Failed to fetch user:", err);
-          setUser(null); // Déconnexion en cas d'erreur
-          setError("Token invalide ou expiré"); // Ajout d'un message d'erreur
-          localStorage.removeItem("token"); // Supprimer le token invalide
+          console.error("Erreur lors de l'authentification :", err);
+          setError("Authentification échouée. Veuillez réessayer.");
+          localStorage.removeItem("token");
         })
         .finally(() => {
-          setLoading(false); // Mettre à jour 'loading' après l'exécution
+          setLoading(false);
         });
     } else {
-      setUser(null); // Si pas de token, déconnecter l'utilisateur
-      setLoading(false); // Mettre 'loading' à false si pas de token
+      setLoading(false);
     }
   }, []);
 
@@ -53,5 +57,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Hook pour accéder facilement au contexte
 export const useAuth = () => React.useContext(AuthContext);

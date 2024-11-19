@@ -1,7 +1,8 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./../pages/HomePage";
-import LoginPage from "./../pages/createurs/Login";
+import LoginPageCreateur from "./../pages/createurs/Login";
+import LoginPageAdmin from "./../pages/admins/Login";
 import AdminDashboard from "./../pages/AdminDashboard";
 import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au contexte Auth
 
@@ -16,7 +17,7 @@ const ProtectedRoute = ({ role, children }) => {
 
   // Si l'utilisateur n'est pas connecté, redirige vers login
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
 
   // Vérifie si l'utilisateur a le rôle requis
@@ -31,7 +32,10 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Route publique : page de connexion */}
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/loginCreateur" element={<LoginPageCreateur />} />
+
+      {/* Route publique : page de connexion */}
+      <Route path="/loginAdmin" element={<LoginPageAdmin />} />
 
       {/* Route publique : page d'accueil */}
       <Route path="/" element={<HomePage />} />
@@ -47,7 +51,7 @@ const AppRoutes = () => {
       />
 
       {/* Route par défaut : redirection vers la page de connexion */}
-      <Route path="*" element={<Navigate to="/login" />} />
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 };

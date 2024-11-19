@@ -11,10 +11,12 @@ const HomePage = () => {
   return (
     <div>
       <h1>Home</h1>
-      <p>Welcome, {user.email}!</p>
-      <p>
-        <Link to="/login">Login</Link>
-      </p>
+      <button>
+        <Link to="/loginCreateur">Login Createur</Link>
+      </button>
+      <button>
+        <Link to="/loginAdmin">Login Admin</Link>
+      </button>
     </div>
   );
 };

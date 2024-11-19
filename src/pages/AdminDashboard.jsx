@@ -11,29 +11,21 @@ import {
 const AdminDashboard = () => {
   const { user } = useAuth();
   const [decks, setDecks] = useState([]);
-  const [loading, setLoading] = useState(true); // Indicateur de chargement
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchDecks();
-  }, []);
+    if (user?.role === "admin") {
+      fetchDecks();
+    }
+  }, [user]);
 
   const fetchDecks = async () => {
     setLoading(true);
     try {
       const data = await getAllDeck();
-      let parsedData;
-
-      if (Array.isArray(data)) {
-        parsedData = data;
-      } else if (typeof data === "string") {
-        parsedData = JSON.parse(data);
-      } else {
-        throw new Error("Unexpected data format");
-      }
-
-      setDecks(parsedData);
+      setDecks(data || []);
     } catch (error) {
-      console.error("Failed to fetch decks:", error);
+      console.error("Erreur lors du chargement des decks :", error);
     } finally {
       setLoading(false);
     }
@@ -42,46 +34,49 @@ const AdminDashboard = () => {
   const handleDelete = async (id) => {
     try {
       await deleteById(id);
-      setDecks((prevDecks) => prevDecks.filter((deck) => deck.id_deck !== id));
+      setDecks((prev) => prev.filter((deck) => deck.id_deck !== id));
     } catch (error) {
-      console.error("Failed to delete deck:", error);
+      console.error("Erreur lors de la suppression :", error);
     }
   };
 
   const toggleLive = async (id, currentStatus) => {
-    const toggleAction = currentStatus ? deactivateDeck : activateDeck;
-
     try {
-      await toggleAction(id);
-      setDecks((prevDecks) =>
-        prevDecks.map((deck) =>
+      const action = currentStatus ? deactivateDeck : activateDeck;
+      await action(id);
+      setDecks((prev) =>
+        prev.map((deck) =>
           deck.id_deck === id ? { ...deck, live: currentStatus ? 0 : 1 } : deck
         )
       );
     } catch (error) {
-      console.error("Failed to toggle live status:", error);
+      console.error("Erreur lors du changement de statut :", error);
     }
   };
 
+  if (!user || user.role !== "admin") {
+    return <p>Accès interdit.</p>;
+  }
+
   return (
     <div>
-      <h1>Dashboard</h1>
-      <p>Welcome, {user ? user.email : "Guest"}!</p>
-      <Link to="/admin/deck/new">Create a new deck</Link>
+      <h1>Tableau de bord</h1>
+      <Link to="/admin/deck/new">Créer un nouveau deck</Link>
       {loading ? (
-        <p>Loading decks...</p>
+        <p>Chargement des decks...</p>
       ) : (
         <ul>
           {decks.map((deck) => (
             <li key={deck.id_deck}>
-              <strong>{deck.titre_deck}</strong> (Cards: {deck.nb_cartes},
-              Likes: {deck.nb_jaime}){" "}
-              <span> | Live: {deck.live ? "Yes" : "No"}</span>
+              <strong>{deck.titre_deck}</strong> | Live:{" "}
+              {deck.live ? "Oui" : "Non"}
               <button onClick={() => toggleLive(deck.id_deck, deck.live)}>
-                {deck.live ? "Deactivate" : "Activate"}
+                {deck.live ? "Désactiver" : "Activer"}
               </button>
-              <Link to={`/admin/deck/${deck.id_deck}`}>Edit</Link>
-              <button onClick={() => handleDelete(deck.id_deck)}>Delete</button>
+              <Link to={`/admin/deck/${deck.id_deck}`}>Modifier</Link>
+              <button onClick={() => handleDelete(deck.id_deck)}>
+                Supprimer
+              </button>
             </li>
           ))}
         </ul>

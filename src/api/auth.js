@@ -29,8 +29,19 @@ export const logoutCreateur = async () => {
 
 // Gestion de l'authentification pour les admins
 export const loginAdmin = async (email, password) => {
-  const response = await API.post("/admin/login", { email, password });
-  return response.data; // Contient le token et les informations utilisateur
+  try {
+    const response = await API.post("/admin/login", { email, password });
+
+    if (response.data && response.data.token) {
+      console.log("Utilisateur authentifié :", response.data);
+      return response.data; // Le serveur doit fournir le token
+    } else {
+      throw new Error("Authentification échouée : réponse invalide.");
+    }
+  } catch (error) {
+    console.error("Erreur lors de la connexion :", error.message);
+    throw error; // Propager l'erreur pour que l'appelant puisse la gérer
+  }
 };
 
 export const registerAdmin = async (data) => {
