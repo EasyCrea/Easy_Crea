@@ -2,9 +2,10 @@ import axios from "axios";
 
 const API = axios.create({
   baseURL: "http://localhost:8000",
+  withCredentials: true, // Important pour envoyer des cookies ou des informations d'identification
 });
 
-// Intercepteur pour inclure le token JWT dans chaque requête
+// Intercepteur pour ajouter le token JWT dans les en-têtes
 API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -23,7 +24,7 @@ API.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Exemple : Rediriger l'utilisateur vers la page de login
+      // Rediriger l'utilisateur si le token est invalide ou manquant
       window.location.href = "/login";
     }
     return Promise.reject(error);

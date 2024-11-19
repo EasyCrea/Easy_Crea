@@ -18,11 +18,9 @@ const AdminDashboard = () => {
         let parsedData;
 
         try {
-          // Essayer de traiter le cas où les données sont directement au format JSON
           if (Array.isArray(data)) {
             parsedData = data;
           } else if (typeof data === "string") {
-            // Essayer de parser le JSON si les données sont une chaîne
             parsedData = JSON.parse(data);
           } else {
             throw new Error("Unexpected data format");
@@ -75,7 +73,7 @@ const AdminDashboard = () => {
   return (
     <div>
       <h1>Dashboard</h1>
-      <p>Welcome, {user}!</p>
+      <p>Welcome, {user ? user.email : "Guest"}!</p>
       <Link to="/admin/deck/new">Create a new deck</Link>
       <ul>
         {decks.map((deck) => (
@@ -85,7 +83,7 @@ const AdminDashboard = () => {
             <button onClick={() => toggleLive(deck.id_deck, deck.live)}>
               {deck.live ? "Deactivate" : "Activate"}
             </button>
-            <Link to={`/admin/deck/${deck.id_deck}`}>Edit</Link>{" "}
+            <Link to={`/admin/deck/${deck.id_deck}`}>Edit</Link>
             <button onClick={() => handleDelete(deck.id_deck)}>Delete</button>
           </li>
         ))}

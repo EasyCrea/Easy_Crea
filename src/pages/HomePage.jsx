@@ -6,12 +6,11 @@ import { useAuth } from "../context/AuthContext";
 
 const HomePage = () => {
   const { user } = useAuth();
-  console.log({ user });
 
   return (
     <div>
       <h1>Home</h1>
-      <p>Welcome, {user}!</p>
+      <p>Welcome, {user.email}!</p>
       <p>
         <Link to="/login">Login</Link>
       </p>

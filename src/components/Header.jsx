@@ -16,7 +16,7 @@ const Header = () => {
           {user ? (
             <>
               <li>
-                <Link to="/creator/dashboard">Dashboard</Link>
+                <Link to="/admin/dashboard">Dashboard</Link>
               </li>
               <li>
                 <button onClick={logout}>Logout</button>

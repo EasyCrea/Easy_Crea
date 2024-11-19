@@ -2,8 +2,19 @@ import API from "./api";
 
 // Gestion de l'authentification pour les créateurs
 export const loginCreateur = async (email, password) => {
-  const response = await API.post("/createurs/login", { email, password });
-  return response.data; // Contient le token et les informations utilisateur
+  try {
+    const response = await API.post("/createurs/login", { email, password });
+
+    if (response.data && response.data.token) {
+      console.log("Utilisateur authentifié :", response.data);
+      return response.data; // Le serveur doit fournir le token
+    } else {
+      throw new Error("Authentification échouée : réponse invalide.");
+    }
+  } catch (error) {
+    console.error("Erreur lors de la connexion :", error.message);
+    throw error; // Propager l'erreur pour que l'appelant puisse la gérer
+  }
 };
 
 export const registerCreateur = async (data) => {
