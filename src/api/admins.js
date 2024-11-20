@@ -72,8 +72,25 @@ export const activateDeck = async (id) => {
 // Gestion des cartes dans les decks
 
 export const getAllCardInDeck = async (id) => {
-  const response = await API.get(`/admin/deck/${id}`);
-  return response.data;
+  try {
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error("Token d'authentification manquant");
+    }
+
+    const response = await API.get(`/admin/deck/${id}`, {
+      // Utilisation de l'ID pour la requête
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    });
+
+    return response.data; // Retourner les données du deck
+  } catch (error) {
+    console.error("Erreur lors de la récupération des cartes du deck :", error);
+    throw error;
+  }
 };
 
 export const getCardById = async (id) => {

@@ -5,6 +5,7 @@ import LoginPageCreateur from "./../pages/createurs/Login";
 import LoginPageAdmin from "./../pages/admins/Login";
 import AdminDashboard from "../pages/admins/AdminDashboard";
 import CreateDeck from "../pages/admins/CreateDeck";
+import ShowDeck from "../pages/admins/ShowDeck";
 import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au contexte Auth
 
 // Composant pour protéger les routes selon les rôles
@@ -57,6 +58,16 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute role="admin">
             <CreateDeck />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Route protégée : voir les cartes du deck */}
+      <Route
+        path="/admin/deck/:id_deck"
+        element={
+          <ProtectedRoute role="admin">
+            <ShowDeck />
           </ProtectedRoute>
         }
       />

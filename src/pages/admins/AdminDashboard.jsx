@@ -76,11 +76,12 @@ const AdminDashboard = () => {
             <li key={deck.id_deck}>
               <strong>{deck.titre_deck}</strong> | Live:{" "}
               {deck.live ? "Oui" : "Non"}
+              <Link to={`/admin/deck/${deck.id_deck}`}>Voir deck</Link>
               <button onClick={() => toggleLive(deck.id_deck, deck.live)}>
                 {deck.live ? "Désactiver" : "Activer"}
               </button>
-              <Link to={`/admin/deck/${deck.id_deck}`}>Modifier</Link>
-              <button onClick={() => handleDelete(deck.id_deck, "deck")}>
+              <Link to={`/admin/deck/${deck.id_deck}/edit`}>Modifier</Link>
+              <button onClick={() => handleDelete(deck.id_deck)}>
                 Supprimer
               </button>
             </li>
