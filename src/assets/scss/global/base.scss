@@ -1,0 +1,51 @@
+/* Variables de base pour les couleurs et typographie */
+:root {
+  --primary-color: #2c7be5; /* Bleu primaire */
+  --secondary-color: #f8f9fa; /* Fond clair */
+  --text-color: #212529; /* Noir doux pour le texte */
+  --error-color: #e63946; /* Rouge pour les erreurs */
+  --success-color: #38c172; /* Vert pour le succès */
+  --warning-color: #fbbc05; /* Jaune pour les avertissements */
+  --bg-color: #f4f6f9; /* Fond général */
+  --border-color: #dee2e6; /* Bordures */
+  --font-family: "Arial", "Helvetica", sans-serif;
+  --transition-speed: 0.3s;
+}
+
+/* Reset et structure de base */
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: color var(--transition-speed);
+}
+
+a:hover {
+  color: var(--primary-color);
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 2rem 0;
+}
+
+.error-message {
+  text-align: center;
+  color: var(--error-color);
+  font-weight: bold;
+}

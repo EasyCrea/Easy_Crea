@@ -7,37 +7,49 @@ const Header = () => {
 
   useEffect(() => {
     console.log("Header re-rendered. Current user:", user);
-  }, [user]); // Réagit aux changements de `user`
+  }, [user]);
 
   return (
-    <header>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
+    <header className="header">
+      <nav className="nav">
+        <ul className="nav__list">
+          <li className="nav__item">
+            <Link to="/" className="nav__link">
+              Home
+            </Link>
           </li>
           {user && user.role ? (
-            <li>
-              <Link to="/admin/dashboard">Dashboard</Link>
+            <li className="nav__item">
+              <Link to="/admin/dashboard" className="nav__link">
+                Dashboard
+              </Link>
             </li>
           ) : (
             user && (
-              <li>
-                <Link to="/createur/dashboard">My Decks</Link>
+              <li className="nav__item">
+                <Link to="/createur/dashboard" className="nav__link">
+                  My Decks
+                </Link>
               </li>
             )
           )}
           {user ? (
-            <li>
-              <button onClick={logout}>Logout</button>
+            <li className="nav__item">
+              <button onClick={logout} className="btn btn--logout">
+                Logout
+              </button>
             </li>
           ) : (
             <>
-              <li>
-                <Link to="/loginCreateur">Login créateur</Link>
+              <li className="nav__item">
+                <Link to="/loginCreateur" className="nav__link">
+                  Login créateur
+                </Link>
               </li>
-              <li>
-                <Link to="/loginAdmin">Login admin</Link>
+              <li className="nav__item">
+                <Link to="/loginAdmin" className="nav__link">
+                  Login admin
+                </Link>
               </li>
             </>
           )}

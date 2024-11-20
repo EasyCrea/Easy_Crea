@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { createDeck } from "../../api/admins";
 
@@ -38,50 +38,66 @@ const CreateDeck = () => {
   };
 
   return (
-    <div>
-      <h1>Créer un nouveau deck</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="titre_deck">Titre</label>
+    <div className="form-container">
+      <h1 className="form-container__title">Créer un nouveau deck</h1>
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="form__group">
+          <label htmlFor="titre_deck" className="form__label">
+            Titre
+          </label>
           <input
             type="text"
             id="titre_deck"
             name="titre_deck"
-            value={deck.title}
+            className="form__input"
+            value={deck.titre_deck}
             onChange={handleChange}
+            required
           />
         </div>
-        <div>
-          <label htmlFor="date_debut_deck">Date de début de création</label>
+        <div className="form__group">
+          <label htmlFor="date_debut_deck" className="form__label">
+            Date de début de création
+          </label>
           <input
             type="date"
             id="date_debut_deck"
             name="date_debut_deck"
+            className="form__input"
             value={deck.date_debut_deck}
             onChange={handleChange}
+            required
           />
         </div>
-        <div>
-          <label htmlFor="date_fin_deck">Date de fin de création</label>
+        <div className="form__group">
+          <label htmlFor="date_fin_deck" className="form__label">
+            Date de fin de création
+          </label>
           <input
             type="date"
             id="date_fin_deck"
             name="date_fin_deck"
+            className="form__input"
             value={deck.date_fin_deck}
             onChange={handleChange}
+            required
           />
         </div>
-        <div>
-          <label htmlFor="nb_cartes">Nombre de cartes</label>
-          <textarea
+        <div className="form__group">
+          <label htmlFor="nb_cartes" className="form__label">
+            Nombre de cartes
+          </label>
+          <input
             id="nb_cartes"
             type="number"
             name="nb_cartes"
+            className="form__input"
             value={deck.nb_cartes}
             onChange={handleChange}
+            required
           />
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="submit" className="form__button" disabled={loading}>
           {loading ? "Chargement..." : "Créer"}
         </button>
       </form>

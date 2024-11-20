@@ -12,51 +12,58 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Vérification basique des champs
     if (!email || !password) {
       setError("Veuillez remplir tous les champs.");
       return;
     }
 
-    setError(""); // Réinitialiser les erreurs
-    setLoading(true); // Activer l'état de chargement
+    setError("");
+    setLoading(true);
 
     try {
       const data = await loginCreateur(email, password);
-      console.log("Réponse reçue :", data);
-
-      // Stocker le token dans le localStorage
       localStorage.setItem("token", data.token);
-
-      // Redirection vers la page d'accueil
       navigate("/");
     } catch (err) {
-      // Gestion des erreurs
       setError(err.response?.data?.message || "Erreur de connexion.");
     } finally {
-      setLoading(false); // Désactiver l'état de chargement
+      setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <h2>Connexion</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Mot de passe"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <button type="submit" disabled={loading}>
+    <form className="login-form" onSubmit={handleLogin}>
+      <h2 className="login-form__title">Connexion</h2>
+      <div className="login-form__group">
+        <label htmlFor="email" className="login-form__label">
+          Email
+        </label>
+        <input
+          type="email"
+          id="email"
+          className="login-form__input"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+      <div className="login-form__group">
+        <label htmlFor="password" className="login-form__label">
+          Mot de passe
+        </label>
+        <input
+          type="password"
+          id="password"
+          className="login-form__input"
+          placeholder="Mot de passe"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+      {error && <p className="login-form__error">{error}</p>}
+      <button type="submit" className="login-form__button" disabled={loading}>
         {loading ? "Connexion en cours..." : "Se connecter"}
       </button>
     </form>

@@ -1,0 +1,69 @@
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .deck-table th,
+  .deck-table td {
+    padding: 0.5rem;
+  }
+
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .show-deck__title {
+    font-size: 1.5rem;
+  }
+
+  .card {
+    padding: 0.8rem;
+  }
+
+  .card__text {
+    font-size: 1rem;
+  }
+
+  .card__choice {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav__list {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .nav__item {
+    text-align: center;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer__text {
+    font-size: 0.9rem;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .homepage__title {
+    font-size: 2rem;
+  }
+
+  .homepage__subtitle {
+    font-size: 1rem;
+  }
+
+  .homepage__actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
