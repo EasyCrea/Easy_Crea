@@ -32,11 +32,16 @@ const AdminDashboard = () => {
   };
 
   const handleDelete = async (id) => {
+    if (!window.confirm(`Êtes-vous sûr de vouloir supprimer ce deck ?`)) {
+      return;
+    }
     try {
       await deleteById(id);
       setDecks((prev) => prev.filter((deck) => deck.id_deck !== id));
+      alert(`Deck supprimé avec succès.`);
     } catch (error) {
       console.error("Erreur lors de la suppression :", error);
+      alert("Une erreur est survenue lors de la suppression.");
     }
   };
 
@@ -51,6 +56,7 @@ const AdminDashboard = () => {
       );
     } catch (error) {
       console.error("Erreur lors du changement de statut :", error);
+      alert("Une erreur est survenue lors du changement de statut.");
     }
   };
 
@@ -74,7 +80,7 @@ const AdminDashboard = () => {
                 {deck.live ? "Désactiver" : "Activer"}
               </button>
               <Link to={`/admin/deck/${deck.id_deck}`}>Modifier</Link>
-              <button onClick={() => handleDelete(deck.id_deck)}>
+              <button onClick={() => handleDelete(deck.id_deck, "deck")}>
                 Supprimer
               </button>
             </li>

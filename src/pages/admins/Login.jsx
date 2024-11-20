@@ -13,7 +13,7 @@ const Login = () => {
     try {
       const data = await loginAdmin(email, password);
       localStorage.setItem("token", data.token); // Stocker le token
-      navigate("/"); // Redirige l'utilisateur vers la page d'accueil
+      navigate("/admin/dashboard"); // Redirige l'utilisateur vers la page d'accueil
     } catch (err) {
       setError(err.message || "Erreur de connexion");
     }

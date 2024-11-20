@@ -38,8 +38,13 @@ export const editById = async (id, data) => {
 };
 
 export const deleteById = async (id) => {
-  const response = await API.delete(`/admin/${id}`);
-  return response.data;
+  try {
+    const response = await API.delete(`/admin/delete/deck/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la suppression :", error);
+    throw error;
+  }
 };
 
 export const deactivateDeck = async (id) => {
