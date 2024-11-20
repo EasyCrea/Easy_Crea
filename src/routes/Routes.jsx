@@ -6,6 +6,7 @@ import LoginPageAdmin from "./../pages/admins/Login";
 import AdminDashboard from "../pages/admins/AdminDashboard";
 import CreateDeck from "../pages/admins/CreateDeck";
 import ShowDeck from "../pages/admins/ShowDeck";
+import CreateCard from "../pages/CreateCard";
 import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au contexte Auth
 
 // Composant pour protéger les routes selon les rôles
@@ -41,6 +42,9 @@ const AppRoutes = () => {
 
       {/* Route publique : page de connexion */}
       <Route path="/loginAdmin" element={<LoginPageAdmin />} />
+
+      {/* Route publique : page de création de carte */}
+      <Route path="/create-card/:id_deck" element={<CreateCard />} />
 
       {/* Route protégée : tableau de bord administrateur */}
       <Route

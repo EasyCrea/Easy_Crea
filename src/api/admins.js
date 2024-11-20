@@ -1,57 +1,48 @@
-//  Gestion des decks
-// ['POST', '/admin', 'admin@createDeck'],
-// ['POST', '/admin/firstcard', 'admin@createFirstCard'],
-// [‘GET’, ‘/admin’,'admin@getAllDeck'],
-// [‘PATCH, '/admin/deck/{id:\d+}}'', admin@editById'],
-// ['DELETE, '/admin/{id:\d+}'', admin@deleteById'],
-// ['PATCH', '/admin/deactivate/{id:\d+}', 'admin@deactivate'],
-// ['PATCH', '/admin/activate/{id:\d+}', 'admin@activate'],
-
-//  Gestion des cartes dans les decks
-// [‘GET’, ‘/admin/deck/{id:\d+}’’,'admin@getAllCardInDeck'],
-// [‘GET’, ‘/admin/card/{id:\d+}’’,'admin@getCardById'],
-// [‘PATCH, '/admin/edit/{id:\d+}}'', admin@editCardById'],
-// ['DELETE, '/admin/delete/{id:\d+}'', admin@deleteCardById'],
-
 import API from "./api";
 import { getAuthToken } from "./auth";
+
+// Fonction utilitaire pour récupérer le token
+const getAuthHeaders = () => {
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error("Token d'authentification manquant");
+  }
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    withCredentials: true, // Permet d'inclure les cookies si nécessaire
+  };
+};
 
 // Gestion des decks
 
 export const createDeck = async (data) => {
-  const response = await API.post("/admin/createDeck", data);
+  const response = await API.post("/admin/createDeck", data, getAuthHeaders());
   return response.data;
 };
 
 export const createFirstCard = async (data) => {
-  const response = await API.post("/admin/firstcard", data);
+  const response = await API.post("/admin/firstcard", data, getAuthHeaders());
   return response.data;
 };
 
 export const getAllDeck = async () => {
-  const response = await API.get("/admin/dashboard");
+  const response = await API.get("/admin/dashboard", getAuthHeaders());
   return response.data;
 };
 
 export const editById = async (id, data) => {
-  const response = await API.patch(`/admin/deck/${id}`, data);
+  const response = await API.patch(`/admin/deck/${id}`, data, getAuthHeaders());
   return response.data;
 };
 
 export const deleteById = async (id) => {
   try {
-    const token = getAuthToken();
-    if (!token) {
-      throw new Error("Token d'authentification manquant");
-    }
-
-    const response = await API.delete(`/admin/delete/deck/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      withCredentials: true,
-    });
-
+    const response = await API.delete(
+      `/admin/delete/deck/${id}`,
+      getAuthHeaders()
+    );
     return response.data;
   } catch (error) {
     console.error("Erreur lors de la suppression :", error);
@@ -60,32 +51,33 @@ export const deleteById = async (id) => {
 };
 
 export const deactivateDeck = async (id) => {
-  const response = await API.patch(`/admin/deactivate/${id}`);
+  const response = await API.patch(
+    `/admin/deactivate/${id}`,
+    null,
+    getAuthHeaders()
+  );
   return response.data;
 };
 
 export const activateDeck = async (id) => {
-  const response = await API.patch(`/admin/activate/${id}`);
+  const response = await API.patch(
+    `/admin/activate/${id}`,
+    null,
+    getAuthHeaders()
+  );
   return response.data;
 };
 
 // Gestion des cartes dans les decks
 
+export const addCardToDeck = async (id, data) => {
+  const response = await API.post(`/createCard${id}`, data, getAuthHeaders());
+  return response.data;
+};
+
 export const getAllCardInDeck = async (id) => {
   try {
-    const token = getAuthToken();
-    if (!token) {
-      throw new Error("Token d'authentification manquant");
-    }
-
-    const response = await API.get(`/admin/deck/${id}`, {
-      // Utilisation de l'ID pour la requête
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      withCredentials: true,
-    });
-
+    const response = await API.get(`/admin/deck/${id}`, getAuthHeaders());
     return response.data; // Retourner les données du deck
   } catch (error) {
     console.error("Erreur lors de la récupération des cartes du deck :", error);
@@ -94,16 +86,19 @@ export const getAllCardInDeck = async (id) => {
 };
 
 export const getCardById = async (id) => {
-  const response = await API.get(`/admin/card/${id}`);
+  const response = await API.get(`/admin/card/${id}`, getAuthHeaders());
   return response.data;
 };
 
 export const editCardById = async (id, data) => {
-  const response = await API.patch(`/admin/edit/${id}`, data);
+  const response = await API.patch(`/admin/edit/${id}`, data, getAuthHeaders());
   return response.data;
 };
 
 export const deleteCardById = async (id) => {
-  const response = await API.delete(`/admin/delete/${id}`);
+  const response = await API.delete(
+    `/admin/delete/card/${id}`,
+    getAuthHeaders()
+  );
   return response.data;
 };
