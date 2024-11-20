@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import {
   getAllDeck,
   deleteById,
   activateDeck,
   deactivateDeck,
-} from "../api/admins";
+} from "../../api/admins";
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -67,7 +67,7 @@ const AdminDashboard = () => {
   return (
     <div>
       <h1>Tableau de bord</h1>
-      <Link to="/admin/deck/new">Créer un nouveau deck</Link>
+      <Link to="/admin/createDeck">Créer un nouveau deck</Link>
       {loading ? (
         <p>Chargement des decks...</p>
       ) : (

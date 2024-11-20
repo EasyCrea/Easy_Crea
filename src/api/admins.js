@@ -14,11 +14,12 @@
 // ['DELETE, '/admin/delete/{id:\d+}'', admin@deleteCardById'],
 
 import API from "./api";
+import { getAuthToken } from "./auth";
 
 // Gestion des decks
 
 export const createDeck = async (data) => {
-  const response = await API.post("/admin", data);
+  const response = await API.post("/admin/createDeck", data);
   return response.data;
 };
 
@@ -39,7 +40,18 @@ export const editById = async (id, data) => {
 
 export const deleteById = async (id) => {
   try {
-    const response = await API.delete(`/admin/delete/deck/${id}`);
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error("Token d'authentification manquant");
+    }
+
+    const response = await API.delete(`/admin/delete/deck/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    });
+
     return response.data;
   } catch (error) {
     console.error("Erreur lors de la suppression :", error);

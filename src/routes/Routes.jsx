@@ -3,7 +3,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./../pages/HomePage";
 import LoginPageCreateur from "./../pages/createurs/Login";
 import LoginPageAdmin from "./../pages/admins/Login";
-import AdminDashboard from "./../pages/AdminDashboard";
+import AdminDashboard from "../pages/admins/AdminDashboard";
+import CreateDeck from "../pages/admins/CreateDeck";
 import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au contexte Auth
 
 // Composant pour protéger les routes selon les rôles
@@ -31,14 +32,14 @@ const ProtectedRoute = ({ role, children }) => {
 const AppRoutes = () => {
   return (
     <Routes>
+      {/* Route publique : page d'accueil */}
+      <Route path="/" element={<HomePage />} />
+
       {/* Route publique : page de connexion */}
       <Route path="/loginCreateur" element={<LoginPageCreateur />} />
 
       {/* Route publique : page de connexion */}
       <Route path="/loginAdmin" element={<LoginPageAdmin />} />
-
-      {/* Route publique : page d'accueil */}
-      <Route path="/" element={<HomePage />} />
 
       {/* Route protégée : tableau de bord administrateur */}
       <Route
@@ -46,6 +47,16 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute role="admin">
             <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Route protégée : creation de deck*/}
+      <Route
+        path="/admin/createDeck"
+        element={
+          <ProtectedRoute role="admin">
+            <CreateDeck />
           </ProtectedRoute>
         }
       />

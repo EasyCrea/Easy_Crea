@@ -1,5 +1,10 @@
 import API from "./api";
 
+// Fonction de récupération du token dans le localStorage
+export const getAuthToken = () => {
+  return localStorage.getItem("token");
+};
+
 // Gestion de l'authentification pour les créateurs
 export const loginCreateur = async (email, password) => {
   try {
