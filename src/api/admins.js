@@ -68,6 +68,10 @@ export const activateDeck = async (id) => {
   return response.data;
 };
 
+export const getLiveDeck = async () => {
+  const response = await API.get("/createur/liveDeck", getAuthHeaders());
+  return response.data;
+};
 // Gestion des cartes dans les decks
 
 export const addCardToDeck = async (id, data) => {

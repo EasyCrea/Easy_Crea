@@ -4,8 +4,6 @@ import { useAuth } from "../context/AuthContext";
 
 const HomePage = () => {
   const { user } = useAuth();
-  console.log("HomePage -> user", user);
-
   return (
     <main className="homepage">
       <h1 className="homepage__title">Bienvenue sur EasyCrea</h1>

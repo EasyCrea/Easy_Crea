@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginCreateur } from "../../api/auth";
+import { getLiveDeck } from "../../api/admins";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,7 +24,14 @@ const Login = () => {
     try {
       const data = await loginCreateur(email, password);
       localStorage.setItem("token", data.token);
-      navigate("/");
+
+      const deckLiveResponse = await getLiveDeck();
+      if (deckLiveResponse?.deck?.id_deck) {
+        const { id_deck } = deckLiveResponse.deck;
+        navigate(`/createurs/game/${id_deck}`);
+      } else {
+        throw new Error("Aucun deck live trouvé.");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Erreur de connexion.");
     } finally {

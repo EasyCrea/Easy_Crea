@@ -9,6 +9,7 @@ import ShowDeck from "../pages/admins/ShowDeck";
 import CreateCard from "../pages/CreateCard";
 import CreateFirstCard from "../pages/admins/CreateFirstCard";
 import EditCard from "../pages/admins/EditCard";
+import Game from "./../pages/createurs/Game";
 import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au contexte Auth
 
 // Composant pour protéger les routes selon les rôles
@@ -47,6 +48,9 @@ const AppRoutes = () => {
 
       {/* Route publique : page de création de carte */}
       <Route path="/create-card/:id_deck" element={<CreateCard />} />
+
+      {/* Route publique : page de visualisation du deck en cours de creation et de creation de carte */}
+      <Route path="/createurs/game/:id_deck" element={<Game />} />
 
       {/* Route protégée : tableau de bord administrateur */}
       <Route

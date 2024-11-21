@@ -8,7 +8,6 @@ const EditCard = () => {
   const [card, setCard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  console.log({ id_carte });
 
   useEffect(() => {
     fetchCard(id_carte);
