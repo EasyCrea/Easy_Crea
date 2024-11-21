@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { createDeck } from "../../api/admins";
+import { useNavigate } from "react-router-dom";
 
 const CreateDeck = () => {
   const { user } = useAuth();
@@ -11,6 +12,7 @@ const CreateDeck = () => {
     nb_cartes: "",
   });
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +23,8 @@ const CreateDeck = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await createDeck(deck);
+      const response = await createDeck(deck); // Récupère les données retournées
+      const idDeck = response.id_deck; // Récupère l'ID du deck depuis la réponse
       alert("Deck créé avec succès.");
       setDeck({
         titre_deck: "",
@@ -29,6 +32,7 @@ const CreateDeck = () => {
         date_fin_deck: "",
         nb_cartes: "",
       });
+      navigate(`/createFirstCard/${idDeck}`); // Utilise l'ID du deck pour naviguer
     } catch (error) {
       console.error("Erreur lors de la création du deck :", error);
       alert("Une erreur est survenue lors de la création du deck.");

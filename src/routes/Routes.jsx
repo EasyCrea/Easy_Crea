@@ -7,6 +7,7 @@ import AdminDashboard from "../pages/admins/AdminDashboard";
 import CreateDeck from "../pages/admins/CreateDeck";
 import ShowDeck from "../pages/admins/ShowDeck";
 import CreateCard from "../pages/CreateCard";
+import CreateFirstCard from "../pages/admins/CreateFirstCard";
 import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au contexte Auth
 
 // Composant pour protéger les routes selon les rôles
@@ -66,7 +67,27 @@ const AppRoutes = () => {
         }
       />
 
-      {/* Route protégée : voir les cartes du deck */}
+      {/* Route protégée : creation de deck*/}
+      <Route
+        path="/admin/createDeck"
+        element={
+          <ProtectedRoute role="admin">
+            <CreateDeck />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Route protégée : créer la première carte d'un deck après la création d'un deck */}
+      <Route
+        path="/createFirstCard/:id_deck"
+        element={
+          <ProtectedRoute role="admin">
+            <CreateFirstCard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Route protégée : affichage d'un deck */}
       <Route
         path="/admin/deck/:id_deck"
         element={

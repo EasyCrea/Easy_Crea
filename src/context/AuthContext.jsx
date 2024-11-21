@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import API from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -7,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -18,10 +19,7 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true,
       })
         .then((response) => {
-          console.log({ response }, "################");
-
           const data = response.data;
-
           if (data.status === "success" && data.decoded?.role) {
             setUser({
               id: data.decoded.id,
@@ -47,6 +45,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    navigate("/");
     setUser(null);
   };
 

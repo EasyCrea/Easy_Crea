@@ -52,8 +52,8 @@ const ShowDeck = () => {
     }
   };
 
-  const handleCreateCard = (deckId) => {
-    navigate(`/create-card/${deckId}`); // Redirige vers la page de création de carte
+  const handleCreateCard = (id_deck) => {
+    navigate(`/create-card/${id_deck}`); // Redirige vers la page de création de carte
   };
 
   if (loading) {
@@ -65,7 +65,7 @@ const ShowDeck = () => {
       <>
         <p className="error-message">Deck non trouvé.</p>
         <button
-          onClick={() => handleCreateCard(deck.id_deck)}
+          onClick={() => handleCreateCard(id_deck)}
           className="btn btn-create"
         ></button>
       </>
