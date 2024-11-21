@@ -33,7 +33,7 @@ const ShowDeck = () => {
   };
 
   const handleEditCard = (cardId) => {
-    navigate(`/edit-card/${cardId}`); // Redirige vers la page de modification de la carte
+    navigate(`/admin/edit-card/${cardId}`); // Redirige vers la page de modification de la carte
   };
 
   const handleDeleteCard = async (cardId) => {

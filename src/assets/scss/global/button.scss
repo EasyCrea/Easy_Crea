@@ -52,6 +52,11 @@
   background-color: #d00000;
 }
 
+.btn-create {
+  background-color: var(--success-color);
+  color: #575757;
+}
+
 /* Accessibilité et focus */
 .btn:focus,
 a:focus {

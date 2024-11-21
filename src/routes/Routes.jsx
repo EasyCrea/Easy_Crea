@@ -8,6 +8,7 @@ import CreateDeck from "../pages/admins/CreateDeck";
 import ShowDeck from "../pages/admins/ShowDeck";
 import CreateCard from "../pages/CreateCard";
 import CreateFirstCard from "../pages/admins/CreateFirstCard";
+import EditCard from "../pages/admins/EditCard";
 import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au contexte Auth
 
 // Composant pour protéger les routes selon les rôles
@@ -93,6 +94,16 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute role="admin">
             <ShowDeck />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Route protégée : modifier une carte */}
+      <Route
+        path="/admin/edit-card/:id_carte"
+        element={
+          <ProtectedRoute role="admin">
+            <EditCard />
           </ProtectedRoute>
         }
       />

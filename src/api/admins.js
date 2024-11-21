@@ -91,7 +91,11 @@ export const getCardById = async (id) => {
 };
 
 export const editCardById = async (id, data) => {
-  const response = await API.patch(`/admin/edit/${id}`, data, getAuthHeaders());
+  const response = await API.patch(
+    `/admin/edit/card/${id}`,
+    data,
+    getAuthHeaders()
+  );
   return response.data;
 };
 
