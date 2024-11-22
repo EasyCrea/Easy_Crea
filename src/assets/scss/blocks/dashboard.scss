@@ -1,6 +1,8 @@
-/* Conteneur principal */
 .admin-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 2rem;
+  min-height: calc(85vh - 8rem); /* Hauteur dynamique */
 }
 
 .admin-header {
@@ -8,68 +10,116 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  border-bottom: 1px solid var(--border-color);
   padding-bottom: 1rem;
+  border-bottom: 1px solid var(--indigo-800);
 }
 
 .admin-header h1 {
-  margin: 0;
+  font-size: 1.8rem;
+  color: var(--color-text-primary);
+  font-weight: 600;
 }
 
-.admin-header .btn {
-  background-color: var(--primary-color);
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: background-color var(--transition-speed);
-}
-
-.admin-header .btn:hover {
-  background-color: #185abc;
-}
-
-/* Section principale */
 .admin-content {
-  background-color: #fff;
-  border-radius: 0.5rem;
+  background-color: white;
+  border-radius: 0.75rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 2rem;
 }
 
-.loading-message {
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: var(--warning-color);
-}
-
-/* Table */
 .deck-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate; /* Pour gérer les espaces entre les lignes */
+  border-spacing: 0 0.5rem;
   margin-top: 1rem;
-  font-size: 0.95rem;
+  border-radius: 0.5rem; /* Ajout pour un tableau arrondi */
 }
 
-.deck-table th,
-.deck-table td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
+.deck-table thead {
+  background-color: var(--indigo-50);
 }
 
 .deck-table th {
-  background-color: var(--secondary-color);
-  color: var(--text-color);
-  text-transform: uppercase;
+  padding: 1rem;
+  text-align: left;
+  color: var(--indigo-900);
+  font-weight: 600;
 }
 
-.deck-table tr:hover {
-  background-color: var(--secondary-color);
+.deck-table tbody tr {
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--indigo-800);
+  border-top: 1px solid var(--indigo-800);
+}
+
+.deck-table tbody tr:hover {
+  background-color: var(--indigo-50);
 }
 
 .deck-table td {
-  vertical-align: middle;
+  padding: 1rem;
+}
+
+.deck-card-count {
+  font-size: 0.8rem;
+  color: var(--indigo-700);
+  margin-left: 0.5rem;
+}
+
+.loading-message {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 1.2rem;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%; /* Rendre l'élément circulaire */
+  background-color: var(
+    --color-danger
+  ); /* Par défaut, couleur inactive (rouge) */
+  transition: background-color 0.3s ease;
+}
+
+.status-indicator.active {
+  background-color: var(--color-success); /* Vert pour actif */
+}
+
+.status-indicator.inactive {
+  background-color: var(--color-danger); /* Rouge pour inactif */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: 1rem;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem; /* Ajout pour espacer les éléments */
+  }
+
+  .deck-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .deck-table th,
+  .deck-table td {
+    padding: 0.75rem;
+  }
+}
+
+/* Accessibility Enhancements */
+.btn:focus {
+  outline: 3px solid var(--indigo-500);
+  outline-offset: 2px;
+}
+
+.deck-table tr:focus-within {
+  background-color: var(--indigo-50);
 }

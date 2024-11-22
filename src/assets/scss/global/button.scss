@@ -33,3 +33,33 @@
 .btn-shadow {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
+
+.btn-view {
+  background-color: var(--purple-background);
+  color: var(--indigo-600);
+  margin: 0 0.5rem;
+}
+
+.btn-view:hover {
+  background-color: var(--purple-100);
+}
+
+.btn-delete {
+  background-color: var(--pink-background);
+  color: var(--pink);
+  margin: 0 0.5rem;
+}
+
+.btn-delete:hover {
+  background-color: var(--pink-100);
+}
+
+.btn-activate {
+  background-color: var(--color-success-background);
+  color: var(--color-success);
+}
+
+.btn-deactivate {
+  background-color: var(--color-danger-background);
+  color: var(--color-danger);
+}

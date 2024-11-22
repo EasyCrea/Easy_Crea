@@ -76,7 +76,7 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <header className="admin-header">
         <h1>Tableau de bord - Administrateur</h1>
-        <Link to="/admin/createDeck" className="btn btn-primary">
+        <Link to="/admin/createDeck" className="btn btn-outline">
           Créer un nouveau deck
         </Link>
       </header>
@@ -106,7 +106,14 @@ const AdminDashboard = () => {
                         {deck.nb_cartes > 1 ? "cartes" : "carte"})
                       </span>
                     </td>
-                    <td>{deck.live ? "Oui" : "Non"}</td>
+                    <td>
+                      <span
+                        className={`status-indicator ${
+                          deck.live ? "active" : "inactive"
+                        }`}
+                      ></span>
+                    </td>
+
                     <td>
                       {deck.date_debut_deck && (
                         <span>{deck.date_debut_deck}</span>
@@ -115,12 +122,10 @@ const AdminDashboard = () => {
                       {deck.date_fin_deck && <span>{deck.date_fin_deck}</span>}
                     </td>
                     <td>
-                      <Link
-                        to={`/admin/deck/${deck.id_deck}`}
-                        className="btn btn-view"
-                      >
-                        Voir
-                      </Link>
+                      <button className="btn btn-view">
+                        <Link to={`/admin/deck/${deck.id_deck}`}>Voir</Link>
+                      </button>
+
                       <button
                         onClick={() => toggleLive(deck.id_deck, deck.live)}
                         className={`btn ${

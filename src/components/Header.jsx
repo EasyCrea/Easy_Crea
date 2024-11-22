@@ -72,7 +72,7 @@ const Header = () => {
                 <li className="nav__item">
                   <Link
                     to={`/createurs/game/${id_deck}`}
-                    className="nav__link"
+                    className="nav__link btn btn-filled"
                     onClick={toggleMenu}
                   >
                     Deck
