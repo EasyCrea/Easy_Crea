@@ -7,7 +7,7 @@
 }
 
 .footer__container {
-  max-width: 1120px; /* Correspond à max-w-7xl */
+  max-width: 80vw; /* Correspond à max-w-7xl */
   margin: 0 auto; /* Correspond à mx-auto */
   display: flex;
   justify-content: space-between;
@@ -42,7 +42,7 @@
   display: flex;
   gap: 1.5rem; /* Correspond à gap-6 */
   font-size: 0.875rem; /* Correspond à text-sm */
-  color: #4b5563; /* Correspond à text-gray-600 */
+  color: #6d7683; /* Correspond à text-gray-600 */
 }
 
 .footer__link {
@@ -52,4 +52,20 @@
 
 .footer__link:hover {
   color: #4f46e5; /* Correspond à hover:text-indigo-600 */
+}
+
+/* Styles pour les grands écrans */
+@media (min-width: 768px) {
+  .footer__container {
+    max-width: 90vw; /* Correspond à max-w-2xl */
+  }
+
+  .footer__branding {
+    margin-right: 1.5rem; /* Correspond à mr-8 */
+  }
+
+  .footer__links {
+    gap: 2rem; /* Correspond à gap-8 */
+    font-size: 1.2rem;
+  }
 }

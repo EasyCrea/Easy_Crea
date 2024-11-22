@@ -1,7 +1,38 @@
 .header {
   background-color: var(--primary-color);
-  padding: 1rem;
+  padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between; /* Espace entre le logo et les liens */
+  align-items: center;
+  width: 100%; /* Occupe toute la largeur */
+  position: relative;
+}
+
+.nav__mobile-toggle {
+  display: none;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 20;
+}
+
+.nav__list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 1rem; /* Espacement entre les éléments */
+  width: 100%;
 }
 
 .nav__item {
@@ -9,35 +40,114 @@
   align-items: center;
 }
 
-.nav__link {
-  width: 40%;
+.nav__item:first-child {
+  margin-right: auto; /* Pousse le logo à gauche */
 }
 
 .nav__linkLogo {
   display: flex;
   align-items: center;
-  font-size: 1.5rem; /* Correspond à text-2xl */
+  font-size: 1.5rem; /* Taille du logo */
   font-weight: bold;
-  text-decoration: none;
-  background: linear-gradient(
-    to right,
-    var(--indigo-600),
-    var(--purple-600)
-  ); /* Gradient text */
+  background: linear-gradient(to right, var(--indigo-600), var(--purple-600));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-fill-color: transparent; /* Pour assurer la compatibilité */
+  text-fill-color: transparent; /* Compatibilité */
+  text-decoration: none;
 }
 
 .nav__linkLogo::before {
-  content: ""; /* Utilisé pour simuler l'icône */
+  content: "";
   display: inline-block;
-  width: 2rem; /* Correspond à h-8 */
-  height: 2rem; /* Correspond à w-8 */
+  width: 2rem;
+  height: 2rem;
   background-color: var(--indigo-600);
   mask: url("/path-to-wand2-icon.svg") no-repeat center;
   -webkit-mask: url("/path-to-wand2-icon.svg") no-repeat center;
   mask-size: contain;
   -webkit-mask-size: contain;
-  margin-right: 0.5rem; /* Correspond à ml-2 */
+  margin-right: 0.5rem; /* Espace entre l'icône et le texte */
+}
+
+.nav__link {
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* Espacement entre l'icône et le texte */
+}
+
+.nav__list .btn {
+  margin: 0; /* Supprime toute marge inattendue */
+  padding: 0.75rem 1.5rem; /* Taille standard */
+}
+
+/* Responsive pour petits écrans */
+@media (max-width: 800px) {
+  .nav__mobile-toggle {
+    display: block;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 100%;
+    gap: 30%;
+  }
+
+  /* Ajout de la classe pour cacher le logo lorsqu'il y a un menu ouvert */
+  .nav__linkLogo--hidden {
+    display: none;
+  }
+
+  .nav__linkLogo {
+    font-size: 1.2rem;
+  }
+
+  .nav__list {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--primary-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .nav__list--open {
+    display: flex;
+    background-color: white;
+  }
+
+  .nav__item {
+    width: 100%;
+  }
+
+  .nav__link,
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Grands écrans (comme avant) */
+@media (min-width: 1024px) {
+  .header {
+    padding: 2rem 4rem;
+  }
+
+  .nav__list {
+    gap: 2rem;
+  }
+
+  .nav__link {
+    font-size: 1.3rem;
+  }
+
+  .nav__list .btn {
+    padding: 0.75rem 2rem;
+  }
 }

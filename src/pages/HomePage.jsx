@@ -6,16 +6,16 @@ const HomePage = () => {
   const { user } = useAuth();
   return (
     <main className="homepage">
-      <h1 className="homepage__title">Bienvenue sur EasyCrea</h1>
+      <h1 className="homepage__title">
+        Créez des expériences de jeu <span>uniques</span>
+      </h1>
+
       <p className="homepage__subtitle">
-        Créez, gérez et jouez avec vos decks personnalisés.
+        Concevez, testez et pârtagez vos deck de jeu en toute simplicité
       </p>
       <div className="homepage__actions">
-        <Link to="/loginCreateur" className="btn btn-filled">
-          Login Créateur
-        </Link>
-        <Link to="/loginAdmin" className="btn btn-filled">
-          Login Admin
+        <Link to="/loginCreateur" className="btn btn-filled btn-shadow">
+          Commencer maintenant <i class="fa-solid fa-arrow-right"></i>
         </Link>
       </div>
     </main>

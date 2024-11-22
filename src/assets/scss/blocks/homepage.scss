@@ -1,24 +1,85 @@
-/* Homepage styles */
 .homepage {
-  text-align: center;
-  padding: 2rem;
+  display: flex; /* Utilisation de Flexbox */
+  flex-direction: column; /* Contenu organisé verticalement */
+  justify-content: center; /* Centre verticalement */
+  align-items: center; /* Centre horizontalement */
+  text-align: center; /* Centrer le texte */
+  color: white;
+  min-height: calc(85vh - 4rem); /* Hauteur dynamique */
 }
 
 .homepage__title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #2c7be5;
-  margin-bottom: 1rem;
+  font-size: 3.5rem; /* Taille de police pour le titre */
+  font-weight: bold;
+  color: #1f2937; /* Gris foncé */
+  margin-bottom: 1.5rem;
+}
+
+.homepage__title span {
+  background: linear-gradient(
+    to right,
+    #4f46e5,
+    #9333ea
+  ); /* Dégradé indigo-violet */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent; /* Compatibilité */
 }
 
 .homepage__subtitle {
-  font-size: 1.25rem;
-  color: #555;
+  font-size: 1.5rem; /* Taille de sous-titre */
+  color: #6b7280; /* Gris moyen */
   margin-bottom: 2rem;
 }
 
 .homepage__actions {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.homepage__actions .btn {
+  font-size: 1.3rem; /* Espacement entre les boutons */
+  padding: 1rem 1.5rem;
+}
+
+.btn i {
+  margin-left: 0.5rem; /* Espacement entre le texte et l'icône */
+}
+
+/* Responsive pour les moyens écrans */
+@media (max-width: 1012px) {
+  .homepage__title {
+    font-size: 2rem; /* Réduit la taille du titre pour les petits écrans */
+    margin-bottom: 1.2rem; /* Réduit l'espacement sous le titre */
+  }
+
+  .homepage__subtitle {
+    font-size: 1.2rem; /* Réduit la taille du sous-titre */
+    margin-bottom: 1.2rem; /* Réduit l'espacement sous le sous-titre */
+  }
+
+  .homepage__actions .btn {
+    font-size: 1.2rem; /* Réduit la taille des boutons */
+    padding: 1rem 1.225rem; /* Réduit la taille des boutons */
+  }
+}
+
+/* Responsive pour les petits écrans */
+@media (max-width: 576px) {
+  .homepage {
+    padding: 1rem; /* Ajoute un peu d'espace autour du contenu */
+  }
+  .homepage__title {
+    font-size: 1.75rem; /* Réduit la taille du titre pour les petits écrans */
+    margin-bottom: 1rem; /* Réduit l'espacement sous le titre */
+  }
+
+  .homepage__subtitle {
+    font-size: 1rem; /* Réduit la taille du sous-titre */
+    margin-bottom: 1rem; /* Réduit l'espacement sous le sous-titre */
+  }
+
+  .homepage__actions .btn {
+    font-size: 1rem; /* Réduit la taille des boutons */
+    padding: 0.75rem 1rem; /* Réduit la taille des boutons */
+  }
 }
