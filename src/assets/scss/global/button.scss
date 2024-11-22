@@ -3,7 +3,7 @@
   display: inline-block;
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   font-size: 0.9rem;
   font-weight: bold;
   text-align: center;
@@ -11,55 +11,21 @@
   transition: all var(--transition-speed);
 }
 
-.btn-view {
-  background-color: var(--primary-color);
+.btn-filled {
+  background-color: var(--indigo-600);
   color: #fff;
 }
 
-.btn-view:hover {
-  background-color: #185abc;
+.btn-filled:hover {
+  background-color: var(--indigo-700);
 }
 
-.btn-activate {
-  background-color: var(--success-color);
-  color: #fff;
+.btn-outline {
+  background-color: transparent;
+  color: var(--indigo-600);
+  border: 2px solid var(--indigo-600);
 }
 
-.btn-activate:hover {
-  background-color: #2d9c6b;
-}
-
-.btn-deactivate {
-  background-color: var(--warning-color);
-  color: #fff;
-}
-
-.btn-deactivate:hover {
-  background-color: #e0a800;
-}
-
-.btn-delete {
-  background-color: var(--error-color);
-  color: #fff;
-}
-
-.btn-edit {
-  background-color: var(--primary-color);
-  color: #fff;
-}
-
-.btn-delete:hover {
-  background-color: #d00000;
-}
-
-.btn-create {
-  background-color: var(--success-color);
-  color: #575757;
-}
-
-/* Accessibilité et focus */
-.btn:focus,
-a:focus {
-  outline: 2px dashed var(--primary-color);
-  outline-offset: 2px;
+.btn-outline:hover {
+  background-color: var(--indigo-100);
 }

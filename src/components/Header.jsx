@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getLiveDeck as fetchLiveDeckData } from "../api/admins";
-
+import {
+  LogIn,
+  Users,
+  Palette,
+  Box,
+  ChevronRight,
+  Star,
+  Shield,
+  Wand2,
+} from "lucide-react";
 const Header = () => {
   const { user, logout } = useAuth();
   const [id_deck, setId_deck] = useState(null);
@@ -30,8 +39,8 @@ const Header = () => {
       <nav className="nav">
         <ul className="nav__list">
           <li className="nav__item">
-            <Link to="/" className="nav__link">
-              Home
+            <Link to="/" className="nav__linkLogo">
+              Logo EasyCrea
             </Link>
           </li>
           {user ? (
@@ -53,13 +62,15 @@ const Header = () => {
           ) : (
             <>
               <li className="nav__item">
-                <Link to="/loginCreateur" className="nav__link">
-                  Login créateur
+                <Link to="/loginCreateur" className=" btn btn-filled nav__link">
+                  <Palette size={16} />
+                  Espace créateur
                 </Link>
               </li>
               <li className="nav__item">
-                <Link to="/loginAdmin" className="nav__link">
-                  Login admin
+                <Link to="/loginAdmin" className="nav__link btn btn-outline">
+                  <Shield size={16} />
+                  Administration
                 </Link>
               </li>
             </>

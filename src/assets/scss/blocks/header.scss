@@ -4,33 +4,40 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.nav {
-  max-width: 1200px;
-  margin: 0 auto;
+.nav__item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
-.nav__list {
-  list-style: none;
-  display: flex;
-  gap: 1rem;
-}
-
-.nav__item {
-  position: relative;
-}
-
 .nav__link {
-  text-decoration: none;
-  color: var(--secondary-color);
-  font-weight: 600;
-  transition: color var(--transition-speed);
+  width: 40%;
 }
 
-.nav__link:hover,
-.nav__link:focus {
-  color: var(--hover-color);
-  outline: none;
+.nav__linkLogo {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem; /* Correspond à text-2xl */
+  font-weight: bold;
+  text-decoration: none;
+  background: linear-gradient(
+    to right,
+    var(--indigo-600),
+    var(--purple-600)
+  ); /* Gradient text */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent; /* Pour assurer la compatibilité */
+}
+
+.nav__linkLogo::before {
+  content: ""; /* Utilisé pour simuler l'icône */
+  display: inline-block;
+  width: 2rem; /* Correspond à h-8 */
+  height: 2rem; /* Correspond à w-8 */
+  background-color: var(--indigo-600);
+  mask: url("/path-to-wand2-icon.svg") no-repeat center;
+  -webkit-mask: url("/path-to-wand2-icon.svg") no-repeat center;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  margin-right: 0.5rem; /* Correspond à ml-2 */
 }

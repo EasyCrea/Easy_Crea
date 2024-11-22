@@ -11,10 +11,10 @@ const HomePage = () => {
         Créez, gérez et jouez avec vos decks personnalisés.
       </p>
       <div className="homepage__actions">
-        <Link to="/loginCreateur" className="btn btn--primary">
+        <Link to="/loginCreateur" className="btn btn-filled">
           Login Créateur
         </Link>
-        <Link to="/loginAdmin" className="btn btn--secondary">
+        <Link to="/loginAdmin" className="btn btn-filled">
           Login Admin
         </Link>
       </div>

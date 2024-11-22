@@ -1,13 +1,29 @@
 /* Variables de base pour les couleurs et typographie */
 :root {
-  --primary-color: #2c7be5; /* Bleu primaire */
-  --secondary-color: #f8f9fa; /* Fond clair */
-  --text-color: #212529; /* Noir doux pour le texte */
-  --error-color: #e63946; /* Rouge pour les erreurs */
-  --success-color: #38c172; /* Vert pour le succès */
-  --warning-color: #fbbc05; /* Jaune pour les avertissements */
-  --bg-color: #f4f6f9; /* Fond général */
-  --border-color: #dee2e6; /* Bordures */
+  /* Indigo Palette */
+  --indigo-50: #eef2ff;
+  --indigo-100: #e0e7ff;
+  --indigo-200: #c7d2fe;
+  --indigo-300: #a5b4fc;
+  --indigo-400: #818cf8;
+  --indigo-500: #6366f1; /* Original indigo-500 */
+  --indigo-600: #5b3add;
+  --indigo-700: #4338ca;
+  --indigo-800: #3730a3;
+  --indigo-900: #312e81;
+
+  /* Purple Palette */
+  --purple-50: #faf5ff;
+  --purple-100: #f3e8ff;
+  --purple-200: #e9d5ff;
+  --purple-300: #d8b4fe;
+  --purple-400: #c084fc;
+  --purple-500: #a855f7;
+  --purple-600: #9333ea; /* Original purple-600 */
+  --purple-700: #7e22ce;
+  --purple-800: #6b21a8;
+  --purple-900: #581c87;
+
   --font-family: "Arial", "Helvetica", sans-serif;
   --transition-speed: 0.3s;
 }

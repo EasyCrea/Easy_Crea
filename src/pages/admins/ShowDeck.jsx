@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Crown, Heart, Coins, Users } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom"; // Ajout de useNavigate
 import { useAuth } from "../../context/AuthContext";
 import { getAllCardInDeck, deleteCardById } from "../../api/admins"; // Assurez-vous que deleteCard est bien défini
@@ -67,7 +68,9 @@ const ShowDeck = () => {
         <button
           onClick={() => handleCreateCard(id_deck)}
           className="btn btn-create"
-        ></button>
+        >
+          Créer une carte
+        </button>
       </>
     );
   }
@@ -85,8 +88,17 @@ const ShowDeck = () => {
                 <p className="card__text">
                   <strong>{card.texte_carte}</strong>
                 </p>
-                <p className="card__choice">Choix 1: {card.valeurs_choix1}</p>
-                <p className="card__choice">Choix 2: {card.valeurs_choix2}</p>
+                <p className="card__choice">
+                  <span>
+                    Choix 1: {card.valeurs_choix1}{" "}
+                    <Users color="red" size={42} />
+                  </span>
+                </p>
+                <p className="card__choice">
+                  <span>
+                    Choix 2: {card.valeurs_choix2} <Coins />
+                  </span>
+                </p>
                 <div className="card-actions">
                   <button
                     onClick={() => handleEditCard(card.id_carte)}
@@ -105,9 +117,7 @@ const ShowDeck = () => {
             </li>
           ))
         ) : (
-          <>
-            <p className="error-message">Aucune carte trouvée pour ce deck.</p>
-          </>
+          <p className="error-message">Aucune carte trouvée pour ce deck.</p>
         )}
       </ul>
     </div>

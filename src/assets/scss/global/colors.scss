@@ -1,0 +1,49 @@
+// Color System
+$colors: (
+  // Indigo Palette
+  indigo-50: #eef2ff,
+  indigo-100: #e0e7ff,
+  indigo-200: #c7d2fe,
+  indigo-300: #a5b4fc,
+  indigo-400: #818cf8,
+  indigo-500: #6366f1,
+  // Original indigo-500
+  indigo-600: #4f46e5,
+  indigo-700: #4338ca,
+  indigo-800: #3730a3,
+  indigo-900: #312e81,
+
+  // Purple Palette
+  purple-50: #faf5ff,
+  purple-100: #f3e8ff,
+  purple-200: #e9d5ff,
+  purple-300: #d8b4fe,
+  purple-400: #c084fc,
+  purple-500: #a855f7,
+  purple-600: #9333ea,
+  // Original purple-600
+  purple-700: #7e22ce,
+  purple-800: #6b21a8,
+  purple-900: #581c87,
+
+  // Gradient Combinations
+  gradient-primary:
+    (
+      from: #6366f1,
+      // indigo-500
+      to: #9333ea // purple-600,,
+    ),
+
+  // Alternative Gradients
+  gradient-vibrant:
+    (
+      from: #818cf8,
+      // indigo-400
+      to: #a855f7 // purple-500,,
+    ),
+  gradient-deep: (
+    from: #4f46e5,
+    // indigo-600
+    to: #7e22ce // purple-700,,
+  )
+);
