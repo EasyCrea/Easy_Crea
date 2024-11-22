@@ -107,28 +107,36 @@
   .nav__list {
     display: none;
     flex-direction: column;
-    position: absolute;
-    top: 100%;
+    position: fixed; /* Change pour couvrir tout l'écran */
+    top: 4rem;
     left: 0;
-    width: 100%;
+    width: 90%;
+    height: 100%; /* Hauteur complète de l'écran */
     background-color: var(--primary-color);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
+    padding: 2rem 1rem; /* Ajouter des marges internes pour un espacement harmonieux */
     gap: 1rem;
+    z-index: 100; /* Pour s'assurer que le menu est au-dessus */
+    overflow-y: auto; /* Permettre le défilement si le contenu est long */
   }
 
   .nav__list--open {
     display: flex;
+  }
+
+  .nav__list--open {
+    display: flex;
+    width: 100%;
     background-color: white;
+    z-index: 10;
   }
 
   .nav__item {
-    width: 100%;
+    width: 90%;
   }
 
-  .nav__link,
-  .btn {
-    width: 100%;
+  .nav__link {
+    width: 80%;
     justify-content: center;
   }
 }
