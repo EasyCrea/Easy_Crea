@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const CreateDeck = () => {
   const { user } = useAuth();
+  const [error, setError] = useState("");
   const [deck, setDeck] = useState({
     titre_deck: "",
     date_debut_deck: "",
@@ -34,74 +35,85 @@ const CreateDeck = () => {
       });
       navigate(`/createFirstCard/${idDeck}`); // Utilise l'ID du deck pour naviguer
     } catch (error) {
-      console.error("Erreur lors de la création du deck :", error);
-      alert("Une erreur est survenue lors de la création du deck.");
+      setError(
+        error.response?.data?.message || "Erreur lors de la création du deck."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="form-container">
-      <h1 className="form-container__title">Créer un nouveau deck</h1>
-      <form className="form" onSubmit={handleSubmit}>
-        <div className="form__group">
-          <label htmlFor="titre_deck" className="form__label">
+    <div className="create-container">
+      <form className="form-container" onSubmit={handleSubmit}>
+        <div className="form-header">
+          <button
+            className="btn-back"
+            onClick={() => navigate("/admin/dashboard")}
+          >
+            <i className="fa-solid fa-arrow-left"></i>
+          </button>
+          <h2 className="form-title">Créer un deck</h2>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="titre_deck" className="form-label required">
             Titre
           </label>
           <input
             type="text"
             id="titre_deck"
             name="titre_deck"
-            className="form__input"
+            className="form-input"
             value={deck.titre_deck}
             onChange={handleChange}
             required
           />
         </div>
-        <div className="form__group">
-          <label htmlFor="date_debut_deck" className="form__label">
+        <div className="form-group">
+          <label htmlFor="date_debut_deck" className="form-label required">
             Date de début de création
           </label>
           <input
             type="date"
             id="date_debut_deck"
             name="date_debut_deck"
-            className="form__input"
+            className="form-input"
             value={deck.date_debut_deck}
             onChange={handleChange}
             required
           />
         </div>
-        <div className="form__group">
-          <label htmlFor="date_fin_deck" className="form__label">
+        <div className="form-group">
+          <label htmlFor="date_fin_deck" className="form-label required">
             Date de fin de création
           </label>
           <input
             type="date"
             id="date_fin_deck"
             name="date_fin_deck"
-            className="form__input"
+            className="form-input"
             value={deck.date_fin_deck}
             onChange={handleChange}
             required
           />
         </div>
-        <div className="form__group">
-          <label htmlFor="nb_cartes" className="form__label">
+        <div className="form-group">
+          <label htmlFor="nb_cartes" className="form-label required">
             Nombre de cartes
           </label>
           <input
             id="nb_cartes"
             type="number"
             name="nb_cartes"
-            className="form__input"
+            className="form-input"
             value={deck.nb_cartes}
             onChange={handleChange}
             required
           />
         </div>
-        <button type="submit" className="form__button" disabled={loading}>
+        {error && <p className="login-form__error">{error}</p>}
+        <button type="submit" className="btn-cta" disabled={loading}>
           {loading ? "Chargement..." : "Créer"}
         </button>
       </form>

@@ -40,50 +40,52 @@ const Login = () => {
   };
 
   return (
-    <form className="form-container" onSubmit={handleLogin}>
-      <div className="form-header">
-        <button
-          className="btn btn-outline btn-back"
-          onClick={() => navigate("/createurs/register")}
-        >
-          <i className="fa-solid fa-arrow-left"></i> Retour
-        </button>
-        <h2 className="form-title">Connexion</h2>
-      </div>
+    <div className="login-container">
+      <form className="form-container" onSubmit={handleLogin}>
+        <div className="form-header">
+          <button
+            className="btn-back"
+            onClick={() => navigate("/createurs/register")}
+          >
+            <i className="fa-solid fa-arrow-left"></i>
+          </button>
+          <h2 className="form-title">Connexion</h2>
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="email" className="form-label required">
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          className="form-input"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="password" className="form-label required">
-          Mot de passe
-        </label>
-        <input
-          type="password"
-          id="password"
-          className="form-input"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      {error && <p className="login-form__error">{error}</p>}
-      <button type="submit" className="btn btn-cta" disabled={loading}>
-        {loading ? "Connexion en cours..." : "Se connecter"}
-      </button>
-    </form>
+        <div className="form-group">
+          <label htmlFor="email" className="form-label required">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            className="form-input"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password" className="form-label required">
+            Mot de passe
+          </label>
+          <input
+            type="password"
+            id="password"
+            className="form-input"
+            placeholder="Mot de passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        {error && <p className="login-form__error">{error}</p>}
+        <button type="submit" className="btn-cta" disabled={loading}>
+          {loading ? "Connexion en cours..." : "Se connecter"}
+        </button>
+      </form>
+    </div>
   );
 };
 

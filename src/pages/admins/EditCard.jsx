@@ -50,31 +50,47 @@ const EditCard = () => {
     return <p className="loading">Chargement des détails de la carte...</p>;
   }
 
-  if (error) {
-    return <p className="error-message">{error}</p>;
-  }
-
   if (!card) {
     return <p className="error-message">Carte non trouvée.</p>;
   }
 
   return (
-    <div className="edit-card">
-      <h1 className="edit-card__title">Modifier la carte</h1>
-      <form onSubmit={handleSubmit} className="edit-card__form">
+    <div className="edit-container">
+      <form onSubmit={handleSubmit} className="form-container">
+        <div className="form-header">
+          <button
+            type="button" // Définit explicitement comme bouton non soumis
+            className="btn-back"
+            onClick={(e) => {
+              e.preventDefault(); // Prévenir le comportement par défaut
+              if (window.history.length > 1) {
+                navigate(-1); // Retourner à la page précédente si possible
+              } else {
+                navigate("/cards"); // Page de secours (par exemple, la liste des cartes)
+              }
+            }}
+          >
+            <i className="fa-solid fa-arrow-left"></i>
+          </button>
+          <h2 className="form-title">Modifier la carte</h2>
+        </div>
         <div className="form-group">
-          <label htmlFor="texte_carte">Texte de la carte :</label>
+          <label htmlFor="texte_carte" className="form-label required">
+            Texte de la carte :
+          </label>
           <textarea
             id="texte_carte"
             name="texte_carte"
             value={card.texte_carte || ""}
             onChange={handleChange}
             required
-            className="form-control"
+            className="form-input"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="valeurs_choix1">Valeurs du choix 1 :</label>
+          <label htmlFor="valeurs_choix1" className="form-label required">
+            Valeurs du choix 1 :
+          </label>
           <input
             type="text"
             id="valeurs_choix1"
@@ -82,11 +98,13 @@ const EditCard = () => {
             value={card.valeurs_choix1 || ""}
             onChange={handleChange}
             required
-            className="form-control"
+            className="form-input"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="valeurs_choix2">Valeurs du choix 2 :</label>
+          <label htmlFor="valeurs_choix2" className="form-label required">
+            Valeurs du choix 2 :
+          </label>
           <input
             type="text"
             id="valeurs_choix2"
@@ -94,11 +112,13 @@ const EditCard = () => {
             value={card.valeurs_choix2 || ""}
             onChange={handleChange}
             required
-            className="form-control"
+            className="form-input"
           />
         </div>
         <div className="form-actions">
-          <button type="submit" className="btn btn-save">
+          {error && <p className="login-form__error">{error}</p>}
+          <button type="submit" className="btn btn-cta">
+            <i class="fa-regular fa-floppy-disk"></i>
             Enregistrer
           </button>
           <button

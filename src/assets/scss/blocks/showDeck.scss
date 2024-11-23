@@ -1,0 +1,155 @@
+/* Container principal */
+.show-deck {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: calc(85vh - 8rem);
+}
+
+/* En-tête */
+.show-deck__title {
+  color: var(--text-primary);
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.show-deck__info {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.show-deck__subtitle {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+/* États de chargement et erreur */
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  background-color: var(--neutral-50);
+  border-radius: var(--radius);
+}
+
+.error-message {
+  padding: 1rem;
+  background-color: #fef2f2;
+  color: var(--danger);
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  border: 1px solid #fee2e2;
+}
+
+/* Grille de cartes */
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+}
+
+/* Style des cartes */
+.card {
+  position: relative;
+  background: var(--indigo-50);
+  border: 1px solid var(--indigo-300);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.card:focus-within {
+  outline: 2px solid var(--indigo-600);
+  outline-offset: 2px;
+}
+
+/* Texte de la carte */
+.card__text {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+/* Choix */
+.card__choice {
+  background-color: var(--neutral-50);
+  padding: 1rem;
+  border-radius: calc(var(--radius) - 0.25rem);
+  margin-bottom: 1rem;
+}
+
+.card__choice:last-child {
+  margin-bottom: 0;
+}
+
+.card__choice span {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-primary);
+}
+
+/* Conteneur des boutons */
+.card-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--indigo-300);
+}
+
+/* Icônes */
+svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Focus styles pour l'accessibilité */
+:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Support clavier */
+@media (prefers-reduced-motion: no-preference) {
+  .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn {
+    transition: background-color 0.2s ease;
+  }
+}
+
+/* Media Queries */
+@media (max-width: 640px) {
+  .card-list {
+    grid-template-columns: 1fr;
+  }
+
+  .card-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .show-deck {
+    padding: 1rem;
+  }
+}

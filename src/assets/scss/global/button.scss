@@ -90,3 +90,8 @@
 .btn-cta:active {
   transform: translateY(1px);
 }
+
+.btn-edit {
+  background-color: var(--yellow-background);
+  color: var(--yellow);
+}

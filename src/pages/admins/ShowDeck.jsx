@@ -7,7 +7,7 @@ import { getAllCardInDeck, deleteCardById } from "../../api/admins"; // Assurez-
 const ShowDeck = () => {
   const { user } = useAuth();
   const { id_deck } = useParams();
-  const [deck, setDeck] = useState(null);
+  const [deck, setDeck] = useState("");
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate(); // Hook pour la navigation
@@ -25,7 +25,9 @@ const ShowDeck = () => {
       if (data.cards) {
         setCards(data.cards);
       }
-      setDeck(data.deck || {});
+      console.log({ data });
+      setDeck(data.nom_deck);
+      console.log({ deck });
     } catch (error) {
       console.error("Erreur lors du chargement du deck :", error);
     } finally {
@@ -77,9 +79,16 @@ const ShowDeck = () => {
 
   return (
     <div className="show-deck">
-      <h1 className="show-deck__title">{deck.titre_deck}</h1>
-      <p className="show-deck__info">Nombre de cartes : {cards.length}</p>
-      <h2 className="show-deck__subtitle">Cartes du deck :</h2>
+      <div className="form-header">
+        <button
+          className="btn-back"
+          onClick={() => navigate("/admin/dashboard")} // Retourne à la page du tableau de bord
+        >
+          <i className="fa-solid fa-arrow-left"></i>
+        </button>
+        <h2 className="form-title">{deck}</h2>
+      </div>
+
       <ul className="card-list">
         {cards.length > 0 ? (
           cards.map((card) => (
