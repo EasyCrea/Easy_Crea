@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 const CreateCard = () => {
   const { user } = useAuth(); // Assurez-vous que `useAuth` retourne un utilisateur avec un champ `role`
   const { id_deck } = useParams();
+  const [error, setError] = useState("");
   const [texteCarte, setTexteCarte] = useState("");
   const [valeursChoix1, setValeursChoix1] = useState("");
   const [valeursChoix2, setValeursChoix2] = useState("");
@@ -33,63 +34,65 @@ const CreateCard = () => {
       navigate(`/admin/deck/${id_deck}`);
     } catch (error) {
       console.error("Erreur lors de la création de la carte :", error);
-      alert("Une erreur est survenue lors de la création de la carte.");
+      setError("Une erreur est survenue lors de la création de la carte.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="create-card">
-      <h2 className="create-card__title">Créer une carte</h2>
-      <form className="create-card__form" onSubmit={handleCreateCard}>
-        <div className="create-card__group">
-          <label htmlFor="texteCarte" className="create-card__label">
+    <div className="create-container">
+      <form className="form-container" onSubmit={handleCreateCard}>
+        <div className="form-header">
+          <button className="btn-back" onClick={() => navigate("/")}>
+            <i className="fa-solid fa-arrow-left"></i>
+          </button>
+          <h2 className="form-title">Créer une carte</h2>
+        </div>
+        <div className="form-group">
+          <label htmlFor="texteCarte" className="form-label required">
             Texte de la carte
           </label>
           <input
             type="text"
             id="texteCarte"
-            className="create-card__input"
+            className="form-input"
             placeholder="Entrez le texte de la carte"
             value={texteCarte}
             onChange={(e) => setTexteCarte(e.target.value)}
             required
           />
         </div>
-        <div className="create-card__group">
-          <label htmlFor="valeursChoix1" className="create-card__label">
+        <div className="form-group">
+          <label htmlFor="valeursChoix1" className="form-label required">
             Valeurs choix 1
           </label>
           <input
             type="text"
             id="valeursChoix1"
-            className="create-card__input"
+            className="form-input"
             placeholder="Entrez les valeurs pour le choix 1"
             value={valeursChoix1}
             onChange={(e) => setValeursChoix1(e.target.value)}
             required
           />
         </div>
-        <div className="create-card__group">
-          <label htmlFor="valeursChoix2" className="create-card__label">
+        <div className="form-group">
+          <label htmlFor="valeursChoix2" className="form-label required">
             Valeurs choix 2
           </label>
           <input
             type="text"
             id="valeursChoix2"
-            className="create-card__input"
+            className="form-input"
             placeholder="Entrez les valeurs pour le choix 2"
             value={valeursChoix2}
             onChange={(e) => setValeursChoix2(e.target.value)}
             required
           />
         </div>
-        <button
-          type="submit"
-          className="create-card__button"
-          disabled={loading}
-        >
+        {error && <p className="login-form__error">{error}</p>}
+        <button type="submit" className="btn btn-cta" disabled={loading}>
           {loading ? "Chargement..." : "Créer"}
         </button>
       </form>
