@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./../pages/HomePage";
 import LoginPageCreateur from "./../pages/createurs/Login";
+import Register from "./../pages/createurs/Register";
 import LoginPageAdmin from "./../pages/admins/Login";
 import AdminDashboard from "../pages/admins/AdminDashboard";
 import CreateDeck from "../pages/admins/CreateDeck";
@@ -42,6 +43,9 @@ const AppRoutes = () => {
 
       {/* Route publique : page de connexion */}
       <Route path="/loginCreateur" element={<LoginPageCreateur />} />
+
+      {/* Route publique : page de création de compte */}
+      <Route path="/createurs/register" element={<Register />} />
 
       {/* Route publique : page de connexion */}
       <Route path="/loginAdmin" element={<LoginPageAdmin />} />

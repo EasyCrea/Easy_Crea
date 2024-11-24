@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginCreateur } from "../../api/auth";
 import { getLiveDeck } from "../../api/admins";
@@ -7,8 +7,17 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Vérifie si "success" est dans l'URL
+    const params = new URLSearchParams(location.search);
+    if (params.get("success") === "1") {
+      setSuccessMessage("Création terminée avec succès !");
+    }
+  }, [location]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -41,6 +50,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      {successMessage && <p className="success-message">{successMessage}</p>}
       <form className="form-container" onSubmit={handleLogin}>
         <div className="form-header">
           <button
@@ -84,6 +94,10 @@ const Login = () => {
         <button type="submit" className="btn-cta" disabled={loading}>
           {loading ? "Connexion en cours..." : "Se connecter"}
         </button>
+        <a href="/createurs/register">
+          {" "}
+          Pas encore de compte ? <span>Créez en un !</span>
+        </a>
       </form>
     </div>
   );

@@ -1,5 +1,6 @@
 .login-container {
   height: calc(90vh - var(--header-height) - var(--footer-height));
+  text-align: center;
 }
 
 .create-container {
@@ -211,6 +212,38 @@
 
 .btn-back:hover {
   background-color: var(--pink-background-hover);
+}
+
+.btn-back:focus {
+  border-color: var(--indigo-700);
+  border: 1px solid var(--indigo-700);
+  box-shadow: 0 0 0 3px var(--indigo-100);
+}
+
+.login-container a {
+  display: block;
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-container a span {
+  font-weight: bold;
+  color: #0056b3;
+}
+
+.login-container a:hover {
+  color: #0056b3;
+}
+
+.success-message {
+  color: var(--color-success);
+  background-color: var(--color-success-background);
+  padding: 0.7rem 1rem;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 }
 
 /* Responsive Design */
