@@ -39,10 +39,7 @@ const Login = () => {
     <div className="login-container">
       <form className="form-container" onSubmit={handleLogin}>
         <div className="form-header">
-          <button
-            className="btn-back"
-            onClick={() => navigate("/createurs/register")}
-          >
+          <button className="btn-back" onClick={() => navigate("/")}>
             <i className="fa-solid fa-arrow-left"></i>
           </button>
           <h2 className="form-title">Connexion Admin</h2>

@@ -5,7 +5,6 @@ const Footer = () => (
     <div className="footer__container">
       <div className="footer__content">
         <div className="footer__branding">
-          <div className="footer__icon"></div>
           <span className="footer__title">EasyCrea</span>
         </div>
         <div className="footer__links">

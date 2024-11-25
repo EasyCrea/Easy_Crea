@@ -36,6 +36,10 @@
 
 .homepage__actions {
   margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* Espacement entre le texte et l'icône */
 }
 
 .homepage__actions .btn {
