@@ -50,11 +50,25 @@ const AppRoutes = () => {
       {/* Route publique : page de connexion */}
       <Route path="/loginAdmin" element={<LoginPageAdmin />} />
 
-      {/* Route publique : page de création de carte */}
-      <Route path="/create-card/:id_deck" element={<CreateCard />} />
+      {/* Route protégée : page de création de carte */}
+      <Route
+        path="/create-card/:id_deck"
+        element={
+          <ProtectedRoute role="createur">
+            <CreateCard />
+          </ProtectedRoute>
+        }
+      />
 
-      {/* Route publique : page de visualisation du deck en cours de creation et de creation de carte */}
-      <Route path="/createurs/game/:id_deck" element={<Game />} />
+      {/* Route protégée : page de visualisation du deck en cours de creation et de creation de carte */}
+      <Route
+        path="/createurs/game/:id_deck"
+        element={
+          <ProtectedRoute role="createur">
+            <Game />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Route protégée : tableau de bord administrateur */}
       <Route

@@ -34,6 +34,7 @@ const Header = () => {
   return (
     <header className="header">
       <nav className="nav">
+        {/* Logo et texte pour le header */}
         <div className="nav__mobile-toggle" onClick={toggleMenu}>
           <Link
             to="/"
@@ -41,7 +42,14 @@ const Header = () => {
               isMenuOpen ? "nav__linkLogo--hidden" : ""
             }`}
           >
-            Logo EasyCrea
+            <div className="nav__logoContainer">
+              <img
+                src="/src/assets/images/logo_easy_crea.png"
+                alt="EasyCrea Logo"
+                className="nav__logo"
+              />
+              <span className="nav__logoText">EasyCrea</span>
+            </div>
           </Link>
           {isMenuOpen ? <X size={50} /> : <Menu size={50} />}
         </div>
@@ -53,7 +61,14 @@ const Header = () => {
                 isMenuOpen ? "nav__linkLogo--hidden" : ""
               }`}
             >
-              Logo EasyCrea
+              <div className="nav__logoContainer">
+                <img
+                  src="/src/assets/images/logo_easy_crea.png"
+                  alt="EasyCrea Logo"
+                  className="nav__logo"
+                />
+                <span className="nav__logoText">EasyCrea</span>
+              </div>
             </Link>
           </li>
           {user ? (
@@ -95,7 +110,7 @@ const Header = () => {
               <li className="nav__item">
                 <Link
                   to="/loginCreateur"
-                  className=" btn btn-filled nav__link"
+                  className="btn btn-filled nav__link"
                   onClick={toggleMenu}
                 >
                   <Palette size={20} />

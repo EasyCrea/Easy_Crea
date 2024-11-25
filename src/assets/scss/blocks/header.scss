@@ -5,6 +5,7 @@
   height: var(--header-height);
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .nav {
@@ -44,29 +45,26 @@
   margin-right: auto; /* Pousse le logo à gauche */
 }
 
-.nav__linkLogo {
+.nav__logoContainer {
   display: flex;
   align-items: center;
-  font-size: 1.5rem; /* Taille du logo */
+  text-decoration: none;
+}
+
+.nav__logo {
+  width: 2rem; /* Largeur du logo */
+  height: 2rem; /* Hauteur du logo */
+  object-fit: contain; /* Maintient les proportions du logo */
+  margin-right: 0.5rem; /* Espace à droite entre le logo et le texte */
+}
+
+.nav__logoText {
+  font-size: 1.5rem; /* Taille du texte */
   font-weight: bold;
   background: linear-gradient(to right, var(--indigo-600), var(--purple-600));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-fill-color: transparent; /* Compatibilité */
-  text-decoration: none;
-}
-
-.nav__linkLogo::before {
-  content: "";
-  display: inline-block;
-  width: 2rem;
-  height: 2rem;
-  background-color: var(--indigo-600);
-  mask: url("/path-to-wand2-icon.svg") no-repeat center;
-  -webkit-mask: url("/path-to-wand2-icon.svg") no-repeat center;
-  mask-size: contain;
-  -webkit-mask-size: contain;
-  margin-right: 0.5rem; /* Espace entre l'icône et le texte */
 }
 
 .nav__link {
@@ -89,46 +87,34 @@
   .nav__mobile-toggle {
     display: block;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: flex-end;
     width: 100%;
     gap: 30%;
   }
 
-  /* Ajout de la classe pour cacher le logo lorsqu'il y a un menu ouvert */
   .nav__linkLogo--hidden {
     display: none;
-  }
-
-  .nav__linkLogo {
-    font-size: 1.2rem;
   }
 
   .nav__list {
     display: none;
     flex-direction: column;
-    position: fixed; /* Change pour couvrir tout l'écran */
-    top: 4rem;
+    position: fixed;
+    top: 10vh;
     left: 0;
-    width: 90%;
-    height: 100%; /* Hauteur complète de l'écran */
-    background-color: var(--primary-color);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 2rem 1rem; /* Ajouter des marges internes pour un espacement harmonieux */
-    gap: 1rem;
-    z-index: 100; /* Pour s'assurer que le menu est au-dessus */
-    overflow-y: auto; /* Permettre le défilement si le contenu est long */
-  }
-
-  .nav__list--open {
-    display: flex;
-  }
-
-  .nav__list--open {
-    display: flex;
     width: 100%;
+    height: 100%;
     background-color: white;
-    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem 0rem;
+    gap: 1rem;
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .nav__list--open {
+    display: flex;
   }
 
   .nav__item {
@@ -141,7 +127,7 @@
   }
 }
 
-/* Grands écrans (comme avant) */
+/* Grands écrans */
 @media (min-width: 1024px) {
   .header {
     padding: 2rem 4rem;
