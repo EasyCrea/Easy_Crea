@@ -44,7 +44,7 @@ const Login = () => {
       const deckLiveResponse = await getLiveDeck();
       if (deckLiveResponse?.deck?.id_deck) {
         const { id_deck } = deckLiveResponse.deck;
-        navigate(`/createurs/game/${id_deck}`);
+        navigate(`/createurs/pregame/${id_deck}`);
       } else {
         throw new Error("Aucun deck live trouvé.");
       }

@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getAllCardInLiveDeck, getCreatorCard } from "../../api/createurs";
 import CreateCard from "../CreateCard";
@@ -10,11 +10,10 @@ const GamePage = () => {
   const [deckCards, setDeckCards] = useState([]);
   const [titleDeck, setTitleDeck] = useState("");
   const [creatorCard, setCreatorCard] = useState(null);
-  const [randomCard, setRandomCard] = useState(null);
+  const [visibleCard, setVisibleCard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [flippedCards, setFlippedCards] = useState({});
-  const cardsGalleryRef = useRef(null);
+  const [isCardFlipped, setIsCardFlipped] = useState(false);
 
   const fetchDeckData = useCallback(async () => {
     if (!user) return;
@@ -29,11 +28,13 @@ const GamePage = () => {
       );
       setDeckCards(sortedCards);
 
+      // Sélectionner une carte aléatoire du deck
       if (sortedCards.length > 0) {
         const randomIndex = Math.floor(Math.random() * sortedCards.length);
-        setRandomCard(sortedCards[randomIndex]);
+        setVisibleCard(sortedCards[randomIndex]);
       }
 
+      // Vérifier si l'utilisateur a déjà créé une carte
       if (user?.id) {
         const creatorCardData = await getCreatorCard(id_deck, user.id);
         setCreatorCard(creatorCardData.card || null);
@@ -50,47 +51,12 @@ const GamePage = () => {
     fetchDeckData();
   }, [fetchDeckData]);
 
-  useEffect(() => {
-    if (deckCards.length > 0 && cardsGalleryRef.current) {
-      arrangeCards();
-    }
-  }, [deckCards]);
-
-  const arrangeCards = () => {
-    const cardWrappers =
-      cardsGalleryRef.current?.querySelectorAll(".card-wrapper") || [];
-    const cardCount = cardWrappers.length;
-
-    if (cardCount === 0) return;
-
-    const maxAngle = Math.min(cardCount * 5, 30);
-
-    cardWrappers.forEach((wrapper, index) => {
-      const angle = maxAngle * (index / (cardCount - 1) - 0.5);
-      const verticalOffset = Math.abs(angle) * 0.8;
-      const offset = (index - (cardCount - 1) / 2) * 60;
-
-      wrapper.style.setProperty("--angle", `${angle}deg`);
-      wrapper.style.setProperty("--translation", `${verticalOffset}px`);
-      wrapper.style.left = `calc(50% + ${offset}px - 140px)`;
-      wrapper.style.zIndex = cardCount - index;
-    });
-  };
-
-  const handleCardFlip = (cardId) => {
-    const isFlippable =
-      randomCard?.id_carte === cardId || creatorCard?.id_carte === cardId;
-
-    if (isFlippable) {
-      setFlippedCards((prev) => ({
-        ...prev,
-        [cardId]: !prev[cardId],
-      }));
-    }
+  const handleCardFlip = () => {
+    setIsCardFlipped(!isCardFlipped);
   };
 
   if (!user) {
-    return <p className="loading">Chargement de l&apos;utilisateur...</p>;
+    return <p className="loading">Chargement de l'utilisateur...</p>;
   }
 
   if (loading) {
@@ -107,40 +73,39 @@ const GamePage = () => {
       <h1 className="game-page__title">{titleDeck}</h1>
 
       <div className="deck-container">
-        <h2 className="deck-title">Cartes du deck</h2>
-        <div className="cards-gallery" ref={cardsGalleryRef}>
-          {deckCards.map((card) => {
-            const isRandom = card.id_carte === randomCard?.id_carte;
-            const isCreator = card.id_carte === creatorCard?.id_carte;
-            const isRevealed = isRandom || isCreator;
-            const isFlipped = flippedCards[card.id_carte];
+        <h2 className="deck-title">Carte du Deck</h2>
 
-            return (
-              <div
-                key={card.id_carte}
-                className={`card-wrapper 
-                  ${isRevealed ? "card-wrapper--revealed" : ""}
-                  ${isFlipped ? "card-wrapper--flipped" : ""}`}
-                onClick={() => handleCardFlip(card.id_carte)}
-              >
-                <div className="card-content">
-                  {/* Ajoutez votre contenu de carte ici */}
-                  {isFlipped ? (
-                    <div className="card-back">
-                      {/* Contenu au dos de la carte */}
-                      <p>{card.content || "Carte retournée"}</p>
-                    </div>
-                  ) : (
-                    <div className="card-front">
-                      {/* Contenu de face de la carte */}
-                      <p>Carte face visible</p>
-                    </div>
-                  )}
-                </div>
+        {visibleCard && (
+          <div
+            className={`card-wrapper ${
+              isCardFlipped ? "card-wrapper--flipped" : ""
+            }`}
+            onClick={handleCardFlip}
+          >
+            <div className="card-content">
+              <div className="card-front">
+                <h3>Carte du Deck</h3>
+                <p>Cliquez pour révéler</p>
               </div>
-            );
-          })}
-        </div>
+
+              <div className="card-back">
+                <h3>{visibleCard.texte_carte}</h3>
+                <div className="card-choices">
+                  <div className="choice">
+                    <strong>Choix 1:</strong> {visibleCard.valeurs_choix1}
+                  </div>
+                  <div className="choice">
+                    <strong>Choix 2:</strong> {visibleCard.valeurs_choix2}
+                  </div>
+                </div>
+                <p className="card-metadata">
+                  Créée le:{" "}
+                  {new Date(visibleCard.date_creation).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {!creatorCard && (
@@ -149,12 +114,6 @@ const GamePage = () => {
           <CreateCard id_deck={id_deck} onCardCreated={fetchDeckData} />
         </div>
       )}
-
-      <div className="navigation-links">
-        <Link to="/decks" className="btn btn-back">
-          Retour aux decks
-        </Link>
-      </div>
     </div>
   );
 };
