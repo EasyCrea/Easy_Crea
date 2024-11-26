@@ -95,17 +95,32 @@ const ShowDeck = () => {
             <li key={card.id_carte} className="card-list__item">
               <div className="card">
                 <p className="card__text">
-                  <strong>{card.texte_carte}</strong>
+                  <strong>{card.event_description}</strong>
                 </p>
                 <p className="card__choice">
                   <span>
-                    Choix 1: {card.valeurs_choix1}{" "}
-                    <Users color="red" size={42} />
+                    Choix 1: {card.choice_1}
+                    <p>
+                      Impact Population <Users size={42} /> :{" "}
+                      {card.population_impact_1}
+                    </p>
+                    <p>
+                      Impact Financier <Coins size={42} /> :{" "}
+                      {card.finance_impact_1}
+                    </p>
                   </span>
                 </p>
                 <p className="card__choice">
                   <span>
-                    Choix 2: {card.valeurs_choix2} <Coins />
+                    Choix 1: {card.choice_2}
+                    <p>
+                      Impact Population <Users size={42} /> :{" "}
+                      {card.population_impact_2}
+                    </p>
+                    <p>
+                      Impact Financier <Coins size={42} /> :{" "}
+                      {card.finance_impact_2}
+                    </p>
                   </span>
                 </p>
                 <div className="card-actions">
