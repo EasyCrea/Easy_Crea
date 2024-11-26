@@ -24,7 +24,7 @@ const GamePage = () => {
       setTitleDeck(cardsData.titleDeck);
 
       const sortedCards = (cardsData.cards || []).sort(
-        (a, b) => new Date(a.date_creation) - new Date(b.date_creation)
+        (a, b) => new Date(a.created_at) - new Date(b.created_at)
       );
       setDeckCards(sortedCards);
 
@@ -56,7 +56,7 @@ const GamePage = () => {
   };
 
   if (!user) {
-    return <p className="loading">Chargement de l'utilisateur...</p>;
+    return <p className="loading">Chargement de l&apos;utilisateur...</p>;
   }
 
   if (loading) {
@@ -89,18 +89,22 @@ const GamePage = () => {
               </div>
 
               <div className="card-back">
-                <h3>{visibleCard.texte_carte}</h3>
+                <h3>{visibleCard.event_description}</h3>
                 <div className="card-choices">
                   <div className="choice">
-                    <strong>Choix 1:</strong> {visibleCard.valeurs_choix1}
+                    <strong>Choix 1:</strong> {visibleCard.choice_1}
+                    <p>Impact Population : {visibleCard.population_impact_1}</p>
+                    <p>Impact Financier : {visibleCard.finance_impact_1}</p>
                   </div>
                   <div className="choice">
-                    <strong>Choix 2:</strong> {visibleCard.valeurs_choix2}
+                    <strong>Choix 2:</strong> {visibleCard.choice_2}
+                    <p>Impact Population : {visibleCard.population_impact_2}</p>
+                    <p>Impact Financier : {visibleCard.finance_impact_2}</p>
                   </div>
                 </div>
                 <p className="card-metadata">
                   Créée le:{" "}
-                  {new Date(visibleCard.date_creation).toLocaleDateString()}
+                  {new Date(visibleCard.created_at).toLocaleDateString()}
                 </p>
               </div>
             </div>

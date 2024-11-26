@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Crown, Heart, Coins, Users } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Coins, Users } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom"; // Ajout de useNavigate
 import { useAuth } from "../../context/AuthContext";
 import { getAllCardInDeck, deleteCardById } from "../../api/admins"; // Assurez-vous que deleteCard est bien défini

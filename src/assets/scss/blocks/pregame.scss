@@ -1,0 +1,121 @@
+.deck-creation-guide {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+
+  font-family: "Arial", sans-serif;
+}
+
+.guide-container {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.guide-section,
+.guide-instructions,
+.scoring-guide,
+.example-card {
+  margin-bottom: 30px;
+}
+
+.guide-instructions ul {
+  list-style-type: disc;
+  padding-left: 30px;
+}
+
+.score-explanation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.population-score,
+.finance-score {
+  width: 48%;
+  background-color: var(--purple-background);
+  color: var(--indigo-600);
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.population-score h4,
+.finance-score h4 {
+  font-weight: bold;
+  margin-bottom: 0rem;
+}
+
+.score-explanation ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.balance-note {
+  text-align: center;
+  color: var(--color-danger);
+  background-color: var(--color-danger-background);
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.example-card-content {
+  background-color: var(--yellow-background);
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.choices {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  border: 1px solid var(--yellow);
+}
+
+.choice {
+  width: 48%;
+  padding: 10px;
+  border-radius: 1rem;
+}
+
+.choice ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.action-section {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.btn-start-creating {
+  display: inline-block;
+  background-color: #3498db;
+  color: white;
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-start-creating:hover {
+  background-color: #2980b9;
+}
+
+@media (max-width: 600px) {
+  .score-explanation,
+  .choices {
+    flex-direction: column;
+  }
+
+  .population-score,
+  .finance-score,
+  .choice {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+}
