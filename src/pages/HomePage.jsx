@@ -1,9 +1,6 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 
 const HomePage = () => {
-  const { user } = useAuth();
   return (
     <main className="homepage">
       <h1 className="homepage__title">
@@ -15,7 +12,7 @@ const HomePage = () => {
       </p>
       <div className="homepage__actions">
         <Link to="/loginCreateur" className="btn btn-filled btn-shadow">
-          Commencer maintenant <i class="fa-solid fa-arrow-right"></i>
+          Commencer maintenant <i className="fa-solid fa-arrow-right"></i>
         </Link>
       </div>
     </main>

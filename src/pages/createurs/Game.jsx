@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getAllCardInLiveDeck, getCreatorCard } from "../../api/createurs";
@@ -16,10 +16,39 @@ const GamePage = () => {
   const [flippedCards, setFlippedCards] = useState({});
   const cardsGalleryRef = useRef(null);
 
-  useEffect(() => {
+  const fetchDeckData = useCallback(async () => {
     if (!user) return;
-    fetchDeckData();
+
+    setLoading(true);
+    try {
+      const cardsData = await getAllCardInLiveDeck(id_deck);
+      setTitleDeck(cardsData.titleDeck);
+
+      const sortedCards = (cardsData.cards || []).sort(
+        (a, b) => new Date(a.date_creation) - new Date(b.date_creation)
+      );
+      setDeckCards(sortedCards);
+
+      if (sortedCards.length > 0) {
+        const randomIndex = Math.floor(Math.random() * sortedCards.length);
+        setRandomCard(sortedCards[randomIndex]);
+      }
+
+      if (user?.id) {
+        const creatorCardData = await getCreatorCard(id_deck, user.id);
+        setCreatorCard(creatorCardData.card || null);
+      }
+    } catch (err) {
+      console.error("Erreur lors du chargement des données :", err);
+      setError("Une erreur est survenue lors du chargement des données.");
+    } finally {
+      setLoading(false);
+    }
   }, [id_deck, user]);
+
+  useEffect(() => {
+    fetchDeckData();
+  }, [fetchDeckData]);
 
   useEffect(() => {
     if (deckCards.length > 0 && cardsGalleryRef.current) {
@@ -44,12 +73,15 @@ const GamePage = () => {
       wrapper.style.setProperty("--angle", `${angle}deg`);
       wrapper.style.setProperty("--translation", `${verticalOffset}px`);
       wrapper.style.left = `calc(50% + ${offset}px - 140px)`;
-      wrapper.style.zIndex = index;
+      wrapper.style.zIndex = cardCount - index;
     });
   };
 
   const handleCardFlip = (cardId) => {
-    if (randomCard?.id_carte === cardId || creatorCard?.id_carte === cardId) {
+    const isFlippable =
+      randomCard?.id_carte === cardId || creatorCard?.id_carte === cardId;
+
+    if (isFlippable) {
       setFlippedCards((prev) => ({
         ...prev,
         [cardId]: !prev[cardId],
@@ -57,39 +89,17 @@ const GamePage = () => {
     }
   };
 
-  const fetchDeckData = async () => {
-    setLoading(true);
-    try {
-      const cardsData = await getAllCardInLiveDeck(id_deck);
-      setTitleDeck(cardsData.titleDeck);
-      const sortedCards = (cardsData.cards || []).sort(
-        (a, b) => new Date(a.date_creation) - new Date(b.date_creation)
-      );
-      setDeckCards(sortedCards);
+  if (!user) {
+    return <p className="loading">Chargement de l&apos;utilisateur...</p>;
+  }
 
-      if (user?.id) {
-        const creatorCardData = await getCreatorCard(id_deck, user.id);
-        setCreatorCard(creatorCardData.card || null);
-      }
-
-      if (sortedCards.length > 0) {
-        const randomIndex = Math.floor(Math.random() * sortedCards.length);
-        setRandomCard(sortedCards[randomIndex]);
-      }
-    } catch (err) {
-      console.error("Erreur lors du chargement des données :", err);
-      setError("Une erreur est survenue lors du chargement des données.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (!user) return <p className="loading">Chargement de l'utilisateur...</p>;
-
-  if (loading)
+  if (loading) {
     return <p className="loading">Chargement des données du deck...</p>;
+  }
 
-  if (error) return <p className="error-message">{error}</p>;
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
 
   return (
     <div className="game-page">
@@ -102,18 +112,31 @@ const GamePage = () => {
           {deckCards.map((card) => {
             const isRandom = card.id_carte === randomCard?.id_carte;
             const isCreator = card.id_carte === creatorCard?.id_carte;
-            const isFlipped = flippedCards[card.id_carte];
             const isRevealed = isRandom || isCreator;
+            const isFlipped = flippedCards[card.id_carte];
 
             return (
               <div
                 key={card.id_carte}
-                className={`card-wrapper ${
-                  isRevealed ? "card-wrapper--revealed" : ""
-                }`}
+                className={`card-wrapper 
+                  ${isRevealed ? "card-wrapper--revealed" : ""}
+                  ${isFlipped ? "card-wrapper--flipped" : ""}`}
                 onClick={() => handleCardFlip(card.id_carte)}
               >
-                {/* Ajoutez votre contenu de carte ici */}
+                <div className="card-content">
+                  {/* Ajoutez votre contenu de carte ici */}
+                  {isFlipped ? (
+                    <div className="card-back">
+                      {/* Contenu au dos de la carte */}
+                      <p>{card.content || "Carte retournée"}</p>
+                    </div>
+                  ) : (
+                    <div className="card-front">
+                      {/* Contenu de face de la carte */}
+                      <p>Carte face visible</p>
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -123,7 +146,7 @@ const GamePage = () => {
       {!creatorCard && (
         <div className="create-card-container">
           <h3>Créez votre première carte pour ce deck :</h3>
-          <CreateCard id_deck={id_deck} />
+          <CreateCard id_deck={id_deck} onCardCreated={fetchDeckData} />
         </div>
       )}
 

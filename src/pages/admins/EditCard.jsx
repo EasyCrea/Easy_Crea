@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCardById, editCardById } from "../../api/admins"; // Ajoutez vos fonctions API ici
 
@@ -118,7 +118,7 @@ const EditCard = () => {
         <div className="form-actions">
           {error && <p className="login-form__error">{error}</p>}
           <button type="submit" className="btn btn-cta">
-            <i class="fa-regular fa-floppy-disk"></i>
+            <i className="fa-regular fa-floppy-disk"></i>
             Enregistrer
           </button>
           <button

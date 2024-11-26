@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter } from "react-router-dom"; // Utilisation explicite de BrowserRouter
 import { AuthProvider } from "./context/AuthContext"; // Chemin adapté à votre structure
 import Routes from "./routes/Routes";

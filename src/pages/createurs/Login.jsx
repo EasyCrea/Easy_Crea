@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginCreateur } from "../../api/auth";
 import { getLiveDeck } from "../../api/admins";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
+  const { setUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -33,6 +35,11 @@ const Login = () => {
     try {
       const data = await loginCreateur(email, password);
       localStorage.setItem("token", data.token);
+      setUser({
+        id: data.createur.id,
+        email: data.createur.email,
+        role: data.createur.role,
+      });
 
       const deckLiveResponse = await getLiveDeck();
       if (deckLiveResponse?.deck?.id_deck) {

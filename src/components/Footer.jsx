@@ -1,5 +1,3 @@
-import React from "react";
-
 const Footer = () => (
   <footer className="footer">
     <div className="footer__container">
@@ -9,7 +7,7 @@ const Footer = () => (
         </div>
         <div className="footer__links">
           <a href="#" className="footer__link">
-            Conditions d'utilisation
+            Conditions d&apos;utilisation
           </a>
           <a href="#" className="footer__link">
             Politique de confidentialité

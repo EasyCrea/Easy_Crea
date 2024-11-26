@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./../pages/HomePage";
 import LoginPageCreateur from "./../pages/createurs/Login";
@@ -14,6 +13,7 @@ import Game from "./../pages/createurs/Game";
 import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au contexte Auth
 
 // Composant pour protéger les routes selon les rôles
+// eslint-disable-next-line react/prop-types
 const ProtectedRoute = ({ role, children }) => {
   const { user, loading } = useAuth();
 
