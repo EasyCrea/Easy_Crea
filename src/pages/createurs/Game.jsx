@@ -10,10 +10,10 @@ const GamePage = () => {
   const [deckCards, setDeckCards] = useState([]);
   const [titleDeck, setTitleDeck] = useState("");
   const [creatorCard, setCreatorCard] = useState(null);
-  const [visibleCard, setVisibleCard] = useState(null);
+  const [visibleCards, setVisibleCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [isCardFlipped, setIsCardFlipped] = useState(false);
+  const [cardFlipStates, setCardFlipStates] = useState({});
 
   const fetchDeckData = useCallback(async () => {
     if (!user) return;
@@ -28,16 +28,35 @@ const GamePage = () => {
       );
       setDeckCards(sortedCards);
 
-      // Sélectionner une carte aléatoire du deck
-      if (sortedCards.length > 0) {
-        const randomIndex = Math.floor(Math.random() * sortedCards.length);
-        setVisibleCard(sortedCards[randomIndex]);
-      }
-
-      // Vérifier si l'utilisateur a déjà créé une carte
+      // If user has a card in this deck, fetch it
       if (user?.id) {
         const creatorCardData = await getCreatorCard(id_deck, user.id);
-        setCreatorCard(creatorCardData.card || null);
+        const userCreatorCard = creatorCardData.card || null;
+        setCreatorCard(userCreatorCard);
+
+        // Determine visible cards
+        const visibleCardsSet = new Set();
+
+        // Always add a random card from the deck
+        if (sortedCards.length > 0) {
+          const randomIndex = Math.floor(Math.random() * sortedCards.length);
+          visibleCardsSet.add(sortedCards[randomIndex]);
+        }
+
+        // If user has created a card, add it to visible cards
+        if (userCreatorCard) {
+          visibleCardsSet.add(userCreatorCard);
+        }
+
+        const visibleCardsArray = Array.from(visibleCardsSet);
+        setVisibleCards(visibleCardsArray);
+
+        // Initialize flip states for cards
+        const initialFlipStates = visibleCardsArray.reduce((acc, card) => {
+          acc[card.id_carte] = false;
+          return acc;
+        }, {});
+        setCardFlipStates(initialFlipStates);
       }
     } catch (err) {
       console.error("Erreur lors du chargement des données :", err);
@@ -51,8 +70,15 @@ const GamePage = () => {
     fetchDeckData();
   }, [fetchDeckData]);
 
-  const handleCardFlip = () => {
-    setIsCardFlipped(!isCardFlipped);
+  const handleCardCreated = () => {
+    fetchDeckData(); // Recharge les données
+  };
+
+  const handleCardFlip = (cardId) => {
+    setCardFlipStates((prev) => ({
+      ...prev,
+      [cardId]: !prev[cardId],
+    }));
   };
 
   if (!user) {
@@ -72,15 +98,18 @@ const GamePage = () => {
       <div className="mystical-bg"></div>
       <h1 className="game-page__title">{titleDeck}</h1>
 
-      <div className="deck-container">
-        <h2 className="deck-title">Carte du Deck</h2>
-
-        {visibleCard && (
+      <div
+        className={`deck-container ${
+          creatorCard ? "dual-cards" : "single-card"
+        }`}
+      >
+        {visibleCards.map((card) => (
           <div
+            key={card.id_carte}
             className={`card-wrapper ${
-              isCardFlipped ? "card-wrapper--flipped" : ""
+              cardFlipStates[card.id_carte] ? "card-wrapper--flipped" : ""
             }`}
-            onClick={handleCardFlip}
+            onClick={() => handleCardFlip(card.id_carte)}
           >
             <div className="card-content">
               <div className="card-front">
@@ -89,33 +118,33 @@ const GamePage = () => {
               </div>
 
               <div className="card-back">
-                <h3>{visibleCard.event_description}</h3>
+                <h3>{card.event_description}</h3>
                 <div className="card-choices">
                   <div className="choice">
-                    <strong>Choix 1:</strong> {visibleCard.choice_1}
-                    <p>Impact Population : {visibleCard.population_impact_1}</p>
-                    <p>Impact Financier : {visibleCard.finance_impact_1}</p>
+                    <strong>Choix 1:</strong> {card.choice_1}
+                    <p>Impact Population : {card.population_impact_1}</p>
+                    <p>Impact Financier : {card.finance_impact_1}</p>
                   </div>
                   <div className="choice">
-                    <strong>Choix 2:</strong> {visibleCard.choice_2}
-                    <p>Impact Population : {visibleCard.population_impact_2}</p>
-                    <p>Impact Financier : {visibleCard.finance_impact_2}</p>
+                    <strong>Choix 2:</strong> {card.choice_2}
+                    <p>Impact Population : {card.population_impact_2}</p>
+                    <p>Impact Financier : {card.finance_impact_2}</p>
                   </div>
                 </div>
                 <p className="card-metadata">
-                  Créée le:{" "}
-                  {new Date(visibleCard.created_at).toLocaleDateString()}
+                  Créée le: {new Date(card.created_at).toLocaleDateString()}
+                  {card.id_carte === creatorCard?.id_carte && " (Votre carte)"}
                 </p>
               </div>
             </div>
           </div>
-        )}
+        ))}
       </div>
 
       {!creatorCard && (
         <div className="create-card-container">
           <h3>Créez votre première carte pour ce deck :</h3>
-          <CreateCard id_deck={id_deck} onCardCreated={fetchDeckData} />
+          <CreateCard id_deck={id_deck} onCardCreated={handleCardCreated} />
         </div>
       )}
     </div>

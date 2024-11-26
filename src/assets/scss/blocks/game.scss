@@ -1,9 +1,8 @@
 .game-page {
   position: relative;
-  min-height: 100vh;
-  background-color: white;
-  padding: 2rem;
-  overflow-x: hidden;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 20px;
 }
 
 .mystical-bg {
@@ -12,48 +11,33 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
-  pointer-events: none;
+  z-index: -1;
+  opacity: 0.3;
 }
 
 .game-page__title {
-  position: relative;
-  z-index: 2;
   text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2.5rem;
-  text-shadow: rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  color: #333;
 }
 
 .deck-container {
-  position: relative;
-  z-index: 2;
-  max-width: 1200px;
-  margin: 0 auto;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px var(--card-shadow);
-  padding: 2rem;
-}
-
-.deck-title {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.cards-gallery {
-  position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 400px;
-  perspective: 1000px;
+  gap: 1rem;
+}
+
+.deck-container.single-card {
+  justify-content: center;
+}
+
+.deck-container.dual-cards {
+  justify-content: center;
 }
 
 .card-wrapper {
-  width: 350px;
-  height: 500px;
-  margin: 0 auto;
+  width: 300px;
+  height: 400px;
   perspective: 1000px;
   cursor: pointer;
 }
@@ -76,55 +60,73 @@
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border-radius: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid black;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  background-color: white;
 }
 
 .card-front {
   background-color: #f0f0f0;
-  color: #333;
+  text-align: center;
 }
 
 .card-back {
-  background-color: #e0e0e0;
-  color: #333;
   transform: rotateY(180deg);
 }
 
 .card-choices {
-  margin-top: 20px;
-  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
 }
 
 .choice {
-  margin-bottom: 10px;
+  width: 45%;
   padding: 10px;
   background-color: #f9f9f9;
-  border-radius: 8px;
+  border-radius: 5px;
 }
 
-.card-metadata {
-  margin-top: 15px;
-  font-size: 0.8em;
-  color: #666;
+.create-card-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
 }
 
+.create-card-container h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.loading,
+.error-message {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 18px;
+}
 @media (max-width: 768px) {
+  .deck-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    gap: 3rem;
+  }
   .card-wrapper {
-    width: 200px;
-    height: 300px;
+    width: 50%;
+    height: 330px;
   }
 
   .game-page__title {
     font-size: 2rem;
   }
-
-  .deck-container {
-    padding: 1rem;
+  .card-back {
+    height: 100%;
   }
 }

@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { addCardToDeck } from "../api/admins";
 import { useAuth } from "../context/AuthContext";
 
-const CreateCard = () => {
+const CreateCard = ({ id_deck, onCardCreated }) => {
   const { user } = useAuth();
-  const { id_deck } = useParams();
   const [eventDescription, setEventDescription] = useState("");
   const [choice1, setChoice1] = useState("");
   const [populationImpact1, setPopulationImpact1] = useState(0);
@@ -20,7 +19,6 @@ const CreateCard = () => {
   const handleCreateCard = async (e) => {
     e.preventDefault();
 
-    // Validation des champs
     if (
       !eventDescription ||
       !choice1 ||
@@ -43,7 +41,6 @@ const CreateCard = () => {
     setLoading(true);
 
     try {
-      // Construction de l'objet à envoyer
       await addCardToDeck(id_deck, {
         id_createur: user?.id || null,
         id_administrateur: user?.role === "admin" ? user?.id : null,
@@ -56,7 +53,7 @@ const CreateCard = () => {
         finance_impact_2: financeImpact2,
       });
 
-      navigate(`/admin/deck/${id_deck}`);
+      onCardCreated(); // Notifie le parent
     } catch (err) {
       console.error("Erreur lors de la création de la carte :", err);
       setError("Une erreur est survenue lors de la création de la carte.");

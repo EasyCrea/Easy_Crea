@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // Ajout de useLocation
 import { loginCreateur } from "../../api/auth";
 import { getLiveDeck } from "../../api/admins";
 import { useAuth } from "../../context/AuthContext";
@@ -12,9 +12,9 @@ const Login = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // Utilisation de useLocation
 
   useEffect(() => {
-    // Vérifie si "success" est dans l'URL
     const params = new URLSearchParams(location.search);
     if (params.get("success") === "1") {
       setSuccessMessage("Création terminée avec succès !");
@@ -34,6 +34,8 @@ const Login = () => {
 
     try {
       const data = await loginCreateur(email, password);
+
+      // Stocker le token et définir l'utilisateur
       localStorage.setItem("token", data.token);
       setUser({
         id: data.createur.id,
@@ -41,18 +43,28 @@ const Login = () => {
         role: data.createur.role,
       });
 
+      // Charger le deck actif
       const deckLiveResponse = await getLiveDeck();
       if (deckLiveResponse?.deck?.id_deck) {
         const { id_deck } = deckLiveResponse.deck;
         navigate(`/createurs/pregame/${id_deck}`);
       } else {
-        throw new Error("Aucun deck live trouvé.");
+        throw new Error("Aucun deck actif trouvé.");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Erreur de connexion.");
+      console.error(err);
+      setError(
+        err.response?.data?.message ||
+          "Impossible de se connecter. Vérifiez vos informations."
+      );
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleBack = (e) => {
+    e.preventDefault();
+    navigate("/");
   };
 
   return (
@@ -60,7 +72,7 @@ const Login = () => {
       {successMessage && <p className="success-message">{successMessage}</p>}
       <form className="form-container" onSubmit={handleLogin}>
         <div className="form-header">
-          <button className="btn-back" onClick={() => navigate("/")}>
+          <button className="btn-back" onClick={handleBack}>
             <i className="fa-solid fa-arrow-left"></i>
           </button>
           <h2 className="form-title">Connexion</h2>
@@ -99,8 +111,7 @@ const Login = () => {
           {loading ? "Connexion en cours..." : "Se connecter"}
         </button>
         <a href="/createurs/register">
-          {" "}
-          Pas encore de compte ? <span>Créez en un !</span>
+          Pas encore de compte ? <span>Créez-en un !</span>
         </a>
       </form>
     </div>
