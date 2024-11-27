@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { addCardToDeck } from "../api/admins";
 import { useAuth } from "../context/AuthContext";
 
+// eslint-disable-next-line react/prop-types
 const CreateCard = ({ id_deck, onCardCreated }) => {
   const { user } = useAuth();
   const [eventDescription, setEventDescription] = useState("");

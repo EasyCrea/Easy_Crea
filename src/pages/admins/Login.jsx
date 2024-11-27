@@ -16,23 +16,31 @@ const Login = () => {
     setError("");
     setLoading(true);
 
-    try {
-      const data = await loginAdmin(email, password);
-      localStorage.setItem("token", data.token);
-      setUser({
-        id: data.admin.id,
-        email: data.admin.email,
-        role: data.admin.role,
+    loginAdmin(email, password)
+      .then((data) => {
+        if (data.response?.status === "error") {
+          setError("Email ou mot de passe incorrect");
+          return;
+        }
+
+        // Stocker le token et définir l'utilisateur
+        localStorage.setItem("token", data.token);
+        setUser({
+          id: data.admin.id,
+          email: data.admin.email,
+          role: data.admin.role,
+        });
+
+        // Rediriger après succès
+        navigate("/admin/dashboard");
+      })
+      .catch((err) => {
+        console.error("Erreur de connexion :", err);
+        setError("Impossible de se connecter. Vérifiez vos informations.");
+      })
+      .finally(() => {
+        setLoading(false);
       });
-      navigate("/admin/dashboard");
-    } catch (err) {
-      console.error("Erreur de connexion :", err);
-      setError(
-        err.message || "Erreur lors de la connexion. Veuillez réessayer."
-      );
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (

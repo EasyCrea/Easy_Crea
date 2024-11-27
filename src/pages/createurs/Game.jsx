@@ -1,15 +1,23 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { getAllCardInLiveDeck, getCreatorCard } from "../../api/createurs";
+import {
+  getAllCardInLiveDeck,
+  getCreatorCard,
+  assignRandomCardToCreator,
+  checkIfCreatorHasRandomCardInDeck,
+} from "../../api/createurs";
 import CreateCard from "../CreateCard";
+import { Coins, Users } from "lucide-react";
 
 const GamePage = () => {
   const { id_deck } = useParams();
   const { user } = useAuth();
+
   const [deckCards, setDeckCards] = useState([]);
   const [titleDeck, setTitleDeck] = useState("");
   const [creatorCard, setCreatorCard] = useState(null);
+  const [randomCard, setRandomCard] = useState(null);
   const [visibleCards, setVisibleCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -20,6 +28,7 @@ const GamePage = () => {
 
     setLoading(true);
     try {
+      // Récupération des cartes du deck
       const cardsData = await getAllCardInLiveDeck(id_deck);
       setTitleDeck(cardsData.titleDeck);
 
@@ -28,36 +37,50 @@ const GamePage = () => {
       );
       setDeckCards(sortedCards);
 
-      // If user has a card in this deck, fetch it
+      let creatorCardData = null;
+      let randomCardData = null;
+
+      // Vérifie si l'utilisateur a créé une carte
       if (user?.id) {
-        const creatorCardData = await getCreatorCard(id_deck, user.id);
-        const userCreatorCard = creatorCardData.card || null;
-        setCreatorCard(userCreatorCard);
+        creatorCardData = await getCreatorCard(id_deck, user.id);
+        console.log("Creator Card Data:", creatorCardData);
 
-        // Determine visible cards
-        const visibleCardsSet = new Set();
+        // Si l'utilisateur n'a pas encore de carte attribuée aléatoirement
+        const hasRandomCard = await checkIfCreatorHasRandomCardInDeck(
+          id_deck,
+          user.id
+        );
+        console.log("Has Random Card:", hasRandomCard);
 
-        // Always add a random card from the deck
-        if (sortedCards.length > 0) {
-          const randomIndex = Math.floor(Math.random() * sortedCards.length);
-          visibleCardsSet.add(sortedCards[randomIndex]);
+        if (hasRandomCard?.card) {
+          randomCardData = hasRandomCard.card;
+        } else {
+          const assignedCard = await assignRandomCardToCreator(
+            id_deck,
+            user.id
+          );
+          randomCardData = assignedCard?.card || null;
         }
-
-        // If user has created a card, add it to visible cards
-        if (userCreatorCard) {
-          visibleCardsSet.add(userCreatorCard);
-        }
-
-        const visibleCardsArray = Array.from(visibleCardsSet);
-        setVisibleCards(visibleCardsArray);
-
-        // Initialize flip states for cards
-        const initialFlipStates = visibleCardsArray.reduce((acc, card) => {
-          acc[card.id_carte] = false;
-          return acc;
-        }, {});
-        setCardFlipStates(initialFlipStates);
       }
+
+      // Met à jour les états
+      setCreatorCard(creatorCardData?.card || null);
+      setRandomCard(randomCardData || null);
+
+      // Cartes visibles
+      const visibleCardsSet = new Set();
+      if (creatorCardData?.card) visibleCardsSet.add(creatorCardData.card);
+      if (randomCardData) visibleCardsSet.add(randomCardData);
+
+      const visibleCardsArray = Array.from(visibleCardsSet);
+      setVisibleCards(visibleCardsArray);
+
+      // Initialisation des états de flip des cartes
+      const initialFlipStates = visibleCardsArray.reduce((acc, card) => {
+        acc[card.id_carte] = false;
+        return acc;
+      }, {});
+      setCardFlipStates(initialFlipStates);
     } catch (err) {
       console.error("Erreur lors du chargement des données :", err);
       setError("Une erreur est survenue lors du chargement des données.");
@@ -113,8 +136,15 @@ const GamePage = () => {
           >
             <div className="card-content">
               <div className="card-front">
-                <h3>Carte du Deck</h3>
-                <p>Cliquez pour révéler</p>
+                <h3>
+                  {card.id_carte === creatorCard?.id_carte
+                    ? "Votre carte"
+                    : "Carte aléatoire du deck"}
+                </h3>
+                <p>
+                  Cliquez pour révéler{" "}
+                  <i className="fa-solid fa-arrow-rotate-right"></i>
+                </p>
               </div>
 
               <div className="card-back">
@@ -122,13 +152,41 @@ const GamePage = () => {
                 <div className="card-choices">
                   <div className="choice">
                     <strong>Choix 1:</strong> {card.choice_1}
-                    <p>Impact Population : {card.population_impact_1}</p>
-                    <p>Impact Financier : {card.finance_impact_1}</p>
+                    <div className="impact">
+                      <p className="impact-item">
+                        <Users size={22} className="impact-icon population" />
+                        <span className="impact-label">Populations:</span>
+                        <span className="impact-value">
+                          {card.population_impact_1}
+                        </span>
+                      </p>
+                      <p className="impact-item">
+                        <Coins size={22} className="impact-icon finance" />
+                        <span className="impact-label">Finances:</span>
+                        <span className="impact-value">
+                          {card.finance_impact_1}
+                        </span>
+                      </p>
+                    </div>
                   </div>
                   <div className="choice">
                     <strong>Choix 2:</strong> {card.choice_2}
-                    <p>Impact Population : {card.population_impact_2}</p>
-                    <p>Impact Financier : {card.finance_impact_2}</p>
+                    <div className="impact">
+                      <p className="impact-item">
+                        <Users size={22} className="impact-icon population" />
+                        <span className="impact-label">Populations:</span>
+                        <span className="impact-value">
+                          {card.population_impact_2}
+                        </span>
+                      </p>
+                      <p className="impact-item">
+                        <Coins size={22} className="impact-icon finance" />
+                        <span className="impact-label">Finances:</span>
+                        <span className="impact-value">
+                          {card.finance_impact_2}
+                        </span>
+                      </p>
+                    </div>
                   </div>
                 </div>
                 <p className="card-metadata">

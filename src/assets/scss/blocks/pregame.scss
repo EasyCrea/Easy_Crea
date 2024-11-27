@@ -13,6 +13,12 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
+.guide-instructions ul {
+  background-color: var(--pink-background);
+  color: var(--pink);
+  padding: 1rem;
+  border-radius: 1rem;
+}
 .guide-section,
 .guide-instructions,
 .scoring-guide,
@@ -76,7 +82,7 @@
 }
 
 .choice {
-  width: 48%;
+  width: 40%;
   padding: 10px;
   border-radius: 1rem;
 }
@@ -112,10 +118,10 @@
     flex-direction: column;
   }
 
-  .population-score,
+  .deck-creation-guide .population-score,
   .finance-score,
   .choice {
-    width: 100%;
+    width: 80%;
     margin-bottom: 15px;
   }
 }

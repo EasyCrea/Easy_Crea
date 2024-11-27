@@ -62,16 +62,6 @@ const AdminDashboard = () => {
     }
   };
 
-  if (!user || user.role !== "admin") {
-    return (
-      <main>
-        <p>
-          Accès interdit. Veuillez vous connecter avec un compte administrateur.
-        </p>
-      </main>
-    );
-  }
-
   return (
     <div className="admin-dashboard">
       <header className="admin-header">
@@ -85,8 +75,8 @@ const AdminDashboard = () => {
         {loading ? (
           <p className="loading-message">Chargement des decks...</p>
         ) : (
-          <section aria-labelledby="deck-list-title">
-            <h2 id="deck-list-title">Liste des decks</h2>
+          <>
+            {/* Tableau visible pour les écrans larges */}
             <table className="deck-table">
               <thead>
                 <tr>
@@ -113,19 +103,17 @@ const AdminDashboard = () => {
                         }`}
                       ></span>
                     </td>
-
                     <td>
                       {deck.date_debut_deck && (
                         <span>{deck.date_debut_deck}</span>
-                      )}
-                      {" - "}
+                      )}{" "}
+                      -{" "}
                       {deck.date_fin_deck && <span>{deck.date_fin_deck}</span>}
                     </td>
                     <td>
                       <button className="btn btn-view">
                         <Link to={`/admin/deck/${deck.id_deck}`}>Voir</Link>
                       </button>
-
                       <button
                         onClick={() => toggleLive(deck.id_deck, deck.live)}
                         className={`btn ${
@@ -145,7 +133,58 @@ const AdminDashboard = () => {
                 ))}
               </tbody>
             </table>
-          </section>
+
+            {/* Cards pour les écrans étroits */}
+            <div className="deck-cards">
+              {decks.map((deck) => (
+                <div key={deck.id_deck} className="deck-card">
+                  <div className="deck-title">
+                    {deck.titre_deck}{" "}
+                    <span className="deck-card-count">
+                      ({deck.nb_cartes}{" "}
+                      {deck.nb_cartes > 1 ? "cartes" : "carte"})
+                    </span>
+                  </div>
+                  <div className="deck-details">
+                    <div>
+                      Live:{" "}
+                      <span
+                        className={`status-indicator ${
+                          deck.live ? "active" : "inactive"
+                        }`}
+                      ></span>
+                    </div>
+                    <div>
+                      Dates: {deck.date_debut_deck || "N/A"} -{" "}
+                      {deck.date_fin_deck || "N/A"}
+                    </div>
+                  </div>
+                  <div className="deck-actions">
+                    <Link
+                      to={`/admin/deck/${deck.id_deck}`}
+                      className="btn btn-view"
+                    >
+                      Voir
+                    </Link>
+                    <button
+                      onClick={() => toggleLive(deck.id_deck, deck.live)}
+                      className={`btn ${
+                        deck.live ? "btn-deactivate" : "btn-activate"
+                      }`}
+                    >
+                      {deck.live ? "Désactiver" : "Activer"}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(deck.id_deck)}
+                      className="btn btn-delete"
+                    >
+                      Supprimer
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </main>
     </div>

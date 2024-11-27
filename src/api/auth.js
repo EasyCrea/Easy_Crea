@@ -13,11 +13,9 @@ export const loginCreateur = async (email, password) => {
     if (response.data && response.data.token) {
       console.log("Utilisateur authentifié :", response.data);
       return response.data; // Le serveur doit fournir le token
-    } else {
-      throw new Error("Authentification échouée : réponse invalide.");
     }
   } catch (error) {
-    console.error("Erreur lors de la connexion :", error.message);
+    console.error("Les identifiants fournis sont incorrects :", error.message);
     throw error; // Propager l'erreur pour que l'appelant puisse la gérer
   }
 };
@@ -40,8 +38,6 @@ export const loginAdmin = async (email, password) => {
     if (response.data && response.data.token) {
       console.log("Utilisateur authentifié :", response.data);
       return response.data; // Le serveur doit fournir le token
-    } else {
-      throw new Error("Authentification échouée : réponse invalide.");
     }
   } catch (error) {
     console.error("Erreur lors de la connexion :", error.message);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom"; // Ajout de useLocation
+import { useNavigate, useLocation } from "react-router-dom";
 import { loginCreateur } from "../../api/auth";
 import { getLiveDeck } from "../../api/admins";
 import { useAuth } from "../../context/AuthContext";
@@ -12,7 +12,7 @@ const Login = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // Utilisation de useLocation
+  const location = useLocation();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -21,16 +21,30 @@ const Login = () => {
     }
   }, [location]);
 
+  const validateEmail = (email) => {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    // Reset previous states
+    setError("");
+    setLoading(true);
+
+    // Comprehensive validation
     if (!email || !password) {
       setError("Veuillez remplir tous les champs.");
+      setLoading(false);
       return;
     }
 
-    setError("");
-    setLoading(true);
+    if (!validateEmail(email)) {
+      setError("Veuillez entrer une adresse email valide.");
+      setLoading(false);
+      return;
+    }
 
     try {
       const data = await loginCreateur(email, password);
@@ -69,13 +83,28 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {successMessage && <p className="success-message">{successMessage}</p>}
-      <form className="form-container" onSubmit={handleLogin}>
+      {successMessage && (
+        <p className="success-message" role="alert" aria-live="polite">
+          {successMessage}
+        </p>
+      )}
+      <form
+        className="form-container"
+        onSubmit={handleLogin}
+        aria-labelledby="login-title"
+      >
         <div className="form-header">
-          <button className="btn-back" onClick={handleBack}>
+          <button
+            type="button"
+            className="btn-back"
+            onClick={handleBack}
+            aria-label="Retour"
+          >
             <i className="fa-solid fa-arrow-left"></i>
           </button>
-          <h2 className="form-title">Connexion</h2>
+          <h2 id="login-title" className="form-title">
+            Connexion
+          </h2>
         </div>
 
         <div className="form-group">
@@ -90,6 +119,8 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            aria-required="true"
+            autoComplete="email"
           />
         </div>
         <div className="form-group">
@@ -104,10 +135,21 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            aria-required="true"
+            autoComplete="current-password"
           />
         </div>
-        {error && <p className="login-form__error">{error}</p>}
-        <button type="submit" className="btn-cta" disabled={loading}>
+        {error && (
+          <p className="login-form__error" role="alert" aria-live="assertive">
+            {error}
+          </p>
+        )}
+        <button
+          type="submit"
+          className="btn-cta"
+          disabled={loading}
+          aria-busy={loading}
+        >
           {loading ? "Connexion en cours..." : "Se connecter"}
         </button>
         <a href="/createurs/register">

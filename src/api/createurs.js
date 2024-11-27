@@ -42,3 +42,23 @@ export const getCreatorCard = async (deckId, id_createur) => {
   );
   return response.data;
 };
+
+export const assignRandomCardToCreator = async (deckId, id_createur) => {
+  const response = await API.post(
+    `/createur/${deckId}/${id_createur}`,
+    {},
+    getAuthHeaders()
+  );
+  return response.data;
+};
+
+export const checkIfCreatorHasRandomCardInDeck = async (
+  deckId,
+  id_createur
+) => {
+  const response = await API.get(
+    `/createur/${deckId}/${id_createur}/randomCard`,
+    getAuthHeaders()
+  );
+  return response.data;
+};

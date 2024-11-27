@@ -36,10 +36,10 @@ const PreGame = () => {
           <div className="guide-section">
             <h2>Créez votre propre carte de jeu !</h2>
             <p>
-              Vous allez contribuer à un deck thématique en créant une carte
-              unique. Vous ne pouvez créer qu&apos;une seule carte par deck. Ce
-              deck, un fois complet, sera jouable sur l&apos;application mobile
-              DeckOuverte.
+              Vous allez contribuer à un deck thématique ({titleDeck}) en créant
+              une carte unique. Vous ne pouvez créer qu&apos;une seule carte par
+              deck. Ce deck, un fois complet, sera jouable sur
+              l&apos;application mobile DeckOuverte.
             </p>
           </div>
 

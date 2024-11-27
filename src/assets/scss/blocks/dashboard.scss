@@ -24,6 +24,10 @@
   border-radius: 0.75rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .deck-table {
@@ -90,35 +94,63 @@
   background-color: var(--color-danger); /* Rouge pour inactif */
 }
 
-/* Responsive Design */
+/* Styles par défaut (grands écrans) */
+.deck-cards {
+  display: none; /* Cache les cartes pour les grands écrans */
+}
+
+.deck-table {
+  display: table; /* S'assure que le tableau est visible sur les grands écrans */
+}
+
+/* Responsive pour écrans étroits */
 @media (max-width: 768px) {
-  .admin-dashboard {
-    padding: 1rem;
-  }
-
-  .admin-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem; /* Ajout pour espacer les éléments */
-  }
-
   .deck-table {
-    display: block;
-    overflow-x: auto;
+    display: none; /* Cache le tableau pour les petits écrans */
   }
 
-  .deck-table th,
-  .deck-table td {
-    padding: 0.75rem;
+  .deck-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid var(--indigo-200);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--indigo-50);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
   }
-}
 
-/* Accessibility Enhancements */
-.btn:focus {
-  outline: 3px solid var(--indigo-500);
-  outline-offset: 2px;
-}
+  .deck-card .deck-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
 
-.deck-table tr:focus-within {
-  background-color: var(--indigo-50);
+  .deck-card .deck-details {
+    font-size: 0.9rem;
+    color: var(--indigo-800);
+  }
+
+  .deck-card .deck-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .deck-card .status-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+
+  .deck-card .status-indicator.active {
+    background-color: var(--color-success);
+  }
+
+  .deck-card .status-indicator.inactive {
+    background-color: var(--color-danger);
+  }
 }
