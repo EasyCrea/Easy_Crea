@@ -3,7 +3,7 @@
 }
 
 .create-container {
-  height: calc(90vh - var(--header-height) - var(--footer-height));
+  // height: calc(90vh - var(--header-height) - var(--footer-height));
 }
 
 .edit-container {
@@ -17,7 +17,6 @@
 /* Form Container */
 
 .form-container {
-  max-width: 600px;
   margin: 5vh auto;
   padding: 2rem;
   background-color: white;
@@ -76,7 +75,7 @@
 .form-input,
 .form-select,
 .form-textarea {
-  width: 95%;
+  width: 90%;
   padding: 0.75rem 1rem;
   border: 2px solid var(--indigo-200);
   border-radius: 0.5rem;

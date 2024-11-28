@@ -22,6 +22,7 @@ const GamePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [cardFlipStates, setCardFlipStates] = useState({});
+  const [isRandomCardAssigned, setIsRandomCardAssigned] = useState(false);
 
   const fetchDeckData = useCallback(async () => {
     if (!user) return;
@@ -60,14 +61,24 @@ const GamePage = () => {
             user.id
           );
           randomCardData = assignedCard?.card || null;
+
+          // Mise à jour immédiate de l'état pour affichage en temps réel
+          if (randomCardData) {
+            setIsRandomCardAssigned(true);
+            setRandomCard(randomCardData);
+            setVisibleCards((prevVisibleCards) => [
+              ...prevVisibleCards,
+              randomCardData,
+            ]);
+            setCardFlipStates((prevFlipStates) => ({
+              ...prevFlipStates,
+              [randomCardData.id_carte]: false,
+            }));
+          }
         }
       }
 
-      // Met à jour les états
-      setCreatorCard(creatorCardData?.card || null);
-      setRandomCard(randomCardData || null);
-
-      // Cartes visibles
+      // Mise à jour des cartes visibles
       const visibleCardsSet = new Set();
       if (creatorCardData?.card) visibleCardsSet.add(creatorCardData.card);
       if (randomCardData) visibleCardsSet.add(randomCardData);
@@ -81,6 +92,10 @@ const GamePage = () => {
         return acc;
       }, {});
       setCardFlipStates(initialFlipStates);
+
+      // Met à jour les états principaux
+      setCreatorCard(creatorCardData?.card || null);
+      setRandomCard(randomCardData || null);
     } catch (err) {
       console.error("Erreur lors du chargement des données :", err);
       setError("Une erreur est survenue lors du chargement des données.");
@@ -94,7 +109,7 @@ const GamePage = () => {
   }, [fetchDeckData]);
 
   const handleCardCreated = () => {
-    fetchDeckData(); // Recharge les données
+    fetchDeckData(); // Recharge les données après création
   };
 
   const handleCardFlip = (cardId) => {

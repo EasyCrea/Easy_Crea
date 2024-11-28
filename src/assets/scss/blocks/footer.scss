@@ -63,7 +63,10 @@
 }
 
 /* Styles pour les grands écrans */
-@media (min-width: 768px) {
+@media (min-width: 800px) {
+  .footer {
+    height: 10vh;
+  }
   .footer__content {
     flex-direction: row;
     justify-content: space-between;

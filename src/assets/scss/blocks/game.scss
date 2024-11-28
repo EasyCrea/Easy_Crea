@@ -1,9 +1,14 @@
 .game-page {
-  height: calc(80vh - var(--header-height) - var(--footer-height));
+  height: auto;
   position: relative;
   max-width: 1200px;
   margin: 2rem auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
 }
 
 .mystical-bg {
@@ -26,6 +31,7 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
+  margin-bottom: 5vh;
 }
 
 .deck-container.single-card {
@@ -150,6 +156,8 @@
   margin-top: 30px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .create-card-container h3 {
@@ -172,8 +180,7 @@
     gap: 3rem;
   }
   .card-wrapper {
-    width: 60%;
-    height: 500px;
+    height: 70vh;
   }
 
   .card-choices {
