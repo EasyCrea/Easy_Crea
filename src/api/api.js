@@ -24,8 +24,7 @@ API.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Rediriger l'utilisateur si le token est invalide ou manquant
-      window.location.href = "/login";
+      console.error("Erreur 401 : non autorisé");
     }
     return Promise.reject(error);
   }

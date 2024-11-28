@@ -23,6 +23,7 @@
   border-radius: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   position: relative;
+  width: 50%;
 }
 
 /* Form Title */
@@ -248,7 +249,7 @@
 @media (max-width: 640px) {
   .form-container {
     padding: 1.5rem;
-    margin: 1rem;
+    margin: 1rem auto;
   }
 
   .form-actions {

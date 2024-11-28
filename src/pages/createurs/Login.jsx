@@ -26,7 +26,7 @@ const Login = () => {
     return re.test(String(email).toLowerCase());
   };
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
 
     // Reset previous states
@@ -46,34 +46,41 @@ const Login = () => {
       return;
     }
 
-    try {
-      const data = await loginCreateur(email, password);
+    // Attempt to login
+    loginCreateur(email, password)
+      .then((data) => {
+        // Stocker le token et définir l'utilisateur
+        localStorage.setItem("token", data.token);
+        setUser({
+          id: data.createur.id,
+          email: data.createur.email,
+          role: data.createur.role,
+        });
 
-      // Stocker le token et définir l'utilisateur
-      localStorage.setItem("token", data.token);
-      setUser({
-        id: data.createur.id,
-        email: data.createur.email,
-        role: data.createur.role,
-      });
+        // Charger le deck actif
+        return getLiveDeck();
+      })
+      .then((deckLiveResponse) => {
+        if (!deckLiveResponse || !deckLiveResponse.deck?.id_deck) {
+          setError("Aucun deck actif trouvé.");
+          setLoading(false);
+          return; // Stop further processing
+        }
 
-      // Charger le deck actif
-      const deckLiveResponse = await getLiveDeck();
-      if (deckLiveResponse?.deck?.id_deck) {
+        // Redirection vers le deck actif
         const { id_deck } = deckLiveResponse.deck;
+        setLoading(false);
         navigate(`/createurs/pregame/${id_deck}`);
-      } else {
-        throw new Error("Aucun deck actif trouvé.");
-      }
-    } catch (err) {
-      console.error(err);
-      setError(
-        err.response?.data?.message ||
-          "Impossible de se connecter. Vérifiez vos informations."
-      );
-    } finally {
-      setLoading(false);
-    }
+      })
+      .catch((err) => {
+        // Gestion des erreurs pour login ou getLiveDeck
+        console.error(err);
+        setError(
+          err.response?.data?.message ||
+            "Une erreur est survenue. Vérifiez vos informations ou réessayez plus tard."
+        );
+        setLoading(false);
+      });
   };
 
   const handleBack = (e) => {

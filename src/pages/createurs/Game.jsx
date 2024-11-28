@@ -16,6 +16,7 @@ const GamePage = () => {
 
   const [deckCards, setDeckCards] = useState([]);
   const [titleDeck, setTitleDeck] = useState("");
+  const [description, setDescription] = useState("");
   const [creatorCard, setCreatorCard] = useState(null);
   const [randomCard, setRandomCard] = useState(null);
   const [visibleCards, setVisibleCards] = useState([]);
@@ -31,7 +32,9 @@ const GamePage = () => {
     try {
       // Récupération des cartes du deck
       const cardsData = await getAllCardInLiveDeck(id_deck);
+      console.log("Deck Cards Data:", cardsData);
       setTitleDeck(cardsData.titleDeck);
+      setDescription(cardsData.descriptionDeck);
 
       const sortedCards = (cardsData.cards || []).sort(
         (a, b) => new Date(a.created_at) - new Date(b.created_at)
@@ -135,6 +138,7 @@ const GamePage = () => {
     <div className="game-page">
       <div className="mystical-bg"></div>
       <h1 className="game-page__title">{titleDeck}</h1>
+      <h2 className="game-page__subtitle">{description}</h2>
 
       <div
         className={`deck-container ${
