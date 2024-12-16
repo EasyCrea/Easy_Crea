@@ -4,7 +4,7 @@ const API = axios.create({
   baseURL: "https://easydeck.alwaysdata.net/api",
   withCredentials: true, // Important pour envoyer des cookies ou des informations d'identification
 });
-
+//https://easydeck.alwaysdata.net/api
 // Intercepteur pour ajouter le token JWT dans les en-têtes
 API.interceptors.request.use(
   (config) => {
