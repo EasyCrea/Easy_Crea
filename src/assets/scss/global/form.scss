@@ -2,14 +2,6 @@
   height: calc(85vh - var(--header-height) - var(--footer-height));
 }
 
-.create-container {
-  // height: calc(90vh - var(--header-height) - var(--footer-height));
-}
-
-.edit-container {
-  height: calc(90vh - var(--header-height) - var(--footer-height));
-}
-
 .edit-container .btn i {
   margin-right: 0.5rem; /* Espacement entre le texte et l'icône */
 }
