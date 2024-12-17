@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getLiveDeck as fetchLiveDeckData } from "../api/admins";
 import { Palette, Shield, Menu, X } from "lucide-react";
-import logoEasyCrea from "./../assets/images/logo_easy_crea.png";
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -45,7 +44,7 @@ const Header = () => {
           >
             <div className="nav__logoContainer">
               <img
-                src={logoEasyCrea}
+                src="/images/logo_easy_crea.png"
                 alt="EasyCrea Logo"
                 className="nav__logo"
               />
@@ -64,7 +63,7 @@ const Header = () => {
             >
               <div className="nav__logoContainer">
                 <img
-                  src="/src/assets/images/logo_easy_crea.png"
+                  src="/images/logo_easy_crea.png"
                   alt="EasyCrea Logo"
                   className="nav__logo"
                 />
