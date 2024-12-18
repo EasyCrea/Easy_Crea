@@ -41,15 +41,15 @@
 }
 
 .deck-container.single-card {
-  text-align: center;
+  justify-content: center;
 }
 
 .deck-container.dual-cards {
-  text-align: center;
+  justify-content: center;
 }
 
 .card-wrapper {
-  width: 70vw;
+  width: 300px;
   height: 400px;
   perspective: 1000px;
   cursor: pointer;
@@ -80,6 +80,7 @@
   border-radius: 10px;
   border: 1px solid var(--indigo-800);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2vh 0;
   background-color: var(--indigo-200);
 }
 
