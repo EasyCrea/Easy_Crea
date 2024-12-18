@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: "https://easydeck.alwaysdata.net/api",
   withCredentials: true, // Important pour envoyer des cookies ou des informations d'identification
 });
 //https://easydeck.alwaysdata.net/api
