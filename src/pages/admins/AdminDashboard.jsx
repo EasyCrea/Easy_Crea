@@ -50,7 +50,12 @@ const AdminDashboard = () => {
   const toggleLive = async (id, currentStatus) => {
     try {
       const action = currentStatus ? deactivateDeck : activateDeck;
-      await action(id);
+      const response = await action(id);
+      console.log(response);
+      if (response.error) {
+        alert("Vous ne pouvez pas activer deux decks en même temps.");
+        return;
+      }
       setDecks((prev) =>
         prev.map((deck) =>
           deck.id_deck === id ? { ...deck, live: currentStatus ? 0 : 1 } : deck
