@@ -8,7 +8,7 @@ import {
   checkIfCreatorHasRandomCardInDeck,
 } from "../../api/createurs";
 import CreateCard from "../CreateCard";
-import { Coins, Users } from "lucide-react";
+import { Coins, Users, Lock } from "lucide-react";
 
 const GamePage = () => {
   const { id_deck } = useParams();
@@ -19,11 +19,9 @@ const GamePage = () => {
   const [description, setDescription] = useState("");
   const [creatorCard, setCreatorCard] = useState(null);
   const [randomCard, setRandomCard] = useState(null);
-  const [visibleCards, setVisibleCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [cardFlipStates, setCardFlipStates] = useState({});
-  const [isRandomCardAssigned, setIsRandomCardAssigned] = useState(false);
 
   const fetchDeckData = useCallback(async () => {
     if (!user) return;
@@ -32,7 +30,6 @@ const GamePage = () => {
     try {
       // Récupération des cartes du deck
       const cardsData = await getAllCardInLiveDeck(id_deck);
-      console.log("Deck Cards Data:", cardsData);
       setTitleDeck(cardsData.titleDeck);
       setDescription(cardsData.descriptionDeck);
 
@@ -41,20 +38,16 @@ const GamePage = () => {
       );
       setDeckCards(sortedCards);
 
+      // Récupération de la carte de l'utilisateur
       let creatorCardData = null;
       let randomCardData = null;
 
-      // Vérifie si l'utilisateur a créé une carte
       if (user?.id) {
         creatorCardData = await getCreatorCard(id_deck, user.id);
-        console.log("Creator Card Data:", creatorCardData);
-
-        // Si l'utilisateur n'a pas encore de carte attribuée aléatoirement
         const hasRandomCard = await checkIfCreatorHasRandomCardInDeck(
           id_deck,
           user.id
         );
-        console.log("Has Random Card:", hasRandomCard);
 
         if (hasRandomCard?.card) {
           randomCardData = hasRandomCard.card;
@@ -64,39 +57,19 @@ const GamePage = () => {
             user.id
           );
           randomCardData = assignedCard?.card || null;
-
-          // Mise à jour immédiate de l'état pour affichage en temps réel
-          if (randomCardData) {
-            setIsRandomCardAssigned(true);
-            setRandomCard(randomCardData);
-            setVisibleCards((prevVisibleCards) => [
-              ...prevVisibleCards,
-              randomCardData,
-            ]);
-            setCardFlipStates((prevFlipStates) => ({
-              ...prevFlipStates,
-              [randomCardData.id_carte]: false,
-            }));
-          }
         }
       }
 
-      // Mise à jour des cartes visibles
-      const visibleCardsSet = new Set();
-      if (creatorCardData?.card) visibleCardsSet.add(creatorCardData.card);
-      if (randomCardData) visibleCardsSet.add(randomCardData);
-
-      const visibleCardsArray = Array.from(visibleCardsSet);
-      setVisibleCards(visibleCardsArray);
-
-      // Initialisation des états de flip des cartes
-      const initialFlipStates = visibleCardsArray.reduce((acc, card) => {
-        acc[card.id_carte] = false;
-        return acc;
-      }, {});
+      // Initialisation des états de flip uniquement pour la carte créateur et la carte aléatoire
+      const initialFlipStates = {};
+      if (creatorCardData?.card) {
+        initialFlipStates[creatorCardData.card.id_carte] = false;
+      }
+      if (randomCardData) {
+        initialFlipStates[randomCardData.id_carte] = false;
+      }
       setCardFlipStates(initialFlipStates);
 
-      // Met à jour les états principaux
       setCreatorCard(creatorCardData?.card || null);
       setRandomCard(randomCardData || null);
     } catch (err) {
@@ -111,15 +84,105 @@ const GamePage = () => {
     fetchDeckData();
   }, [fetchDeckData]);
 
-  const handleCardCreated = () => {
-    fetchDeckData(); // Recharge les données après création
+  const handleCardFlip = (cardId) => {
+    // Vérifie si la carte peut être retournée (carte créateur ou aléatoire)
+    if (
+      (creatorCard && cardId === creatorCard.id_carte) ||
+      (randomCard && cardId === randomCard.id_carte)
+    ) {
+      setCardFlipStates((prev) => ({
+        ...prev,
+        [cardId]: !prev[cardId],
+      }));
+    }
   };
 
-  const handleCardFlip = (cardId) => {
-    setCardFlipStates((prev) => ({
-      ...prev,
-      [cardId]: !prev[cardId],
-    }));
+  const renderCard = (card, isFlippable = false) => {
+    const isCreatorCard = creatorCard && card.id_carte === creatorCard.id_carte;
+    const isRandomCard = randomCard && card.id_carte === randomCard.id_carte;
+    const canFlip = isFlippable && (isCreatorCard || isRandomCard);
+
+    return (
+      <div
+        key={card.id_carte}
+        className={`card-wrapper ${
+          cardFlipStates[card.id_carte] ? "card-wrapper--flipped" : ""
+        } ${canFlip ? "flippable" : "locked"}`}
+        onClick={() => canFlip && handleCardFlip(card.id_carte)}
+      >
+        <div className="card-content">
+          <div className="card-front">
+            <h3>
+              {isCreatorCard
+                ? "Votre carte"
+                : isRandomCard
+                ? "Votre carte aléatoire"
+                : "Carte du deck"}
+            </h3>
+            {canFlip ? (
+              <p>
+                Cliquez pour révéler{" "}
+                <i className="fa-solid fa-arrow-rotate-right"></i>
+              </p>
+            ) : (
+              <div className="locked-card">
+                <Lock size={24} />
+                <p>Carte verrouillée</p>
+              </div>
+            )}
+          </div>
+
+          <div className="card-back">
+            <h3>{card.event_description}</h3>
+            <div className="card-choices">
+              <div className="choice">
+                <strong>Choix 1:</strong> {card.choice_1}
+                <div className="impact">
+                  <p className="impact-item">
+                    <Users size={22} className="impact-icon population" />
+                    <span className="impact-label">Populations:</span>
+                    <span className="impact-value">
+                      {card.population_impact_1}
+                    </span>
+                  </p>
+                  <p className="impact-item">
+                    <Coins size={22} className="impact-icon finance" />
+                    <span className="impact-label">Finances:</span>
+                    <span className="impact-value">
+                      {card.finance_impact_1}
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div className="choice">
+                <strong>Choix 2:</strong> {card.choice_2}
+                <div className="impact">
+                  <p className="impact-item">
+                    <Users size={22} className="impact-icon population" />
+                    <span className="impact-label">Populations:</span>
+                    <span className="impact-value">
+                      {card.population_impact_2}
+                    </span>
+                  </p>
+                  <p className="impact-item">
+                    <Coins size={22} className="impact-icon finance" />
+                    <span className="impact-label">Finances:</span>
+                    <span className="impact-value">
+                      {card.finance_impact_2}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <p className="card-metadata">
+              Créée le: {new Date(card.created_at).toLocaleDateString()}
+              {isCreatorCard && " (Votre carte)"}
+              {isRandomCard && " (Votre carte aléatoire)"}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   if (!user) {
@@ -140,88 +203,14 @@ const GamePage = () => {
       <h1 className="game-page__title">{titleDeck}</h1>
       <h2 className="game-page__subtitle">{description}</h2>
 
-      <div
-        className={`deck-container ${
-          creatorCard ? "dual-cards" : "single-card"
-        }`}
-      >
-        {visibleCards.map((card) => (
-          <div
-            key={card.id_carte}
-            className={`card-wrapper ${
-              cardFlipStates[card.id_carte] ? "card-wrapper--flipped" : ""
-            }`}
-            onClick={() => handleCardFlip(card.id_carte)}
-          >
-            <div className="card-content">
-              <div className="card-front">
-                <h3>
-                  {card.id_carte === creatorCard?.id_carte
-                    ? "Votre carte"
-                    : "Carte aléatoire du deck"}
-                </h3>
-                <p>
-                  Cliquez pour révéler{" "}
-                  <i className="fa-solid fa-arrow-rotate-right"></i>
-                </p>
-              </div>
-
-              <div className="card-back">
-                <h3>{card.event_description}</h3>
-                <div className="card-choices">
-                  <div className="choice">
-                    <strong>Choix 1:</strong> {card.choice_1}
-                    <div className="impact">
-                      <p className="impact-item">
-                        <Users size={22} className="impact-icon population" />
-                        <span className="impact-label">Populations:</span>
-                        <span className="impact-value">
-                          {card.population_impact_1}
-                        </span>
-                      </p>
-                      <p className="impact-item">
-                        <Coins size={22} className="impact-icon finance" />
-                        <span className="impact-label">Finances:</span>
-                        <span className="impact-value">
-                          {card.finance_impact_1}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="choice">
-                    <strong>Choix 2:</strong> {card.choice_2}
-                    <div className="impact">
-                      <p className="impact-item">
-                        <Users size={22} className="impact-icon population" />
-                        <span className="impact-label">Populations:</span>
-                        <span className="impact-value">
-                          {card.population_impact_2}
-                        </span>
-                      </p>
-                      <p className="impact-item">
-                        <Coins size={22} className="impact-icon finance" />
-                        <span className="impact-label">Finances:</span>
-                        <span className="impact-value">
-                          {card.finance_impact_2}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <p className="card-metadata">
-                  Créée le: {new Date(card.created_at).toLocaleDateString()}
-                  {card.id_carte === creatorCard?.id_carte && " (Votre carte)"}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="deck-container grid grid-cols-3 gap-4">
+        {deckCards.map((card) => renderCard(card, true))}
       </div>
 
       {!creatorCard && (
-        <div className="create-card-container">
+        <div className="create-card-container mt-8">
           <h3>Créez votre première carte pour ce deck :</h3>
-          <CreateCard id_deck={id_deck} onCardCreated={handleCardCreated} />
+          <CreateCard id_deck={id_deck} onCardCreated={fetchDeckData} />
         </div>
       )}
     </div>
