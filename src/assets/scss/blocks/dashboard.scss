@@ -112,16 +112,24 @@
   .deck-cards {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
-    border: 1px solid var(--indigo-200);
-    border-radius: 0.5rem;
     padding: 1rem;
     margin-bottom: 1rem;
-    background-color: var(--indigo-50);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
   }
 
+  .deck-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--indigo-200);
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
   .deck-card .deck-title {
     font-size: 1.1rem;
     font-weight: 600;
@@ -135,6 +143,8 @@
   .deck-card .deck-actions {
     display: flex;
     margin-top: 0.5rem;
+    //reduce size of buttons
+    gap: 0.1rem;
   }
 
   .deck-card .status-indicator {
