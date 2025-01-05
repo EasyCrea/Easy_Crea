@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { loginAdmin } from "../../api/auth";
@@ -9,7 +10,12 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -70,15 +76,35 @@ const Login = () => {
           <label htmlFor="password" className="form-label required">
             Mot de passe
           </label>
-          <input
-            type="password"
-            id="password"
-            className="form-input"
-            placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="input-toggle">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              className="form-input"
+              placeholder="Mot de passe"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              aria-required="true"
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={togglePasswordVisibility}
+              aria-label={
+                showPassword
+                  ? "Masquer le mot de passe"
+                  : "Afficher le mot de passe"
+              }
+            >
+              {showPassword ? (
+                <EyeOff className="password-toggle-eye" />
+              ) : (
+                <Eye className="password-toggle-eye" />
+              )}
+            </button>
+          </div>
         </div>
         {error && <p className="login-form__error">{error}</p>}
         <button type="submit" className="btn btn-cta" disabled={loading}>

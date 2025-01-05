@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { loginCreateur } from "../../api/auth";
 import { getLiveDeck } from "../../api/admins";
 import { useAuth } from "../../context/AuthContext";
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const { setUser } = useAuth();
@@ -11,6 +12,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -29,11 +31,9 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Reset previous states
     setError("");
     setLoading(true);
 
-    // Comprehensive validation
     if (!email || !password) {
       setError("Veuillez remplir tous les champs.");
       setLoading(false);
@@ -46,10 +46,8 @@ const Login = () => {
       return;
     }
 
-    // Attempt to login
     loginCreateur(email, password)
       .then((data) => {
-        // Stocker le token et définir l'utilisateur
         localStorage.setItem("token", data.token);
         setUser({
           id: data.createur.id,
@@ -57,23 +55,20 @@ const Login = () => {
           role: data.createur.role,
         });
 
-        // Charger le deck actif
         return getLiveDeck();
       })
       .then((deckLiveResponse) => {
         if (!deckLiveResponse || !deckLiveResponse.deck?.id_deck) {
           setError("Aucun deck actif trouvé.");
           setLoading(false);
-          return; // Stop further processing
+          return;
         }
 
-        // Redirection vers le deck actif
         const { id_deck } = deckLiveResponse.deck;
         setLoading(false);
         navigate(`/createurs/pregame/${id_deck}`);
       })
       .catch((err) => {
-        // Gestion des erreurs pour login ou getLiveDeck
         console.error(err);
         setError(
           err.response?.data?.message ||
@@ -86,6 +81,10 @@ const Login = () => {
   const handleBack = (e) => {
     e.preventDefault();
     navigate("/");
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -134,17 +133,35 @@ const Login = () => {
           <label htmlFor="password" className="form-label required">
             Mot de passe
           </label>
-          <input
-            type="password"
-            id="password"
-            className="form-input"
-            placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            aria-required="true"
-            autoComplete="current-password"
-          />
+          <div className="input-toggle">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              className="form-input"
+              placeholder="Mot de passe"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              aria-required="true"
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={togglePasswordVisibility}
+              aria-label={
+                showPassword
+                  ? "Masquer le mot de passe"
+                  : "Afficher le mot de passe"
+              }
+            >
+              {showPassword ? (
+                <EyeOff className="password-toggle-eye" />
+              ) : (
+                <Eye className="password-toggle-eye" />
+              )}
+            </button>
+          </div>
         </div>
         {error && (
           <p className="login-form__error" role="alert" aria-live="assertive">
