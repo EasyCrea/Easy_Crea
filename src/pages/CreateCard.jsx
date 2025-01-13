@@ -53,7 +53,6 @@ const CreateCard = ({ id_deck, onCardCreated }) => {
         population_impact_2: populationImpact2,
         finance_impact_2: financeImpact2,
       });
-
       onCardCreated(); // Notifie le parent
     } catch (err) {
       console.error("Erreur lors de la création de la carte :", err);

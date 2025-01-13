@@ -30,6 +30,7 @@ const GamePage = () => {
     try {
       // Récupération des cartes du deck
       const cardsData = await getAllCardInLiveDeck(id_deck);
+      console.log(cardsData);
       setTitleDeck(cardsData.titleDeck);
       setDescription(cardsData.descriptionDeck);
 
@@ -203,12 +204,12 @@ const GamePage = () => {
       <h1 className="game-page__title">{titleDeck}</h1>
       <h2 className="game-page__subtitle">{description}</h2>
 
-      <div className="deck-container grid grid-cols-3 gap-4">
+      <div className="deck-container">
         {deckCards.map((card) => renderCard(card, true))}
       </div>
 
       {!creatorCard && (
-        <div className="create-card-container mt-8">
+        <div className="create-card-container">
           <h3>Créez votre première carte pour ce deck :</h3>
           <CreateCard id_deck={id_deck} onCardCreated={fetchDeckData} />
         </div>
