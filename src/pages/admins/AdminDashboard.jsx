@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -192,6 +192,11 @@ const AdminDashboard = () => {
           </>
         )}
       </main>
+      <div className="admin-footer">
+        <Link to={`/admin/createurs`} className="btn btn-outline">
+          Utilisateurs
+        </Link>
+      </div>
     </div>
   );
 };

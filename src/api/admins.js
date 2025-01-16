@@ -110,3 +110,21 @@ export const deleteCardById = async (id) => {
   );
   return response.data;
 };
+
+export const banUser = async (id) => {
+  const response = await API.patch(`/admin/ban/${id}`, null, getAuthHeaders());
+  return response.data;
+};
+
+export const getAllUsers = async () => {
+  const response = await API.get("/admin/createurs", getAuthHeaders());
+  return response.data;
+};
+
+export const deleteUser = async (id) => {
+  const response = await API.delete(
+    `/admin/deleteCreateur/${id}`,
+    getAuthHeaders()
+  );
+  return response.data;
+};

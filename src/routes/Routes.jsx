@@ -11,6 +11,7 @@ import CreateFirstCard from "../pages/admins/CreateFirstCard";
 import EditCard from "../pages/admins/EditCard";
 import Game from "./../pages/createurs/Game";
 import PreGame from "../pages/createurs/PreGame";
+import UsersAdmin from "../pages/admins/Users";
 import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au contexte Auth
 
 // Composant pour protéger les routes selon les rôles
@@ -101,12 +102,12 @@ const AppRoutes = () => {
         }
       />
 
-      {/* Route protégée : creation de deck*/}
+      {/* Route protégée : page de gestions des users */}
       <Route
-        path="/admin/createDeck"
+        path="/admin/createurs"
         element={
           <ProtectedRoute role="admin">
-            <CreateDeck />
+            <UsersAdmin />
           </ProtectedRoute>
         }
       />
