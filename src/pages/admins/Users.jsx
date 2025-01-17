@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { getAllUsers, deleteUser, banUser } from "../../api/admins";
+import { getAllUsers, deleteUser, banCreateur } from "../../api/admins";
 
 const UsersAdmin = () => {
   const { user } = useAuth();
@@ -46,7 +46,7 @@ const UsersAdmin = () => {
     if (!window.confirm("Êtes-vous sûr de vouloir bannir cet utilisateur ?"))
       return;
     try {
-      await banUser(id);
+      await banCreateur(id);
       setUsers((prev) =>
         prev.map((user) => {
           if (user.id === id) {

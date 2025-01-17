@@ -111,8 +111,12 @@ export const deleteCardById = async (id) => {
   return response.data;
 };
 
-export const banUser = async (id) => {
-  const response = await API.patch(`/admin/ban/${id}`, null, getAuthHeaders());
+export const banCreateur = async (id) => {
+  const response = await API.patch(
+    `/admin/banCreateur/${id}`,
+    null,
+    getAuthHeaders()
+  );
   return response.data;
 };
 
