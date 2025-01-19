@@ -62,3 +62,11 @@ export const checkIfCreatorHasRandomCardInDeck = async (
   );
   return response.data;
 };
+
+export const unassignRandomCardFromCreator = async (deckId, id_createur) => {
+  const response = await API.delete(
+    `/createur/${deckId}/${id_createur}/unassignrandomCard`,
+    getAuthHeaders()
+  );
+  return response.data;
+};

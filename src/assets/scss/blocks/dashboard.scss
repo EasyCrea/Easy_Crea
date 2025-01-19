@@ -18,7 +18,62 @@
   font-size: 1.8rem;
   font-weight: 600;
 }
+.table-container {
+  overflow-x: auto;
+}
 
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.user-table th,
+.user-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.user-table th {
+  background-color: #f8fafc;
+  font-weight: 600;
+}
+
+/* Mobile cards styles */
+.user-cards {
+  display: none;
+}
+
+.user-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.user-card-field {
+  margin-bottom: 8px;
+}
+
+.user-card-label {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.user-card-value {
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+.user-card-actions {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 .admin-content {
   background-color: white;
   border-radius: 0.75rem;
@@ -103,6 +158,13 @@
   display: table; /* S'assure que le tableau est visible sur les grands écrans */
 }
 
+.admin-footer {
+  margin-top: 2rem;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
 /* Responsive pour écrans étroits */
 @media (max-width: 768px) {
   .deck-table {
@@ -161,5 +223,26 @@
 
   .deck-card .status-indicator.inactive {
     background-color: var(--color-danger);
+  }
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .table-container {
+    display: none;
+  }
+
+  .user-cards {
+    display: block;
+  }
+
+  .user-card-actions .btn {
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 8px;
+  }
+
+  .btn-delete {
+    margin-left: 0;
   }
 }

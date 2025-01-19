@@ -1,8 +1,11 @@
-// Component listant les users et permettant de les modifier ou de les supprimer et des les bannir de la création de deck
-
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { getAllUsers, deleteUser, banCreateur } from "../../api/admins";
+import {
+  getAllUsers,
+  deleteUser,
+  banCreateur,
+  debanCreateur,
+} from "../../api/admins";
 
 const UsersAdmin = () => {
   const { user } = useAuth();
@@ -34,49 +37,74 @@ const UsersAdmin = () => {
       return;
     try {
       await deleteUser(id);
-      setUsers((prev) => prev.filter((user) => user.id !== id));
+      setUsers((prev) => prev.filter((user) => user.id_createur !== id));
       alert("Utilisateur supprimé avec succès.");
     } catch (error) {
       console.error("Erreur lors de la suppression :", error);
       alert("Une erreur est survenue lors de la suppression.");
+      await fetchUsers();
     }
   };
 
-  const handleBan = async (id) => {
-    if (!window.confirm("Êtes-vous sûr de vouloir bannir cet utilisateur ?"))
-      return;
+  const handleBanToggle = async (id, isBanned) => {
+    const message = isBanned
+      ? "Êtes-vous sûr de vouloir débannir cet utilisateur ?"
+      : "Êtes-vous sûr de vouloir bannir cet utilisateur ?";
+
+    if (!window.confirm(message)) return;
+
     try {
-      await banCreateur(id);
+      if (isBanned) {
+        await debanCreateur(id);
+      } else {
+        await banCreateur(id);
+      }
+
       setUsers((prev) =>
         prev.map((user) => {
-          if (user.id === id) {
-            return { ...user, banned: true };
+          if (user.id_createur === id) {
+            return { ...user, banned: !isBanned };
           }
           return user;
         })
       );
-      alert("Utilisateur banni avec succès.");
+
+      alert(
+        isBanned
+          ? "Utilisateur débanni avec succès."
+          : "Utilisateur banni avec succès."
+      );
     } catch (error) {
-      console.error("Erreur lors du bannissement :", error);
-      alert("Une erreur est survenue lors du bannissement.");
+      console.error("Erreur lors du changement de statut :", error);
+      alert("Une erreur est survenue lors du changement de statut.");
+      await fetchUsers();
     }
   };
 
+  if (loading) {
+    return (
+      <main className="admin-content">
+        <h1 className="admin-title">Utilisateurs</h1>
+        <p>Chargement...</p>
+      </main>
+    );
+  }
+
   return (
     <main className="admin-content">
-      <h1>Utilisateurs</h1>
-      {loading ? (
-        <p>Chargement...</p>
-      ) : (
-        <table className="deck-table">
+      <h1 className="admin-title">Utilisateurs</h1>
+
+      {/* Table pour desktop */}
+      <div className="table-container">
+        <table className="user-table">
           <thead>
             <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Nom</th>
-              <th scope="col">Email</th>
-              <th scope="col">Genre</th>
-              <th scope="col">Banni</th>
-              <th scope="col">Actions</th>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Genre</th>
+              <th>Banni</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -89,25 +117,82 @@ const UsersAdmin = () => {
                 <td>{user.banned ? "Oui" : "Non"}</td>
                 <td>
                   <button
+                    onClick={() =>
+                      handleBanToggle(user.id_createur, user.banned)
+                    }
+                    className={`btn ${
+                      user.banned ? "btn-activate" : "btn-deactivate"
+                    }`}
+                  >
+                    {user.banned ? "Débannir" : "Bannir"}
+                  </button>
+                  <button
                     onClick={() => handleDelete(user.id_createur)}
                     className="btn btn-delete"
                   >
                     Supprimer
-                  </button>
-                  <button
-                    onClick={() => handleBan(user.id_createur)}
-                    className={
-                      user.banned ? "btn btn-activate" : "btn btn-deactivate"
-                    }
-                  >
-                    Bannir
                   </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      )}
+      </div>
+
+      {/* Cards pour mobile */}
+      <div className="user-cards">
+        {users.map((user) => (
+          <div key={user.id_createur} className="user-card">
+            <div className="user-card-field">
+              <span className="user-card-label">ID:</span>
+              <span className="user-card-value">{user.id_createur}</span>
+            </div>
+
+            <div className="user-card-field">
+              <span className="user-card-label">Nom:</span>
+              <span className="user-card-value">{user.nom_createur}</span>
+            </div>
+
+            <div className="user-card-field">
+              <span className="user-card-label">Email:</span>
+              <span className="user-card-value">{user.ad_email_createur}</span>
+            </div>
+
+            <div className="user-card-field">
+              <span className="user-card-label">Genre:</span>
+              <span className="user-card-value">{user.genre}</span>
+            </div>
+
+            <div className="user-card-field">
+              <span className="user-card-label">Statut:</span>
+              <span
+                className={`user-card-value ${
+                  user.banned ? "status-banned" : "status-active"
+                }`}
+              >
+                {user.banned ? "Banni" : "Actif"}
+              </span>
+            </div>
+
+            <div className="user-card-actions">
+              <button
+                onClick={() => handleBanToggle(user.id_createur, user.banned)}
+                className={`btn ${
+                  user.banned ? "btn-activate" : "btn-deactivate"
+                }`}
+              >
+                {user.banned ? "Débannir" : "Bannir"}
+              </button>
+              <button
+                onClick={() => handleDelete(user.id_createur)}
+                className="btn btn-delete"
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </main>
   );
 };

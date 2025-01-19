@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
       })
         .then((response) => {
           const data = response.data;
+          console.log({ data });
           if (data.status === "success" && data.decoded?.role) {
             setUser({
               id: data.decoded.id,

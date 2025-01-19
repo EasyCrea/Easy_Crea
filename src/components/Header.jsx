@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getLiveDeck as fetchLiveDeckData } from "../api/admins";
@@ -10,7 +10,6 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    console.log("Header re-rendered. Current user:", user);
     if (user) {
       fetchLiveDeck();
     }

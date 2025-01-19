@@ -120,6 +120,15 @@ export const banCreateur = async (id) => {
   return response.data;
 };
 
+export const debanCreateur = async (id) => {
+  const response = await API.patch(
+    `/admin/banCreateur/${id}`,
+    null,
+    getAuthHeaders()
+  );
+  return response.data;
+};
+
 export const getAllUsers = async () => {
   const response = await API.get("/admin/createurs", getAuthHeaders());
   return response.data;
