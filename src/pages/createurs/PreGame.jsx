@@ -1,36 +1,50 @@
 import { useState, useEffect, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Coins, Users } from "lucide-react";
-import { getAllCardInLiveDeck } from "../../api/createurs"; // Assurez-vous que cette fonction est correctement importée
+import { getAllCardInLiveDeck } from "../../api/createurs";
+import { useAuth } from "../../context/AuthContext";
 
 const PreGame = () => {
-  const { id_deck } = useParams(); // Récupère l'ID du deck depuis l'URL
-  const [titleDeck, setTitleDeck] = useState(""); // Stocke le titre du deck
-  const [error, setError] = useState(null); // État pour les erreurs
-  const [loading, setLoading] = useState(true); // État de chargement
+  const { id_deck } = useParams();
+  const [titleDeck, setTitleDeck] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-  // Fonction pour récupérer les données du deck
   const fetchDeckData = useCallback(async () => {
     try {
-      setLoading(true); // Débute le chargement
-      const cardsData = await getAllCardInLiveDeck(id_deck); // Appelle l'API
-      setTitleDeck(cardsData.titleDeck); // Stocke le titre du deck
+      setLoading(true);
+      const cardsData = await getAllCardInLiveDeck(id_deck);
+      setTitleDeck(cardsData.titleDeck);
     } catch (err) {
       console.error("Erreur lors du chargement des données :", err);
-      setError("Une erreur est survenue lors du chargement des données."); // Gère l'erreur
+      setError("Une erreur est survenue lors du chargement des données.");
     } finally {
-      setLoading(false); // Termine le chargement
+      setLoading(false);
     }
   }, [id_deck]);
 
-  // Appelle `fetchDeckData` une fois que le composant est monté
+  // Effet pour gérer la redirection et le chargement des données
   useEffect(() => {
-    fetchDeckData();
-  }, [fetchDeckData]);
+    if (user !== null) {
+      // On vérifie si la propriété banned existe et est égale à 1
+      if ("banned" in user && user.banned === 1) {
+        navigate("/banned");
+        return;
+      }
+      // Si l'utilisateur n'est pas banni, on charge les données
+      fetchDeckData();
+    }
+  }, [user, navigate, fetchDeckData]);
+
+  // Si l'utilisateur n'est pas encore chargé, on affiche un écran de chargement ou rien
+  if (user === null) {
+    return null;
+  }
 
   return (
     <>
-      {/* Guide pour la création de cartes */}
       <div className="deck-creation-guide">
         <div className="guide-container">
           <div className="guide-section">
@@ -133,7 +147,6 @@ const PreGame = () => {
             </div>
           </div>
 
-          {/* Bouton pour commencer le jeu */}
           <div className="action-section">
             <Link
               to={`/createurs/game/${id_deck}`}

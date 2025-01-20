@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
-// eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -21,12 +21,12 @@ export const AuthProvider = ({ children }) => {
       })
         .then((response) => {
           const data = response.data;
-          console.log({ data });
           if (data.status === "success" && data.decoded?.role) {
             setUser({
               id: data.decoded.id,
               email: data.decoded.email,
               role: data.decoded.role,
+              banned: data.decoded.banned,
             });
           } else {
             throw new Error(data.message || "Rôle inconnu");
@@ -45,6 +45,17 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  const updateUserFromLoginResponse = (data) => {
+    if (data.createur) {
+      setUser({
+        id: data.createur.id,
+        email: data.createur.email,
+        role: data.createur.role,
+        banned: data.createur.banned,
+      });
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     navigate("/");
@@ -52,7 +63,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, logout, setUser }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        error,
+        logout,
+        setUser,
+        updateUserFromLoginResponse,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -6,7 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
-  const { setUser } = useAuth();
+  const { updateUserFromLoginResponse } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -49,11 +49,7 @@ const Login = () => {
     loginCreateur(email, password)
       .then((data) => {
         localStorage.setItem("token", data.token);
-        setUser({
-          id: data.createur.id,
-          email: data.createur.email,
-          role: data.createur.role,
-        });
+        updateUserFromLoginResponse(data);
 
         return getLiveDeck();
       })

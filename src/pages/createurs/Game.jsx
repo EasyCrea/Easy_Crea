@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { Navigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -84,6 +85,10 @@ const GamePage = () => {
   useEffect(() => {
     fetchDeckData();
   }, [fetchDeckData]);
+
+  if (user && user.banned === 1) {
+    return <Navigate to="/banned" />;
+  }
 
   const handleCardFlip = (cardId) => {
     // Vérifie si la carte peut être retournée (carte créateur ou aléatoire)

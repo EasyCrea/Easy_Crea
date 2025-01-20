@@ -12,11 +12,12 @@ import EditCard from "../pages/admins/EditCard";
 import Game from "./../pages/createurs/Game";
 import PreGame from "../pages/createurs/PreGame";
 import UsersAdmin from "../pages/admins/Users";
+import Banned from "../pages/createurs/Banned";
 import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au contexte Auth
 
 // Composant pour protéger les routes selon les rôles
 // eslint-disable-next-line react/prop-types
-const ProtectedRoute = ({ role, children }) => {
+const ProtectedRoute = ({ role, banned, children }) => {
   const { user, loading } = useAuth();
 
   // Affiche un indicateur de chargement tant que l'état de l'authentification n'est pas connu
@@ -32,6 +33,11 @@ const ProtectedRoute = ({ role, children }) => {
   // Vérifie si l'utilisateur a le rôle requis
   if (role && user.role !== role) {
     return <Navigate to="/" />; // Redirection si le rôle ne correspond pas
+  }
+
+  // Vérifie si l'utilisateur est banni
+  if (banned && user.banned === 1) {
+    return <Navigate to="/banned" />; // Redirection si l'utilisateur est banni
   }
 
   return children;
@@ -144,6 +150,9 @@ const AppRoutes = () => {
 
       {/* Route par défaut : redirection vers la page de connexion */}
       <Route path="*" element={<Navigate to="/" />} />
+
+      {/* Route pour les utilisateurs bannis */}
+      <Route path="/banned" element={<Banned />} />
     </Routes>
   );
 };
