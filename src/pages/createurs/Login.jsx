@@ -48,13 +48,23 @@ const Login = () => {
 
     loginCreateur(email, password)
       .then((data) => {
+        // Vérifie d'abord si l'utilisateur est banni
+        if (data?.user?.banned === 1) {
+          setLoading(false);
+          updateUserFromLoginResponse(data); // Met à jour le contexte
+          navigate("/banned");
+          return Promise.reject(); // Arrête la chaîne de promesses
+        }
+
+        // Si non banni, continue normalement
         localStorage.setItem("token", data.token);
         updateUserFromLoginResponse(data);
-
         return getLiveDeck();
       })
       .then((deckLiveResponse) => {
-        if (!deckLiveResponse || !deckLiveResponse.deck?.id_deck) {
+        if (!deckLiveResponse) return; // Si la promesse a été rejetée plus tôt
+
+        if (!deckLiveResponse.deck?.id_deck) {
           setError("Aucun deck actif trouvé.");
           setLoading(false);
           return;
@@ -65,6 +75,8 @@ const Login = () => {
         navigate(`/createurs/pregame/${id_deck}`);
       })
       .catch((err) => {
+        if (!err) return; // Si c'est notre rejet intentionnel pour banned
+
         console.error(err);
         setError(
           err.response?.data?.message ||

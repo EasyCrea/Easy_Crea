@@ -10,7 +10,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (user) {
+    if (user && !user.banned) {
       fetchLiveDeck();
     }
   }, [user]);
@@ -30,10 +30,106 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const renderAuthLinks = () => {
+    if (!user) {
+      return (
+        <>
+          <li className="nav__item">
+            <Link
+              to="/loginAdmin"
+              className="nav__link btn btn-outline"
+              onClick={toggleMenu}
+            >
+              <Shield size={20} />
+              Administration
+            </Link>
+          </li>
+          <li className="nav__item">
+            <Link
+              to="/loginCreateur"
+              className="btn btn-filled nav__link"
+              onClick={toggleMenu}
+            >
+              <Palette size={20} />
+              <p>Espace créateur</p>
+            </Link>
+          </li>
+        </>
+      );
+    }
+
+    // If user is banned, show only the default links
+    if (user.banned) {
+      return (
+        <>
+          <li className="nav__item">
+            <Link
+              to="/loginAdmin"
+              className="nav__link btn btn-outline"
+              onClick={toggleMenu}
+            >
+              <Shield size={20} />
+              Administration
+            </Link>
+          </li>
+          <li className="nav__item">
+            <Link
+              to="/loginCreateur"
+              className="btn btn-filled nav__link"
+              onClick={toggleMenu}
+            >
+              <Palette size={20} />
+              <p>Espace créateur</p>
+            </Link>
+          </li>
+        </>
+      );
+    }
+
+    // Show appropriate content for non-banned users
+    return (
+      <>
+        {user.role === "admin" ? (
+          <li className="nav__item">
+            <Link
+              to="/admin/dashboard"
+              className="nav__link btn btn-filled"
+              onClick={toggleMenu}
+            >
+              Dashboard
+            </Link>
+          </li>
+        ) : (
+          id_deck && (
+            <li className="nav__item">
+              <Link
+                to={`/createurs/game/${id_deck}`}
+                className="nav__link btn btn-filled"
+                onClick={toggleMenu}
+              >
+                Deck
+              </Link>
+            </li>
+          )
+        )}
+        <li className="nav__item">
+          <button
+            onClick={() => {
+              logout();
+              toggleMenu();
+            }}
+            className="nav__link btn btn-outline"
+          >
+            Logout
+          </button>
+        </li>
+      </>
+    );
+  };
+
   return (
     <header className="header">
       <nav className="nav">
-        {/* Logo et texte pour le header */}
         <div className="nav__mobile-toggle" onClick={toggleMenu}>
           <Link
             to="/"
@@ -70,67 +166,7 @@ const Header = () => {
               </div>
             </Link>
           </li>
-          {user ? (
-            user.role === "admin" ? (
-              <li className="nav__item">
-                <Link
-                  to="/admin/dashboard"
-                  className="nav__link btn btn-filled"
-                  onClick={toggleMenu}
-                >
-                  Dashboard
-                </Link>
-              </li>
-            ) : (
-              id_deck && (
-                <li className="nav__item">
-                  <Link
-                    to={`/createurs/game/${id_deck}`}
-                    className="nav__link btn btn-filled"
-                    onClick={toggleMenu}
-                  >
-                    Deck
-                  </Link>
-                </li>
-              )
-            )
-          ) : (
-            <>
-              <li className="nav__item">
-                <Link
-                  to="/loginAdmin"
-                  className="nav__link btn btn-outline"
-                  onClick={toggleMenu}
-                >
-                  <Shield size={20} />
-                  Administration
-                </Link>
-              </li>
-              <li className="nav__item">
-                <Link
-                  to="/loginCreateur"
-                  className="btn btn-filled nav__link"
-                  onClick={toggleMenu}
-                >
-                  <Palette size={20} />
-                  <p>Espace créateur</p>
-                </Link>
-              </li>
-            </>
-          )}
-          {user && (
-            <li className="nav__item">
-              <button
-                onClick={() => {
-                  logout();
-                  toggleMenu();
-                }}
-                className="nav__link btn btn-outline"
-              >
-                Logout
-              </button>
-            </li>
-          )}
+          {renderAuthLinks()}
         </ul>
       </nav>
     </header>
