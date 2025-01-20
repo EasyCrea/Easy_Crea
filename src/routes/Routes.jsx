@@ -13,6 +13,8 @@ import Game from "./../pages/createurs/Game";
 import PreGame from "../pages/createurs/PreGame";
 import UsersAdmin from "../pages/admins/Users";
 import Banned from "../pages/createurs/Banned";
+import TermsOfService from "../pages/TermsOfService";
+import Privacy from "../pages/Privacy";
 import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au contexte Auth
 
 // Composant pour protéger les routes selon les rôles
@@ -57,6 +59,12 @@ const AppRoutes = () => {
 
       {/* Route publique : page de connexion */}
       <Route path="/loginAdmin" element={<LoginPageAdmin />} />
+
+      {/* Route publique : conditions d'utilisation */}
+      <Route path="/terms" element={<TermsOfService />} />
+
+      {/* Route publique : politique de confidentialité */}
+      <Route path="/privacy" element={<Privacy />} />
 
       {/* Route protégée : page de préparation à la création */}
       <Route

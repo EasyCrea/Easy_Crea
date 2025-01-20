@@ -6,7 +6,7 @@
   text-align: center; /* Centrer le texte */
   color: white;
   min-height: calc(
-    90vh - var(--header-height) - var(--footer-height)
+    92vh - var(--header-height) - var(--footer-height)
   ); /* Hauteur dynamique */
 }
 

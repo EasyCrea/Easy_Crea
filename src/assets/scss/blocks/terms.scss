@@ -1,0 +1,50 @@
+/* Conteneur principal */
+.terms-of-service-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+  line-height: 1.6;
+}
+
+/* Titre principal */
+.terms-of-service-title {
+  font-size: 2rem;
+  color: var(--indigo-600);
+  margin-bottom: 10px;
+}
+
+/* Introduction */
+.terms-of-service-intro {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+/* Sous-titres des sections */
+.terms-of-service-subtitle {
+  font-size: 1.5rem;
+  color: var(--indigo-600);
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Texte général */
+.terms-of-service-text {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+/* Listes */
+.terms-of-service-list {
+  margin-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 10px;
+}
+
+/* Conclusion */
+.terms-of-service-conclusion {
+  font-size: 1rem;
+  font-style: italic;
+  margin-top: 20px;
+  color: #555;
+}

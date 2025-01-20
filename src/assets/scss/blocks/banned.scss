@@ -1,5 +1,5 @@
 .banned-container {
-  min-height: 70vh;
+  min-height: calc(90vh - var(--header-height) - var(--footer-height));
   display: flex;
   align-items: center;
   justify-content: center;

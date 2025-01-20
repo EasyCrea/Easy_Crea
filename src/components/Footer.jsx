@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => (
   <footer className="footer">
     <div className="footer__container">
@@ -6,15 +8,9 @@ const Footer = () => (
           <span className="footer__title">EasyCrea</span>
         </div>
         <div className="footer__links">
-          <a href="#" className="footer__link">
-            Conditions d&apos;utilisation
-          </a>
-          <a href="#" className="footer__link">
-            Politique de confidentialité
-          </a>
-          <a href="#" className="footer__link">
-            Contact
-          </a>
+          <Link to="/terms">Conditions d&apos;utilisation</Link>
+          <Link to="/privacy">Politique de confidentialité</Link>
+          <Link to="/contact">Contact</Link>
         </div>
       </div>
     </div>
