@@ -24,6 +24,17 @@ const GamePage = () => {
   const [error, setError] = useState("");
   const [cardFlipStates, setCardFlipStates] = useState({});
 
+  const updateFlipStates = useCallback((creatorCardData, randomCardData) => {
+    const newFlipStates = {};
+    if (creatorCardData?.card) {
+      newFlipStates[creatorCardData.card.id_carte] = false;
+    }
+    if (randomCardData) {
+      newFlipStates[randomCardData.id_carte] = false;
+    }
+    setCardFlipStates(newFlipStates);
+  }, []);
+
   const fetchDeckData = useCallback(async () => {
     if (!user) return;
 
@@ -31,7 +42,6 @@ const GamePage = () => {
     try {
       // Récupération des cartes du deck
       const cardsData = await getAllCardInLiveDeck(id_deck);
-      console.log(cardsData);
       setTitleDeck(cardsData.titleDeck);
       setDescription(cardsData.descriptionDeck);
 
@@ -40,7 +50,7 @@ const GamePage = () => {
       );
       setDeckCards(sortedCards);
 
-      // Récupération de la carte de l'utilisateur
+      // Récupération de la carte de l'utilisateur et de la carte aléatoire
       let creatorCardData = null;
       let randomCardData = null;
 
@@ -58,29 +68,26 @@ const GamePage = () => {
             id_deck,
             user.id
           );
-          randomCardData = assignedCard?.card || null;
+          if (assignedCard?.card) {
+            randomCardData = assignedCard.card;
+            // Mettre à jour les cartes du deck avec la nouvelle carte aléatoire
+            sortedCards.push(assignedCard.card);
+            setDeckCards([...sortedCards]);
+          }
         }
-      }
 
-      // Initialisation des états de flip uniquement pour la carte créateur et la carte aléatoire
-      const initialFlipStates = {};
-      if (creatorCardData?.card) {
-        initialFlipStates[creatorCardData.card.id_carte] = false;
+        // Mise à jour des états de flip et des cartes
+        updateFlipStates(creatorCardData, randomCardData);
+        setCreatorCard(creatorCardData?.card || null);
+        setRandomCard(randomCardData || null);
       }
-      if (randomCardData) {
-        initialFlipStates[randomCardData.id_carte] = false;
-      }
-      setCardFlipStates(initialFlipStates);
-
-      setCreatorCard(creatorCardData?.card || null);
-      setRandomCard(randomCardData || null);
     } catch (err) {
       console.error("Erreur lors du chargement des données :", err);
       setError("Une erreur est survenue lors du chargement des données.");
     } finally {
       setLoading(false);
     }
-  }, [id_deck, user]);
+  }, [id_deck, user, updateFlipStates]);
 
   useEffect(() => {
     fetchDeckData();
@@ -91,7 +98,6 @@ const GamePage = () => {
   }
 
   const handleCardFlip = (cardId) => {
-    // Vérifie si la carte peut être retournée (carte créateur ou aléatoire)
     if (
       (creatorCard && cardId === creatorCard.id_carte) ||
       (randomCard && cardId === randomCard.id_carte)
