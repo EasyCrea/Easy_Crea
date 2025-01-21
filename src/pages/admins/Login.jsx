@@ -53,7 +53,11 @@ const Login = () => {
     <div className="login-container">
       <form className="form-container" onSubmit={handleLogin}>
         <div className="form-header">
-          <button className="btn-back" onClick={() => navigate("/")}>
+          <button
+            className="btn-back"
+            type="button"
+            onClick={() => navigate("/")}
+          >
             <i className="fa-solid fa-arrow-left"></i>
           </button>
           <h2 className="form-title">Connexion Admin</h2>
@@ -107,7 +111,12 @@ const Login = () => {
           </div>
         </div>
         {error && <p className="login-form__error">{error}</p>}
-        <button type="submit" className="btn btn-cta" disabled={loading}>
+        <button
+          type="submit"
+          className="btn btn-cta"
+          disabled={loading}
+          aria-busy={loading}
+        >
           {loading ? "Connexion..." : "Se connecter"}
         </button>
       </form>

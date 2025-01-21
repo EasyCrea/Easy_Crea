@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import {
   getAllUsers,
   deleteUser,
@@ -11,6 +12,7 @@ const UsersAdmin = () => {
   const { user } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user?.role !== "admin") {
@@ -96,6 +98,13 @@ const UsersAdmin = () => {
 
       {/* Table pour desktop */}
       <div className="table-container">
+        <button
+          className="btn-back users-back"
+          type="button"
+          onClick={() => navigate("/admin/dashboard")}
+        >
+          <i className="fa-solid fa-arrow-left"></i>
+        </button>
         <table className="user-table">
           <thead>
             <tr>

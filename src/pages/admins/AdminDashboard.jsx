@@ -7,6 +7,7 @@ import {
   activateDeck,
   deactivateDeck,
 } from "../../api/admins";
+import { Users, SquarePlus } from "lucide-react";
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -71,9 +72,26 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <header className="admin-header">
         <h1>Tableau de bord - Administrateur</h1>
-        <Link to="/admin/createDeck" className="btn btn-outline">
-          Créer un nouveau deck
-        </Link>
+        <div className="admin-actions">
+          <div className="admin-actions-button">
+            <Link
+              to="/admin/createDeck"
+              className="btn btn-outline admins-actions"
+            >
+              <SquarePlus size={22} className="impact-icon population" />
+              Créer un nouveau deck
+            </Link>
+          </div>
+          <div className="admin-actions-button">
+            <Link
+              to="/admin/createurs"
+              className="btn btn-outline admins-actions"
+            >
+              <Users size={22} className="impact-icon population" />
+              Utilisateurs
+            </Link>
+          </div>
+        </div>
       </header>
 
       <main className="admin-content">
@@ -192,11 +210,6 @@ const AdminDashboard = () => {
           </>
         )}
       </main>
-      <div className="admin-footer">
-        <Link to={`/admin/createurs`} className="btn btn-outline">
-          Utilisateurs
-        </Link>
-      </div>
     </div>
   );
 };

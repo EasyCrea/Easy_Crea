@@ -7,6 +7,7 @@
 
 .admin-header {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
@@ -17,6 +18,17 @@
 .admin-header h1 {
   font-size: 1.8rem;
   font-weight: 600;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.admins-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .table-container {
   overflow-x: auto;
@@ -158,13 +170,6 @@
   display: table; /* S'assure que le tableau est visible sur les grands écrans */
 }
 
-.admin-footer {
-  margin-top: 2rem;
-  text-align: center;
-  color: var(--color-text-secondary);
-  font-size: 0.9rem;
-}
-
 /* Responsive pour écrans étroits */
 @media (max-width: 768px) {
   .deck-table {
@@ -228,12 +233,16 @@
 
 /* Responsive styles */
 @media screen and (max-width: 768px) {
-  .table-container {
+  .user-table {
     display: none;
   }
 
   .user-cards {
     display: block;
+  }
+
+  .table-container {
+    margin-right: 75%;
   }
 
   .user-card-actions .btn {
