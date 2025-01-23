@@ -205,6 +205,18 @@
   font-size: 18px;
 }
 
+.limit-reached-message {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  background-color: var(--color-danger-background, #fce8ec);
+  color: var(--color-danger, #e0245e);
+  border: 1px solid var(--color-danger, #e0245e);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .deck-container {
     flex-direction: column;

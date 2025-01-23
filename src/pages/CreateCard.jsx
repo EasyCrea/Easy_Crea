@@ -63,7 +63,7 @@ const CreateCard = ({ id_deck, onCardCreated }) => {
   };
 
   return (
-    <div className="create-container">
+    <div className="create-card-container">
       <form className="form-container createCard" onSubmit={handleCreateCard}>
         <div className="form-header">
           <button className="btn-back" onClick={() => navigate("/")}>

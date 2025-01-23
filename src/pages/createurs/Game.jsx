@@ -18,6 +18,7 @@ const GamePage = () => {
   const [deckCards, setDeckCards] = useState([]);
   const [titleDeck, setTitleDeck] = useState("");
   const [description, setDescription] = useState("");
+  const [nbCartes, setNbCartes] = useState(0); // Limite de cartes dans le deck
   const [creatorCard, setCreatorCard] = useState(null);
   const [randomCard, setRandomCard] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -44,6 +45,8 @@ const GamePage = () => {
       const cardsData = await getAllCardInLiveDeck(id_deck);
       setTitleDeck(cardsData.titleDeck);
       setDescription(cardsData.descriptionDeck);
+      setNbCartes(cardsData.nb_cartes);
+      console.log(cardsData); // Mise à jour de la limite de cartes
 
       const sortedCards = (cardsData.cards || []).sort(
         (a, b) => new Date(a.created_at) - new Date(b.created_at)
@@ -143,55 +146,6 @@ const GamePage = () => {
               </div>
             )}
           </div>
-
-          <div className="card-back">
-            <h3>{card.event_description}</h3>
-            <div className="card-choices">
-              <div className="choice">
-                <strong>Choix 1:</strong> {card.choice_1}
-                <div className="impact">
-                  <p className="impact-item">
-                    <Users size={22} className="impact-icon population" />
-                    <span className="impact-label">Populations:</span>
-                    <span className="impact-value">
-                      {card.population_impact_1}
-                    </span>
-                  </p>
-                  <p className="impact-item">
-                    <Coins size={22} className="impact-icon finance" />
-                    <span className="impact-label">Finances:</span>
-                    <span className="impact-value">
-                      {card.finance_impact_1}
-                    </span>
-                  </p>
-                </div>
-              </div>
-              <div className="choice">
-                <strong>Choix 2:</strong> {card.choice_2}
-                <div className="impact">
-                  <p className="impact-item">
-                    <Users size={22} className="impact-icon population" />
-                    <span className="impact-label">Populations:</span>
-                    <span className="impact-value">
-                      {card.population_impact_2}
-                    </span>
-                  </p>
-                  <p className="impact-item">
-                    <Coins size={22} className="impact-icon finance" />
-                    <span className="impact-label">Finances:</span>
-                    <span className="impact-value">
-                      {card.finance_impact_2}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <p className="card-metadata">
-              Créée le: {new Date(card.created_at).toLocaleDateString()}
-              {isCreatorCard && " (Votre carte)"}
-              {isRandomCard && " (Votre carte aléatoire)"}
-            </p>
-          </div>
         </div>
       </div>
     );
@@ -215,11 +169,17 @@ const GamePage = () => {
       <h1 className="game-page__title">{titleDeck}</h1>
       <h2 className="game-page__subtitle">{description}</h2>
 
+      {deckCards.length >= nbCartes && (
+        <div className="limit-reached-message">
+          Le nombre maximum de cartes pour ce deck a été atteint.
+        </div>
+      )}
+
       <div className="deck-container">
         {deckCards.map((card) => renderCard(card, true))}
       </div>
 
-      {!creatorCard && (
+      {!creatorCard && deckCards.length < nbCartes && (
         <div className="create-card-container">
           <h3>Créez votre première carte pour ce deck :</h3>
           <CreateCard id_deck={id_deck} onCardCreated={fetchDeckData} />

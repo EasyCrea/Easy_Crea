@@ -12,7 +12,7 @@ const CreateCardPage = () => {
   };
 
   return (
-    <div className="create-card-page">
+    <div className="game-page">
       <h2 className="create-card-page__title">
         Créer la première carte du deck
       </h2>
