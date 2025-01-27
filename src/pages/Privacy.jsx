@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const PrivacyPolicy = () => {
   return (
     <div className="privacy-policy-container">
@@ -73,11 +75,8 @@ const PrivacyPolicy = () => {
         </ul>
         <p className="privacy-policy-text">
           Pour exercer vos droits, veuillez nous contacter à :{" "}
-          <a
-            href="mailto:eliot.pouplier@gmail.com"
-            className="privacy-policy-link"
-          >
-            eliot.pouplier@gmail.com
+          <a className="privacy-policy-link">
+            <Link to="/contact">Contact</Link>
           </a>
           .
         </p>
@@ -87,11 +86,8 @@ const PrivacyPolicy = () => {
         <h2 className="privacy-policy-subtitle">Contact</h2>
         <p className="privacy-policy-text">
           Pour toute question, écrivez-nous à :{" "}
-          <a
-            href="mailto:eliot.pouplier@gmail.com"
-            className="privacy-policy-link"
-          >
-            eliot.pouplier@gmail.com
+          <a className="privacy-policy-link">
+            <Link to="/contact">Contact</Link>
           </a>
           .
         </p>
