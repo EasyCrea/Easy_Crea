@@ -18,7 +18,7 @@ const GamePage = () => {
   const [deckCards, setDeckCards] = useState([]);
   const [titleDeck, setTitleDeck] = useState("");
   const [description, setDescription] = useState("");
-  const [nbCartes, setNbCartes] = useState(0); // Limite de cartes dans le deck
+  const [nbCartes, setNbCartes] = useState(0);
   const [creatorCard, setCreatorCard] = useState(null);
   const [randomCard, setRandomCard] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -41,19 +41,16 @@ const GamePage = () => {
 
     setLoading(true);
     try {
-      // Récupération des cartes du deck
       const cardsData = await getAllCardInLiveDeck(id_deck);
       setTitleDeck(cardsData.titleDeck);
       setDescription(cardsData.descriptionDeck);
       setNbCartes(cardsData.nb_cartes);
-      console.log(cardsData); // Mise à jour de la limite de cartes
 
       const sortedCards = (cardsData.cards || []).sort(
         (a, b) => new Date(a.created_at) - new Date(b.created_at)
       );
       setDeckCards(sortedCards);
 
-      // Récupération de la carte de l'utilisateur et de la carte aléatoire
       let creatorCardData = null;
       let randomCardData = null;
 
@@ -73,13 +70,11 @@ const GamePage = () => {
           );
           if (assignedCard?.card) {
             randomCardData = assignedCard.card;
-            // Mettre à jour les cartes du deck avec la nouvelle carte aléatoire
             sortedCards.push(assignedCard.card);
             setDeckCards([...sortedCards]);
           }
         }
 
-        // Mise à jour des états de flip et des cartes
         updateFlipStates(creatorCardData, randomCardData);
         setCreatorCard(creatorCardData?.card || null);
         setRandomCard(randomCardData || null);
@@ -126,6 +121,7 @@ const GamePage = () => {
         onClick={() => canFlip && handleCardFlip(card.id_carte)}
       >
         <div className="card-content">
+          {/* Front de la carte */}
           <div className="card-front">
             <h3>
               {isCreatorCard
@@ -145,6 +141,53 @@ const GamePage = () => {
                 <p>Carte verrouillée</p>
               </div>
             )}
+          </div>
+
+          {/* Back de la carte */}
+          <div className="card-back">
+            <h3>{card.event_description}</h3>
+            <div className="card-choices">
+              <div className="choice">
+                <strong>Choix 1</strong>
+                <p>{card.choice_1}</p>
+                <div className="impact">
+                  <div className="impact-item">
+                    <Users size={16} className="impact-icon population" />
+                    <span className="impact-value population">
+                      {card.population_impact_1}
+                    </span>
+                  </div>
+                  <div className="impact-item">
+                    <Coins size={16} className="impact-icon finance" />
+                    <span className="impact-value finance">
+                      {card.finance_impact_1}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="choice">
+                <strong>Choix 2</strong>
+                <p>{card.choice_2}</p>
+                <div className="impact">
+                  <div className="impact-item">
+                    <Users size={16} className="impact-icon population" />
+                    <span className="impact-value population">
+                      {card.population_impact_2}
+                    </span>
+                  </div>
+                  <div className="impact-item">
+                    <Coins size={16} className="impact-icon finance" />
+                    <span className="impact-value finance">
+                      {card.finance_impact_2}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="card-metadata">
+              Créée le {new Date(card.created_at).toLocaleDateString()}
+            </div>
           </div>
         </div>
       </div>
