@@ -115,7 +115,7 @@ const GamePage = () => {
     return (
       <div
         key={card.id_carte}
-        className={`card-wrapper ${
+        className={`deck-container card-wrapper ${
           cardFlipStates[card.id_carte] ? "card-wrapper--flipped" : ""
         } ${canFlip ? "flippable" : "locked"}`}
         onClick={() => canFlip && handleCardFlip(card.id_carte)}

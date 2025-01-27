@@ -11,43 +11,24 @@
   gap: 2rem;
 }
 
-.mystical-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  opacity: 0.3;
-}
-
-.game-page__title {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #333;
-}
-
-.game-page__subtitle {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #333;
-}
-
 .deck-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 220px);
+  gap: 2rem;
   justify-content: center;
-  gap: 1rem;
-  margin-bottom: 5vh;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
-.deck-container.single-card {
-  justify-content: center;
+@media (max-width: 768px) {
+  .deck-container {
+    grid-template-columns: 220px;
+    gap: 2rem;
+    padding: 1rem;
+  }
 }
-
-.deck-container.dual-cards {
-  justify-content: center;
-}
-
 .card-wrapper {
   width: 220px;
   height: 300px;
@@ -75,170 +56,134 @@
   backface-visibility: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   border-radius: 10px;
   border: 1px solid var(--indigo-800);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 1vh 0;
+  padding: 0.75rem;
   background-color: var(--indigo-200);
   font-size: 0.85rem;
+  overflow-y: auto;
 }
 
-.card-back h3 {
-  font-size: 0.75rem;
+/* Personnalisation de la scrollbar */
+.card-back::-webkit-scrollbar {
+  width: 4px;
+}
+
+.card-back::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.card-back::-webkit-scrollbar-thumb {
+  background: var(--indigo-800);
+  border-radius: 2px;
 }
 
 .card-front {
   text-align: center;
+  justify-content: center;
 }
 
 .card-back {
   transform: rotateY(180deg);
 }
 
+.card-back h3 {
+  font-size: 0.75rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
 .card-choices {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin: 1rem 0;
-  gap: 1rem;
-  width: 90%;
-}
-
-.card-wrapper.locked {
-  opacity: 0.8;
-  cursor: not-allowed;
-}
-
-.locked-card {
-  display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 0.5rem;
-  color: #666;
-}
-
-.deck-container {
-  padding: 2rem;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  margin: 0.5rem 0;
 }
 
 .choice {
-  flex: 1;
   padding: 0.5rem;
   background-color: #f9f9f9;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 
 .choice strong {
   display: block;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.choice p {
+  margin: 0.25rem 0;
+  word-wrap: break-word;
 }
 
 .impact {
-  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .impact-item {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  margin: 0.3rem 0;
-}
-
-.impact-icon {
-  flex-shrink: 0;
-}
-
-.impact-label {
-  font-size: 0.6rem;
-  color: #555;
+  gap: 0.2rem;
 }
 
 .impact-value {
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
-}
-
-.impact-value.population {
-  color: #007bff; /* Bleu pour populations */
-}
-
-.impact-value.finance {
-  color: #28a745; /* Vert pour finances */
 }
 
 .card-metadata {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #888;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   text-align: center;
 }
 
-.create-card-container {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.create-card-container h3 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.loading,
-.error-message {
-  text-align: center;
-  margin-top: 50px;
-  font-size: 18px;
-}
-
-.limit-reached-message {
-  margin-top: 1rem;
-  padding: 0.8rem 1rem;
-  background-color: var(--color-danger-background, #fce8ec);
-  color: var(--color-danger, #e0245e);
-  border: 1px solid var(--color-danger, #e0245e);
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: bold;
-  text-align: center;
-}
-
-@media (max-width: 768px) {
-  .deck-container {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    gap: 2rem;
-  }
-
+@media (min-width: 768px) {
   .card-choices {
-    gap: 0.8rem;
+    flex-direction: row;
+    gap: 0.5rem;
   }
 
   .choice {
-    width: 100%;
+    flex: 1;
+    font-size: 0.8rem;
   }
 
-  .game-page__title {
-    font-size: 1.8rem;
+  .impact-value {
+    font-size: 0.9rem;
   }
+}
 
+@media (max-height: 600px) {
   .card-back {
-    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .card-back h3 {
+    font-size: 0.7rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .choice {
+    padding: 0.25rem;
+  }
+
+  .impact {
+    margin-top: 0.15rem;
   }
 }

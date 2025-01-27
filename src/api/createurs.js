@@ -70,3 +70,11 @@ export const unassignRandomCardFromCreator = async (deckId, id_createur) => {
   );
   return response.data;
 };
+
+export const sendEmail = async (data) => {
+  console.log("sendEmail form api");
+  console.log(data);
+  const response = await API.post("/sendEmail", getAuthHeaders(), data);
+
+  return response.data;
+};

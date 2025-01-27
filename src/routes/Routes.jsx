@@ -15,6 +15,7 @@ import UsersAdmin from "../pages/admins/Users";
 import Banned from "../pages/createurs/Banned";
 import TermsOfService from "../pages/TermsOfService";
 import Privacy from "../pages/Privacy";
+import Contact from "../pages/Contact";
 import { useAuth } from "./../context/AuthContext"; // Hook pour accéder au contexte Auth
 
 // Composant pour protéger les routes selon les rôles
@@ -65,6 +66,9 @@ const AppRoutes = () => {
 
       {/* Route publique : politique de confidentialité */}
       <Route path="/privacy" element={<Privacy />} />
+
+      {/* Route publique : page de contact */}
+      <Route path="/contact" element={<Contact />} />
 
       {/* Route protégée : page de préparation à la création */}
       <Route
