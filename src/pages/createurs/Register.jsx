@@ -12,14 +12,6 @@ const Register = () => {
   const [error, setError] = useState(""); // Message d'erreur
   const [loading, setLoading] = useState(false); // Indicateur de chargement
   const navigate = useNavigate();
-  console.log({
-    nom_createur,
-    ad_email_createur,
-    ddn,
-    genre,
-    mdp_createur,
-    confirmPassword,
-  });
 
   // Fonction pour valider la complexité du mot de passe
   const isPasswordComplex = (password) => {
@@ -68,7 +60,6 @@ const Register = () => {
         genre,
         mdp_createur,
       });
-      console.log({ response });
       navigate("/loginCreateur?success=1"); // Redirection après succès
     } catch (err) {
       setError(err.response?.data?.message || "Erreur lors de l'inscription.");

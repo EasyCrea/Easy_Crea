@@ -8,30 +8,37 @@ const CreateCard = ({ id_deck, onCardCreated }) => {
   const { user } = useAuth();
   const [eventDescription, setEventDescription] = useState("");
   const [choice1, setChoice1] = useState("");
-  const [populationImpact1, setPopulationImpact1] = useState(0);
-  const [financeImpact1, setFinanceImpact1] = useState(0);
+  const [populationImpact1, setPopulationImpact1] = useState("");
+  const [financeImpact1, setFinanceImpact1] = useState("");
   const [choice2, setChoice2] = useState("");
-  const [populationImpact2, setPopulationImpact2] = useState(0);
-  const [financeImpact2, setFinanceImpact2] = useState(0);
+  const [populationImpact2, setPopulationImpact2] = useState("");
+  const [financeImpact2, setFinanceImpact2] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const validateImpact = (value) => {
+    const num = Number(value);
+    return !isNaN(num) && num >= -10 && num <= 10;
+  };
+
   const handleCreateCard = async (e) => {
     e.preventDefault();
+
+    // Convertir les valeurs en nombres pour la validation
+    const p1 = Number(populationImpact1);
+    const f1 = Number(financeImpact1);
+    const p2 = Number(populationImpact2);
+    const f2 = Number(financeImpact2);
 
     if (
       !eventDescription ||
       !choice1 ||
       !choice2 ||
-      populationImpact1 < -10 ||
-      populationImpact1 > 10 ||
-      financeImpact1 < -10 ||
-      financeImpact1 > 10 ||
-      populationImpact2 < -10 ||
-      populationImpact2 > 10 ||
-      financeImpact2 < -10 ||
-      financeImpact2 > 10
+      !validateImpact(p1) ||
+      !validateImpact(f1) ||
+      !validateImpact(p2) ||
+      !validateImpact(f2)
     ) {
       setError(
         "Tous les champs sont obligatoires et les impacts doivent être entre -10 et 10."
@@ -47,13 +54,13 @@ const CreateCard = ({ id_deck, onCardCreated }) => {
         id_administrateur: user?.role === "admin" ? user?.id : null,
         event_description: eventDescription,
         choice_1: choice1,
-        population_impact_1: populationImpact1,
-        finance_impact_1: financeImpact1,
+        population_impact_1: p1,
+        finance_impact_1: f1,
         choice_2: choice2,
-        population_impact_2: populationImpact2,
-        finance_impact_2: financeImpact2,
+        population_impact_2: p2,
+        finance_impact_2: f2,
       });
-      onCardCreated(); // Notifie le parent
+      onCardCreated();
     } catch (err) {
       console.error("Erreur lors de la création de la carte :", err);
       setError("Une erreur est survenue lors de la création de la carte.");
@@ -103,34 +110,42 @@ const CreateCard = ({ id_deck, onCardCreated }) => {
 
         <div className="form-group">
           <label htmlFor="populationImpact1" className="form-label required">
-            Impact sur la population (Choix 1)
+            Impact sur la population (Choix 1) [-10 à 10]
           </label>
-          <input
-            type="number"
+          <select
             id="populationImpact1"
             className="form-input"
             value={populationImpact1}
-            min={-10}
-            max={10}
-            onChange={(e) => setPopulationImpact1(parseInt(e.target.value, 10))}
+            onChange={(e) => setPopulationImpact1(e.target.value)}
             required
-          />
+          >
+            <option value="">Sélectionnez une valeur</option>
+            {Array.from({ length: 21 }, (_, i) => i - 10).map((num) => (
+              <option key={num} value={num}>
+                {num}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="form-group">
           <label htmlFor="financeImpact1" className="form-label required">
-            Impact sur les finances (Choix 1)
+            Impact sur les finances (Choix 1) [-10 à 10]
           </label>
-          <input
-            type="number"
+          <select
             id="financeImpact1"
             className="form-input"
             value={financeImpact1}
-            min={-10}
-            max={10}
-            onChange={(e) => setFinanceImpact1(parseInt(e.target.value, 10))}
+            onChange={(e) => setFinanceImpact1(e.target.value)}
             required
-          />
+          >
+            <option value="">Sélectionnez une valeur</option>
+            {Array.from({ length: 21 }, (_, i) => i - 10).map((num) => (
+              <option key={num} value={num}>
+                {num}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="form-group">
@@ -150,34 +165,42 @@ const CreateCard = ({ id_deck, onCardCreated }) => {
 
         <div className="form-group">
           <label htmlFor="populationImpact2" className="form-label required">
-            Impact sur la population (Choix 2)
+            Impact sur la population (Choix 2) [-10 à 10]
           </label>
-          <input
-            type="number"
+          <select
             id="populationImpact2"
             className="form-input"
             value={populationImpact2}
-            min={-10}
-            max={10}
-            onChange={(e) => setPopulationImpact2(parseInt(e.target.value, 10))}
+            onChange={(e) => setPopulationImpact2(e.target.value)}
             required
-          />
+          >
+            <option value="">Sélectionnez une valeur</option>
+            {Array.from({ length: 21 }, (_, i) => i - 10).map((num) => (
+              <option key={num} value={num}>
+                {num}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="form-group">
           <label htmlFor="financeImpact2" className="form-label required">
-            Impact sur les finances (Choix 2)
+            Impact sur les finances (Choix 2) [-10 à 10]
           </label>
-          <input
-            type="number"
+          <select
             id="financeImpact2"
             className="form-input"
             value={financeImpact2}
-            min={-10}
-            max={10}
-            onChange={(e) => setFinanceImpact2(parseInt(e.target.value, 10))}
+            onChange={(e) => setFinanceImpact2(e.target.value)}
             required
-          />
+          >
+            <option value="">Sélectionnez une valeur</option>
+            {Array.from({ length: 21 }, (_, i) => i - 10).map((num) => (
+              <option key={num} value={num}>
+                {num}
+              </option>
+            ))}
+          </select>
         </div>
 
         {error && <p className="login-form__error">{error}</p>}

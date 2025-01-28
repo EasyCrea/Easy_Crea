@@ -25,9 +25,7 @@ const ShowDeck = () => {
       if (data.cards) {
         setCards(data.cards);
       }
-      console.log({ data });
       setDeck(data.nom_deck);
-      console.log({ deck });
     } catch (error) {
       console.error("Erreur lors du chargement du deck :", error);
     } finally {

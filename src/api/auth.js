@@ -11,7 +11,6 @@ export const loginCreateur = async (email, password) => {
     const response = await API.post("/createurs/login", { email, password });
 
     if (response.data && response.data.token) {
-      console.log("Utilisateur authentifié :", response.data);
       return response.data; // Le serveur doit fournir le token
     }
   } catch (error) {
@@ -36,7 +35,6 @@ export const loginAdmin = async (email, password) => {
     const response = await API.post("/admin/login", { email, password });
 
     if (response.data && response.data.token) {
-      console.log("Utilisateur authentifié :", response.data);
       return response.data; // Le serveur doit fournir le token
     }
   } catch (error) {
