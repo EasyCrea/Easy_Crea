@@ -9,7 +9,7 @@ import {
   checkIfCreatorHasRandomCardInDeck,
 } from "../../api/createurs";
 import CreateCard from "../CreateCard";
-import { Coins, Users, Lock } from "lucide-react";
+import { Coins, Users, Lock, Calendar } from "lucide-react";
 
 const GamePage = () => {
   const { id_deck } = useParams();
@@ -21,6 +21,8 @@ const GamePage = () => {
   const [nbCartes, setNbCartes] = useState(0);
   const [creatorCard, setCreatorCard] = useState(null);
   const [randomCard, setRandomCard] = useState(null);
+  const [dateDebut, setDateDebut] = useState("");
+  const [dateFin, setDateFin] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [cardFlipStates, setCardFlipStates] = useState({});
@@ -42,9 +44,12 @@ const GamePage = () => {
     setLoading(true);
     try {
       const cardsData = await getAllCardInLiveDeck(id_deck);
+      console.log(cardsData);
       setTitleDeck(cardsData.titleDeck);
       setDescription(cardsData.descriptionDeck);
       setNbCartes(cardsData.nb_cartes);
+      setDateDebut(cardsData.date_debut_deck);
+      setDateFin(cardsData.date_fin_deck);
 
       const sortedCards = (cardsData.cards || []).sort(
         (a, b) => new Date(a.created_at) - new Date(b.created_at)
@@ -211,7 +216,16 @@ const GamePage = () => {
       <div className="mystical-bg"></div>
       <h1 className="game-page__title">{titleDeck}</h1>
       <h2 className="game-page__subtitle">{description}</h2>
-
+      <div className="deck-dates">
+        <div className="date-item">
+          <Calendar />
+          <span>Début : {new Date(dateDebut).toLocaleDateString()}</span>
+        </div>
+        <div className="date-item">
+          <Calendar />
+          <span>Fin : {new Date(dateFin).toLocaleDateString()}</span>
+        </div>
+      </div>
       {deckCards.length >= nbCartes && (
         <div className="limit-reached-message">
           Le nombre maximum de cartes pour ce deck a été atteint.

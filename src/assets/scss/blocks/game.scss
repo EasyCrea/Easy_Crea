@@ -123,6 +123,31 @@
   line-height: 1.2;
 }
 
+.deck-dates {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.deck-dates .date-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.deck-dates .date-item svg {
+  width: 16px;
+  height: 16px;
+  color: var(--color-danger); /* Couleur dorée */
+}
+
 .limit-reached-message {
   font-size: clamp(0.65rem, 1.5vw, 0.8rem);
   background-color: var(--color-danger-background);
