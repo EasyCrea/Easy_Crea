@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -26,7 +26,18 @@ const GamePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [cardFlipStates, setCardFlipStates] = useState({});
+  const navigate = useNavigate();
 
+  // Effet pour gérer la redirection et le chargement des données
+  useEffect(() => {
+    if (user !== null) {
+      // On vérifie si la propriété banned existe et est égale à 1
+      if ("banned" in user && user.banned === 1) {
+        navigate("/banned");
+        return;
+      }
+    }
+  }, [user, fetchDeckData]);
   const updateFlipStates = useCallback((creatorCardData, randomCardData) => {
     const newFlipStates = {};
     if (creatorCardData?.card) {
@@ -214,8 +225,11 @@ const GamePage = () => {
   return (
     <div className="game-page">
       <div className="mystical-bg"></div>
-      <h1 className="game-page__title">{titleDeck}</h1>
-      <h2 className="game-page__subtitle">{description}</h2>
+      <div className="deck-info">
+        <h1 className="game-page__title">{titleDeck}</h1>
+        <h2 className="game-page__subtitle">{description}</h2>
+      </div>
+
       <div className="deck-dates">
         <div className="date-item">
           <Calendar />

@@ -1,15 +1,18 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Coins, Users } from "lucide-react";
-import { getAllCardInLiveDeck } from "../../api/createurs";
+import {
+  getAllCardInLiveDeck,
+  checkIfCreatorHasRandomCardInDeck,
+  assignRandomCardToCreator,
+} from "../../api/createurs";
 import { useAuth } from "../../context/AuthContext";
 
 const PreGame = () => {
   const { id_deck } = useParams();
   const [titleDeck, setTitleDeck] = useState("");
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const fetchDeckData = useCallback(async () => {
@@ -19,7 +22,6 @@ const PreGame = () => {
       setTitleDeck(cardsData.titleDeck);
     } catch (err) {
       console.error("Erreur lors du chargement des données :", err);
-      setError("Une erreur est survenue lors du chargement des données.");
     } finally {
       setLoading(false);
     }
@@ -30,12 +32,33 @@ const PreGame = () => {
     if (user !== null) {
       // On vérifie si la propriété banned existe et est égale à 1
       if ("banned" in user && user.banned === 1) {
+        logout();
         navigate("/banned");
         return;
       }
       // Si l'utilisateur n'est pas banni, on charge les données
       fetchDeckData();
     }
+    const hasRandomCard = async () => {
+      if (user?.id) {
+        const hasRandomCard = await checkIfCreatorHasRandomCardInDeck(
+          id_deck,
+          user.id
+        );
+
+        if (!hasRandomCard?.card) {
+          const assignedCard = await assignRandomCardToCreator(
+            id_deck,
+            user.id
+          );
+          if (assignedCard?.card) {
+            fetchDeckData();
+          }
+        }
+      }
+    };
+
+    hasRandomCard();
   }, [user, navigate, fetchDeckData]);
 
   // Si l'utilisateur n'est pas encore chargé, on affiche un écran de chargement ou rien

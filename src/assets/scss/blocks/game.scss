@@ -22,6 +22,34 @@
   padding: 2rem;
 }
 
+.deck-info {
+  background: var(--indigo-600);
+  opacity: 0.9;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 600px;
+  margin: 2rem auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.game-page__title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.game-page__subtitle {
+  font-size: 1.3rem;
+  color: #cbd5e1;
+  font-style: italic;
+  margin-bottom: 0;
+  padding: 0 1rem;
+}
+
 @media (max-width: 768px) {
   .deck-container {
     grid-template-columns: 220px;
@@ -63,13 +91,18 @@
   border: 1px solid var(--indigo-800);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 0.5rem;
-  background-color: var(--indigo-200);
+  background: linear-gradient(
+    135deg,
+    var(--indigo-600),
+    var(--indigo-400)
+  ); /* Bleu foncé élégant */
   font-size: clamp(0.65rem, 1.5vw, 0.85rem);
 }
 
 .card-front {
   text-align: center;
   justify-content: center;
+  color: #f8fafc;
 }
 
 .card-back {
@@ -83,6 +116,7 @@
   margin-bottom: 0.25rem;
   max-width: 100%;
   word-wrap: break-word;
+  color: #f8fafc;
 }
 
 .card-choices {
@@ -131,6 +165,7 @@
   margin: 1rem 0;
   padding: 0.5rem 1rem;
   background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-danger);
   border-radius: 8px;
   font-size: 0.9rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -177,7 +212,7 @@
 
 .card-metadata {
   font-size: clamp(0.6rem, 1.5vw, 0.7rem);
-  color: #888;
+  color: #f8fafc;
   margin-top: 0.15rem;
   text-align: center;
 }
